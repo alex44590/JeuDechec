@@ -12,4 +12,6 @@ typedef struct{
 	Piece* tabPiecesDefaussees[16];
 }Defausse;
 
+Defausse* creerDefausse(Couleur couleur);
+
 #endif

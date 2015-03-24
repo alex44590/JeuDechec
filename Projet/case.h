@@ -1,8 +1,6 @@
 #ifndef CASE_H
 #define CASE_H
 
-#define _CRT_SECURE_NO_DEPRECATE//Autorise l'utilisation de fopen plutot que fopen_s
-
 #include "commun.h"
 
 
