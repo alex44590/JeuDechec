@@ -11,8 +11,8 @@ typedef struct{
 	Dimension dimension;
 }Echiquier;
 
-void initEchiquier(Echiquier* echiquier);
-void afficherEchiquier(Echiquier echiquier, SDL_Renderer* contexte);
+Echiquier* creerEchiquier();
+void afficherEchiquier(Echiquier* echiquier, SDL_Renderer* contexte);
 
 
 #endif

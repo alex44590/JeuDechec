@@ -48,5 +48,5 @@ void afficherBordures(SDL_Renderer* contexte, PlateauDeJeu* plateau){
 
 void afficherPlateauDeJeu(SDL_Renderer* contexte, PlateauDeJeu* plateau){
 	afficherBordures(contexte, plateau);
-	afficherEchiquier(*(plateau->echiquier), contexte);
+	afficherEchiquier(plateau->echiquier, contexte);
 }

@@ -6,6 +6,8 @@
 #include "commun.h"
 #include "menu.h"
 #include "piece.h"
+#include "echiquier.h"
+#include "plateauDeJeu.h"
 
 
 void pause();
@@ -27,10 +29,16 @@ int main(int argc, char* argv[]){
 	SDL_SetWindowIcon(screen, icone); //Insertion de l'icone dans la fenetre
 	SDL_Renderer* contexte = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); //Création du contexte qui apparaitra dans la fenetre
 
-	Case* echiquier[8][8];
-	creerPlateau(echiquier);
-	afficherPlateau(echiquier, contexte);
-	afficherCadre(contexte);
+	Echiquier* echiquier = NULL;
+	echiquier = creerEchiquier();
+	afficherEchiquier(echiquier, contexte);
+
+	Defausse* defausseB = NULL;
+	Defausse* defausseN = NULL;
+
+	PlateauDeJeu* plateau = NULL;
+	plateau = creerPlateauDeJeu(echiquier, defausseB, defausseN);
+	afficherPlateauDeJeu(contexte, plateau);
 
 	Menu* menu = creerMenu();
 	afficherMenu(menu, contexte);
@@ -52,7 +60,7 @@ int main(int argc, char* argv[]){
 	
 
 
-	Case* oldCase = echiquier[0][0];
+	Case* oldCase = plateau->echiquier->tabCases[0][0];
 	while (continuer)
 	{
 		SDL_WaitEvent(&event);
@@ -72,11 +80,11 @@ int main(int argc, char* argv[]){
 				if ((event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE != (oldPosSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE ||
 					(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE != (oldPosSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE)
 				{
-					mettreEnSurbrillance(echiquier[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE]);
-					afficherCase(echiquier[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE], contexte);
+					mettreEnSurbrillance(plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE]);
+					afficherCase(plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE], contexte);
 					supprimerSurbrillance(oldCase);
 					afficherCase(oldCase, contexte);
-					oldCase = echiquier[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+					oldCase = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 				}
 			}
 			
@@ -120,7 +128,7 @@ int main(int argc, char* argv[]){
 
 		}
 		
-		afficherAllPiece(tabPiece, contexte);
+		//afficherAllPiece(tabPiece, contexte);
 		SDL_RenderPresent(contexte);
 		SDL_Delay(10);
 	}

@@ -9,10 +9,12 @@ typedef struct{
 	Bouton* tabBouton[NB_BOUTON];
 }Menu;
 
-
+Bouton* creerBouton(idBouton cible, char* nomImage);
+void afficherBouton(Bouton* b, SDL_Renderer* contexte);
 Menu* creerMenu();
 void afficherFondMenu(Menu* m, SDL_Renderer* contexte);
 void afficherMenu(Menu* m, SDL_Renderer* contexte);
-
+void enfoncerBouton(Bouton* b);
+void desenfoncerBouton(Bouton* b);
 
 #endif
