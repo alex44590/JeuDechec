@@ -141,6 +141,7 @@ int main(int argc, char* argv[]){
 					supprimerSurbrillance(oldCase);
 					afficherCase(oldCase, contexte);
 					oldCase = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+					afficherAllPiece(tabPiece, contexte);
 				}
 			}
 			
@@ -151,6 +152,7 @@ int main(int argc, char* argv[]){
 			{
 				supprimerSurbrillance(oldCase);
 				afficherCase(oldCase, contexte);
+				afficherAllPiece(tabPiece, contexte);
 
 			}
 
@@ -184,7 +186,7 @@ int main(int argc, char* argv[]){
 
 		}
 		
-		//afficherAllPiece(tabPiece, contexte);
+		
 		SDL_RenderPresent(contexte);
 		SDL_Delay(10);
 	}

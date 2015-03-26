@@ -61,3 +61,6 @@ Debug/Projet.exe
 Debug/log.txt
 Debug/Projet.ilk
 Debug/Projet.pdb
+Debug/Projet.exe
+*.ilk
+Debug/Projet.pdb

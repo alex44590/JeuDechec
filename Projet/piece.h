@@ -8,33 +8,23 @@
 
 typedef enum{ ROI, DAME, FOU, CAVALIER, TOUR, PION }TypePiece;
 
-typedef struct {
-	Lettre colonne;
-	Lettre ligne;
-}Id;
-
-typedef struct {
-	char type;
-	char couleur;
-	int numero;
-}IdPiece;
-
 typedef struct{
-	Id idPosition;
-	IdPiece idPiece;
+	IDCase idPosition;
+	IDPiece idPiece;
 	Dimension dimension;
 	Couleur couleur;
 	TypePiece type;
 	SDL_Surface* imagePiece;
-	Id* deplacementPossibles;
+	IDCase* deplacementPossibles;
 	Booleen active;
 	Booleen pieceSelectionne;
 	Booleen surbrillance;
 }Piece;
 
-Piece* newPiece(Id position, int numero, TypePiece t, Couleur c, char* cheminImage);
-void initAllPiece(Piece* tabPiece[32]);
+Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);
+void bougerPiece(Piece* p, Lettre colonneArrivee, Lettre ligneArrivee);
 void afficherPiece(Piece* p, SDL_Renderer* contexte);
 void afficherAllPiece(Piece* tabPiece[32], SDL_Renderer* contexte);
+void initAllPiece(Piece* tabPiece[32]);
 
 #endif

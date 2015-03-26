@@ -40,7 +40,7 @@
 #define HAUTEUR_DEFAUSSE 92
 #define LARGEUR_DEFAUSSE 300
 #define TAILLE_DEFAUSSE (Dimension){HAUTEUR_DEFAUSSE, LARGEUR_DEFAUSSE}
-#define POSITION_DEFAUSSE_NOIRE (Position){LARGEUR_MENU+2*LARGEUR_BARRE+8*LARGEUR_CASE+(LARGEUR_MENU_DROITE-LARGEUR_DEFAUSSE)/2, 20}
+#define POSITION_DEFAUSSE_NOIRE (Position){LARGEUR_MENU+2*LARGEUR_BARRE+8*LARGEUR_CASE+(LARGEUR_MENU_DROITE-LARGEUR_DEFAUSSE)/2, 14}
 #define POSITION_DEFAUSSE_BLANCHE (Position){LARGEUR_MENU+2*LARGEUR_BARRE+8*LARGEUR_CASE+(LARGEUR_MENU_DROITE-LARGEUR_DEFAUSSE)/2, HAUTEUR_FENETRE-20-HAUTEUR_DEFAUSSE}
 
 typedef enum { FALSE, TRUE }Booleen;
@@ -59,8 +59,9 @@ typedef struct {
 
 typedef struct {
 	char type;
-	Couleur couleur;
-	int numero;
+	char couleur;
+	char numero;
+	char id[4]; //Id complet de la pièce sous la forme TN0 pour la 1ère Tour Noire, avec un \0 en 4ème caractère pour pouvoir utiliser les fct de string.h 
 }IDPiece;
 
 typedef struct {
