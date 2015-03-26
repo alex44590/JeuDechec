@@ -7,6 +7,9 @@ Defausse* creerDefausse(Couleur couleur){
 		logPrint(ERREUR, "Allocation dynamique de la Defausse échouée");
 	}
 
+	defausse->couleur = couleur;
+	defausse->dimension = TAILLE_DEFAUSSE;
+
 	return defausse;
 }
 

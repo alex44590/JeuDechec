@@ -8,6 +8,7 @@
 #include "piece.h"
 #include "echiquier.h"
 #include "plateauDeJeu.h"
+#include "menuDroite.h"
 
 
 int main(int argc, char* argv[]){
@@ -83,6 +84,12 @@ int main(int argc, char* argv[]){
 		logPrint(ERREUR, "Echec de la création du menu");
 	afficherMenu(menu, contexte);
 
+	//Création du menu de droite (contenant les défausses)
+	logPrint(INFO, "Création du menu de droite");
+	MenuDroite* menuDroite = creerMenuDroite(defausseB, defausseN);
+	if (menu == NULL)
+		logPrint(ERREUR, "Echec de la création du menuDroite");
+	afficherFondMenuDroite(menuDroite, contexte);
 
 	//Ajout de pieces
 	Piece* tabPiece[32];
