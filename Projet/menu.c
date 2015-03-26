@@ -32,10 +32,10 @@ Menu* creerMenu(){
 	Menu* menu = (Menu*)malloc(sizeof(Menu));
 	menu->fondMenu = IMG_Load("fondMenu3.png");
 
-	menu->tabBouton[0] = creerBouton(JOUER, "Bouton1.png");
+	menu->tabBouton[0] = creerBouton(JOUER, "Bouton0.png");
 	menu->tabBouton[1] = creerBouton(OPTIONS, "Bouton1.png");
-	menu->tabBouton[2] = creerBouton(REGLES, "Bouton1.png");
-	menu->tabBouton[3] = creerBouton(STATISTIQUES, "Bouton1.png");
+	menu->tabBouton[2] = creerBouton(REGLES, "Bouton2.png");
+	menu->tabBouton[3] = creerBouton(STATISTIQUES, "Bouton3.png");
 	
 	return menu;
 }

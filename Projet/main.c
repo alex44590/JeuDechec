@@ -91,6 +91,14 @@ int main(int argc, char* argv[]){
 		logPrint(ERREUR, "Echec de la création du menuDroite");
 	afficherFondMenuDroite(menuDroite, contexte);
 
+
+	//Affichage des défausses
+	logPrint(INFO, "Affichage de la défausse blanche");
+	afficherDefausse(defausseB, contexte);
+	logPrint(INFO, "Affichage de la défausse noire");
+	afficherDefausse(defausseN, contexte);
+
+
 	//Ajout de pieces
 	Piece* tabPiece[32];
 	initAllPiece(tabPiece);
