@@ -8,7 +8,7 @@
 typedef struct {
 	char* joueur1;
 	char* joueur2;
-	ListeDeplacement deplacementEffectues;
+	ListDeplacement deplacementEffectues;
 	Timer debut;
 }Historique;
 

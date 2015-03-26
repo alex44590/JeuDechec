@@ -11,8 +11,8 @@ typedef struct Deplacement{
 	IDCase arrivee;
 	int numero;
 	Timer heure;
-	Deplacement next;
-	Deplacement previous;
+	struct Deplacement* next;
+	struct Deplacement* previous;
 }Deplacement;
 
 #endif
