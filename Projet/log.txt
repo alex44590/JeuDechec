@@ -7,4 +7,4 @@ INFO : Création de la défausse blanche
 INFO : Création de la défausse noire
 INFO : Création du plateau de jeu
 INFO : Création du menu
-INFO : Lancement de la boucle principale du jeu 2
+INFO : Lancement de la boucle principale du jeu

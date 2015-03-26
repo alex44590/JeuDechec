@@ -8,8 +8,8 @@ Bouton* creerBouton(idBouton cible, char* nomImage){
 	SDL_Surface* imageBouton = IMG_Load(nomImage);
 	b->image = imageBouton;
 
-	b->dimension.largeur = 280;
-	b->dimension.hauteur = 60;
+	b->dimension.largeur = 288;
+	b->dimension.hauteur = 68;
 	b->positionInit.x = b->positionActuelle.x = (LARGEUR_MENU - b->dimension.largeur) / 2;
 	b->positionInit.y = b->positionActuelle.y = (HAUTEUR_MENU - NB_BOUTON * 1.3 * b->dimension.hauteur) / 2 + 1.3 * b->dimension.hauteur*cible;
 
