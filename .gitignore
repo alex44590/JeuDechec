@@ -57,10 +57,7 @@ Projet/Debug
 Projet.sdf
 Projet.v12.suo
 Projet.opensdf
-Debug/Projet.exe
-Debug/log.txt
-Debug/Projet.ilk
-Debug/Projet.pdb
-Debug/Projet.exe
+*log.txt
 *.ilk
-Debug/Projet.pdb
+*.pdb
+*.exe

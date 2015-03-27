@@ -100,6 +100,7 @@ int main(int argc, char* argv[]){
 
 
 	//Ajout de pieces
+	logPrint(INFO, "Initialisation de toutes les pièces");
 	Piece* tabPiece[32];
 	initAllPiece(tabPiece);
 
