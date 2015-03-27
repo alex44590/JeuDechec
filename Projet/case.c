@@ -53,12 +53,14 @@ void afficherCase(Case* c, SDL_Renderer* contexte){
 	SDL_free(&positionAffichage);
 }
 
-void mettreEnSurbrillance(Case* c){
+void mettreEnSurbrillance(Case* c, SDL_Renderer* contexte){
 	c->enSurbrillance = TRUE;
 	c->imageCaseActuelle = c->imageCaseSurbrillance;
+	afficherCase(c, contexte);
 }
 
-void supprimerSurbrillance(Case* c){
+void supprimerSurbrillance(Case* c, SDL_Renderer* contexte){
 	c->enSurbrillance = FALSE;
 	c->imageCaseActuelle = c->imageCaseNormale;
+	afficherCase(c, contexte);
 }

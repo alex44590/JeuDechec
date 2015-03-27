@@ -22,6 +22,6 @@ typedef struct {
 Case* creerCaseBlanche(IDCase id);
 Case* creerCaseNoire(IDCase id);
 void afficherCase(Case* c, SDL_Renderer* contexte);
-void mettreEnSurbrillance(Case* c);
-void supprimerSurbrillance(Case* c);
+void mettreEnSurbrillance(Case* c, SDL_Renderer* contexte);
+void supprimerSurbrillance(Case* c, SDL_Renderer* contexte);
 #endif

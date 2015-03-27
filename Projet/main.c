@@ -10,6 +10,9 @@
 #include "plateauDeJeu.h"
 #include "menuDroite.h"
 
+#define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (event.motion.x > OFFSET_PLATEAU_GAUCHE && event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.motion.y > OFFSET_PLATEAU_HAUT && event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
+#define MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER (event.motion.x < OFFSET_PLATEAU_GAUCHE || event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE || event.motion.y < OFFSET_PLATEAU_HAUT || event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
+#define CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE (event.button.x > menu->tabBouton[i]->positionInit.x && event.button.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur && event.button.y > menu->tabBouton[i]->positionInit.y && event.button.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
 
 int main(int argc, char* argv[]){
 
@@ -26,14 +29,14 @@ int main(int argc, char* argv[]){
 
 
 	//Création de la fenetre
-	SDL_Window* screen = SDL_CreateWindow("Jeu d'Echec Multijoueur",  
+	SDL_Window* screen = SDL_CreateWindow("Jeu d'Echec Multijoueur",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		LARGEUR_FENETRE, HAUTEUR_FENETRE,
 		0);
 
 
 	//Chargement de l'icone
-	SDL_Surface* icone = IMG_Load("Icone4.png"); 
+	SDL_Surface* icone = IMG_Load("Icone4.png");
 	if (icone == NULL){
 		logPrint(ERREUR, "Chargement de l'image pour l'icone échoué");
 		return EXIT_FAILURE;
@@ -110,9 +113,12 @@ int main(int argc, char* argv[]){
 	Position oldPosSouris;
 	oldPosSouris.x = 0;
 	oldPosSouris.y = 0;
-	
 
 	Case* oldCase = plateau->echiquier->tabCases[0][0];
+	Case* casePointee = plateau->echiquier->tabCases[0][0];
+	IDCase idCasePointee = casePointee->identifiant;
+	IDCase idOldCase = oldCase->identifiant;
+
 	while (continuer)
 	{
 		SDL_WaitEvent(&event);
@@ -124,31 +130,34 @@ int main(int argc, char* argv[]){
 
 
 		case SDL_MOUSEMOTION:
-			if (event.motion.x > OFFSET_PLATEAU_GAUCHE &&
-				event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE &&
-				event.motion.y > OFFSET_PLATEAU_HAUT &&
-				event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
-			{
+			if (MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER){
+
+				//Calcul de la case vidée par la souris et de son id
+				casePointee = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+				idCasePointee = casePointee->identifiant;
+
 				if ((event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE != (oldPosSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE ||
 					(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE != (oldPosSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE)
 				{
-					mettreEnSurbrillance(plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE]);
-					afficherCase(plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE], contexte);
-					supprimerSurbrillance(oldCase);
-					afficherCase(oldCase, contexte);
-					oldCase = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
-					afficherAllPiece(echiquier->tabPieces, contexte);
+					//Mise à jour de la couleur de la case puis réaffichage de la pièce
+					mettreEnSurbrillance(casePointee, contexte);
+					if (echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne] != NULL)
+						afficherPiece(echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne], contexte);
+
+					supprimerSurbrillance(oldCase, contexte);
+					if (echiquier->tabPieces[idOldCase.colonne][idOldCase.ligne] != NULL)
+						afficherPiece(echiquier->tabPieces[idOldCase.colonne][idOldCase.ligne], contexte);
+
+					oldCase = casePointee;
+					idOldCase = oldCase->identifiant;
 				}
 			}
-			
-			if (event.motion.x < OFFSET_PLATEAU_GAUCHE ||
-				event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE ||
-				event.motion.y < OFFSET_PLATEAU_HAUT ||
-				event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
+
+			if (MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER)
 			{
-				supprimerSurbrillance(oldCase);
-				afficherCase(oldCase, contexte);
-				afficherAllPiece(echiquier->tabPieces, contexte);
+				supprimerSurbrillance(oldCase, contexte);
+				if (echiquier->tabPieces[idOldCase.colonne][idOldCase.ligne] != NULL)
+					afficherPiece(echiquier->tabPieces[idOldCase.colonne][idOldCase.ligne], contexte);
 
 			}
 
@@ -158,18 +167,15 @@ int main(int argc, char* argv[]){
 
 		case SDL_MOUSEBUTTONDOWN:
 			//Traitement des boutons du menu
-			for (i = 0; i<NB_BOUTON; i++){
-				if (event.button.x > menu->tabBouton[i]->positionInit.x &&
-					event.button.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur &&
-					event.button.y > menu->tabBouton[i]->positionInit.y &&
-					event.button.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
+			for (i = 0; i < NB_BOUTON; i++){
+				if (CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE)
 				{
 					enfoncerBouton(menu->tabBouton[i]);
 					afficherMenu(menu, contexte);
 				}
 			} //Fin du traitement des boutons
 			break;
-		
+
 		case SDL_MOUSEBUTTONUP:
 			//On vérifie que tous les boutons sont bien revenus à leur position initiale
 			for (i = 0; i < NB_BOUTON; i++){
@@ -181,8 +187,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		}
-		
-		
+
 		SDL_RenderPresent(contexte);
 		SDL_Delay(10);
 	}
