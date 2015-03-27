@@ -24,7 +24,7 @@ typedef struct{
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);
 void bougerPiece(Piece* p, Lettre colonneArrivee, Lettre ligneArrivee);
 void afficherPiece(Piece* p, SDL_Renderer* contexte);
-void afficherAllPiece(Piece* tabPiece[32], SDL_Renderer* contexte);
-void initAllPiece(Piece* tabPiece[32]);
+void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte);
+void initAllPiece(Piece* tabPiece[8][8]);
 
 #endif

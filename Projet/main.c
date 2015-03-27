@@ -99,11 +99,6 @@ int main(int argc, char* argv[]){
 	afficherDefausse(defausseN, contexte);
 
 
-	//Ajout de pieces
-	logPrint(INFO, "Initialisation de toutes les pièces");
-	Piece* tabPiece[32];
-	initAllPiece(tabPiece);
-
 	SDL_RenderPresent(contexte);
 
 
@@ -142,7 +137,7 @@ int main(int argc, char* argv[]){
 					supprimerSurbrillance(oldCase);
 					afficherCase(oldCase, contexte);
 					oldCase = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
-					afficherAllPiece(tabPiece, contexte);
+					afficherAllPiece(echiquier->tabPieces, contexte);
 				}
 			}
 			
@@ -153,7 +148,7 @@ int main(int argc, char* argv[]){
 			{
 				supprimerSurbrillance(oldCase);
 				afficherCase(oldCase, contexte);
-				afficherAllPiece(tabPiece, contexte);
+				afficherAllPiece(echiquier->tabPieces, contexte);
 
 			}
 

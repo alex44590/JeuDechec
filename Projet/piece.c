@@ -63,7 +63,7 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	p->idPiece.id[3] = '\0';
 
 	//Chargement de l'image (de la forme 'Type''Couleur'.png)
-	char nomImage[14] = { 'P','i','e','c','e','s','/',p->idPiece.type, p->idPiece.couleur, '.', 'p', 'n', 'g','\0'};
+	char nomImage[14] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, '.', 'p', 'n', 'g', '\0' };
 	p->imagePiece = IMG_Load(nomImage);
 	if (p->imagePiece == NULL)
 		logPrint(ERREUR, "Echec du chargement de l'image de la pièce");
@@ -71,58 +71,65 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	return p;
 }
 
-void initAllPiece(Piece* tabPiece[32]){
-	int i = 0;
+void initAllPiece(Piece* tabPiece[8][8]){
+	int i;
+	int j;
 	//Pions Noirs
 	for (i = 0; i < 8; i++){
-		tabPiece[i] = creerPiece(PION, NOIR, i);
-		bougerPiece(tabPiece[i], i, 1);
+		tabPiece[i][1] = creerPiece(PION, NOIR, i);
+		bougerPiece(tabPiece[i][1], i, 1);
 	}
 	//Pions Blancs
 	for (i = 0; i < 8; i++){
-		tabPiece[i + 8] = creerPiece(PION, BLANC, i);
-		bougerPiece(tabPiece[i+8], i, 6);
+		tabPiece[i][6] = creerPiece(PION, BLANC, i);
+		bougerPiece(tabPiece[i][6], i, 6);
 	}
 	//Tours Noires
-	tabPiece[16] = creerPiece(TOUR, NOIR, 0);
-	tabPiece[17] = creerPiece(TOUR, NOIR, 1);
-	bougerPiece(tabPiece[16], 0, 0);
-	bougerPiece(tabPiece[17], 7, 0);
+	tabPiece[0][0] = creerPiece(TOUR, NOIR, 0);
+	tabPiece[7][0] = creerPiece(TOUR, NOIR, 1);
+	bougerPiece(tabPiece[0][0], 0, 0);
+	bougerPiece(tabPiece[7][0], 7, 0);
 	//Tours Blanches
-	tabPiece[18] = creerPiece(TOUR, BLANC, 0);
-	tabPiece[19] = creerPiece(TOUR, BLANC, 1);
-	bougerPiece(tabPiece[18], 0, 7);
-	bougerPiece(tabPiece[19], 7, 7);
+	tabPiece[0][7] = creerPiece(TOUR, BLANC, 0);
+	tabPiece[7][7] = creerPiece(TOUR, BLANC, 1);
+	bougerPiece(tabPiece[0][7], 0, 7);
+	bougerPiece(tabPiece[7][7], 7, 7);
 	//Cavaliers Noirs
-	tabPiece[20] = creerPiece(CAVALIER, NOIR, 0);
-	tabPiece[21] = creerPiece(CAVALIER, NOIR, 1);
-	bougerPiece(tabPiece[20], 1, 0);
-	bougerPiece(tabPiece[21], 6, 0);
+	tabPiece[1][0] = creerPiece(CAVALIER, NOIR, 0);
+	tabPiece[6][0] = creerPiece(CAVALIER, NOIR, 1);
+	bougerPiece(tabPiece[1][0], 1, 0);
+	bougerPiece(tabPiece[6][0], 6, 0);
 	//Cavaliers Blancs
-	tabPiece[22] = creerPiece(CAVALIER, BLANC, 0);
-	tabPiece[23] = creerPiece(CAVALIER, BLANC, 1);
-	bougerPiece(tabPiece[22], 1, 7);
-	bougerPiece(tabPiece[23], 6, 7);
+	tabPiece[1][7] = creerPiece(CAVALIER, BLANC, 0);
+	tabPiece[6][7] = creerPiece(CAVALIER, BLANC, 1);
+	bougerPiece(tabPiece[1][7], 1, 7);
+	bougerPiece(tabPiece[6][7], 6, 7);
 	//Fous Noirs
-	tabPiece[24] = creerPiece(FOU, NOIR, 0);
-	tabPiece[25] = creerPiece(FOU, NOIR, 1);
-	bougerPiece(tabPiece[24], 2, 0);
-	bougerPiece(tabPiece[25], 5, 0);
+	tabPiece[2][0] = creerPiece(FOU, NOIR, 0);
+	tabPiece[5][0] = creerPiece(FOU, NOIR, 1);
+	bougerPiece(tabPiece[2][0], 2, 0);
+	bougerPiece(tabPiece[5][0], 5, 0);
 	//Fous Blancs
-	tabPiece[26] = creerPiece(FOU, BLANC, 0);
-	tabPiece[27] = creerPiece(FOU, BLANC, 1);
-	bougerPiece(tabPiece[26], 2, 7);
-	bougerPiece(tabPiece[27], 5, 7);
+	tabPiece[2][7] = creerPiece(FOU, BLANC, 0);
+	tabPiece[5][7] = creerPiece(FOU, BLANC, 1);
+	bougerPiece(tabPiece[2][7], 2, 7);
+	bougerPiece(tabPiece[5][7], 5, 7);
 	//Rois
-	tabPiece[28] = creerPiece(ROI, NOIR, 0);
-	tabPiece[29] = creerPiece(ROI, BLANC, 0);
-	bougerPiece(tabPiece[28], 3, 0);
-	bougerPiece(tabPiece[29], 3, 7);
+	tabPiece[3][0] = creerPiece(ROI, NOIR, 0);
+	tabPiece[3][7] = creerPiece(ROI, BLANC, 0);
+	bougerPiece(tabPiece[3][0], 3, 0);
+	bougerPiece(tabPiece[3][7], 3, 7);
 	//Dames
-	tabPiece[30] = creerPiece(DAME, NOIR, 0);
-	tabPiece[31] = creerPiece(DAME, BLANC, 0);
-	bougerPiece(tabPiece[30], 4, 0);
-	bougerPiece(tabPiece[31], 4, 7);
+	tabPiece[4][0] = creerPiece(DAME, NOIR, 0);
+	tabPiece[4][7] = creerPiece(DAME, BLANC, 0);
+	bougerPiece(tabPiece[4][0], 4, 0);
+	bougerPiece(tabPiece[4][7], 4, 7);
+	//Initialisation des autres cases à NULL
+	for (i = 0; i < 8; ++i){
+		for (j = 2; j < 6; ++j){
+			tabPiece[i][j] = NULL;
+		}
+	}
 }
 void afficherPiece(Piece* p, SDL_Renderer* contexte){
 	SDL_Texture* texturePiece = SDL_CreateTextureFromSurface(contexte, p->imagePiece);
@@ -138,21 +145,28 @@ void afficherPiece(Piece* p, SDL_Renderer* contexte){
 
 
 void bougerPiece(Piece* p, Lettre colonneArrivee, Lettre ligneArrivee){
+	if (p == NULL)
+		logPrint(ERREUR, "Impossible de bouger la pièce car il s'agit de l'élément NULL");
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
 }
 
-void afficherAllPiece(Piece* tabPiece[32], SDL_Renderer* contexte){
+void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){
 	int i;
-	for (i = 0; i < 32; ++i){
-		SDL_Texture* texturePiece = SDL_CreateTextureFromSurface(contexte, tabPiece[i]->imagePiece);
-		SDL_Rect positionAffichage;
-		positionAffichage.x = POSITION_FROM_ID_PIECE(tabPiece[i]->idPosition.colonne, tabPiece[i]->idPosition.ligne).x;
-		positionAffichage.y = POSITION_FROM_ID_PIECE(tabPiece[i]->idPosition.colonne, tabPiece[i]->idPosition.ligne).y;
-		positionAffichage.w = tabPiece[i]->dimension.largeur;
-		positionAffichage.h = tabPiece[i]->dimension.hauteur;
-		SDL_RenderCopy(contexte, texturePiece, NULL, &positionAffichage);
-		SDL_DestroyTexture(texturePiece);
-		SDL_free(&positionAffichage);
+	int j;
+	for (i = 0; i < 8; ++i){
+		for (j = 0; j < 8; ++j){
+			if (tabPiece[i][j] != NULL){
+				SDL_Texture* texturePiece = SDL_CreateTextureFromSurface(contexte, tabPiece[i][j]->imagePiece);
+				SDL_Rect positionAffichage;
+				positionAffichage.x = POSITION_FROM_ID_PIECE(tabPiece[i][j]->idPosition.colonne, tabPiece[i][j]->idPosition.ligne).x;
+				positionAffichage.y = POSITION_FROM_ID_PIECE(tabPiece[i][j]->idPosition.colonne, tabPiece[i][j]->idPosition.ligne).y;
+				positionAffichage.w = tabPiece[i][j]->dimension.largeur;
+				positionAffichage.h = tabPiece[i][j]->dimension.hauteur;
+				SDL_RenderCopy(contexte, texturePiece, NULL, &positionAffichage);
+				SDL_DestroyTexture(texturePiece);
+				SDL_free(&positionAffichage);
+			}
+		}
 	}
 }

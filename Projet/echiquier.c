@@ -1,8 +1,12 @@
 #include "echiquier.h"
+#include "piece.h"
 
 Echiquier* creerEchiquier(){
 	Echiquier* echiquier;
 	echiquier = malloc(sizeof(Echiquier));
+	if (echiquier == NULL)
+		logPrint(ERREUR, "Erreur lors de l'allocation de l'échiquier");
+	logPrint(INFO, "Initialisation des cases de l'échiquier");
 	int i, j;
 	for (i = 0; i < 7; i += 2){
 		for (j = 0; j < 7; j += 2){
@@ -16,6 +20,9 @@ Echiquier* creerEchiquier(){
 			echiquier->tabCases[i][j] = creerCaseNoire(((IDCase){ i, j }));
 		}
 	}
+
+	logPrint(INFO, "Initialisation des pièces de l'échiquier");
+	initAllPiece(echiquier->tabPieces);
 	return echiquier;
 }
 
@@ -27,5 +34,6 @@ void afficherEchiquier(Echiquier* echiquier, SDL_Renderer* contexte){
 			afficherCase(echiquier->tabCases[i][j], contexte);
 		}
 	}
+	afficherAllPiece(echiquier->tabPieces, contexte);
 }
 	
