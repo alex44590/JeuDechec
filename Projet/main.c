@@ -91,7 +91,16 @@ int main(int argc, char* argv[]){
 		logPrint(ERREUR, "Echec de la création du menuDroite");
 	afficherFondMenuDroite(menuDroite, contexte);
 
+
+	//Affichage des défausses
+	logPrint(INFO, "Affichage de la défausse blanche");
+	afficherDefausse(defausseB, contexte);
+	logPrint(INFO, "Affichage de la défausse noire");
+	afficherDefausse(defausseN, contexte);
+
+
 	//Ajout de pieces
+	logPrint(INFO, "Initialisation de toutes les pièces");
 	Piece* tabPiece[32];
 	initAllPiece(tabPiece);
 
@@ -133,6 +142,7 @@ int main(int argc, char* argv[]){
 					supprimerSurbrillance(oldCase);
 					afficherCase(oldCase, contexte);
 					oldCase = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+					afficherAllPiece(tabPiece, contexte);
 				}
 			}
 			
@@ -143,6 +153,7 @@ int main(int argc, char* argv[]){
 			{
 				supprimerSurbrillance(oldCase);
 				afficherCase(oldCase, contexte);
+				afficherAllPiece(tabPiece, contexte);
 
 			}
 
@@ -176,7 +187,7 @@ int main(int argc, char* argv[]){
 
 		}
 		
-		//afficherAllPiece(tabPiece, contexte);
+		
 		SDL_RenderPresent(contexte);
 		SDL_Delay(10);
 	}
