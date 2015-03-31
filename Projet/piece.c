@@ -64,10 +64,13 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 
 	//Chargement de l'image (de la forme 'Type''Couleur'.png)
 	char nomImage[14] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, '.', 'p', 'n', 'g', '\0' };
-	p->imagePiece = IMG_Load(nomImage);
+	p->imagePiece = p->imagePieceNormale = IMG_Load(nomImage);
 	if (p->imagePiece == NULL)
 		logPrint(ERREUR, "Echec du chargement de l'image de la pièce");
-
+	char nomImageSurbrillance[15] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, 'S', '.', 'p', 'n', 'g', '\0' };
+	p->imagePieceSurbrillance = IMG_Load(nomImageSurbrillance);
+	if (p->imagePieceSurbrillance == NULL)
+		logPrint(ERREUR, "Echec du chargement de l'image de surbrillance de la pièce");
 	return p;
 }
 
@@ -174,4 +177,20 @@ void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){
 			}
 		}
 	}
+}
+
+void mettreEnSurbillancePiece(Piece* p, SDL_Renderer* contexte){
+	if (p == NULL)
+		logPrint(ERREUR, "Impossible de mettre en surbrillance la pièce s'il s'agit de l'élément null");
+	p->imagePiece = p->imagePieceSurbrillance;
+	p->surbrillance = TRUE;
+	afficherPiece(p, contexte);
+}
+
+void supprimerSurbillancePiece(Piece* p, SDL_Renderer* contexte){
+	if (p == NULL)
+		logPrint(ERREUR, "Impossible de supprimer la surbrillance de la pièce s'il s'agit de l'élément null");
+	p->imagePiece = p->imagePieceNormale;
+	p->surbrillance = FALSE;
+	afficherPiece(p, contexte);
 }

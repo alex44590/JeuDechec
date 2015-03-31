@@ -15,6 +15,8 @@ typedef struct{
 	Couleur couleur;
 	TypePiece type;
 	SDL_Surface* imagePiece;
+	SDL_Surface* imagePieceNormale;
+	SDL_Surface* imagePieceSurbrillance;
 	IDCase* deplacementPossibles;
 	Booleen active;
 	Booleen pieceSelectionne;
@@ -26,5 +28,7 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 void afficherPiece(Piece* p, SDL_Renderer* contexte);
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte);
 void initAllPiece(Piece* tabPiece[8][8]);
+void mettreEnSurbillancePiece(Piece* p, SDL_Renderer* contexte);
+void supprimerSurbillancePiece(Piece* p, SDL_Renderer* contexte);
 
 #endif

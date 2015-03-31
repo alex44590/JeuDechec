@@ -185,6 +185,7 @@ int main(int argc, char* argv[]){
 						afficherMenu(menu, contexte);
 					}
 				} //Fin du traitement des boutons
+				pieceSelectionnee = NULL;
 			}
 
 			if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){
@@ -192,12 +193,17 @@ int main(int argc, char* argv[]){
 				idCaseSelectionnee = caseSelectionnee->identifiant;
 		
 				//Si aucune pièce sélectionnée et que la case en contient une
-				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL)
+				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
+					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
+				}
 
 				//Si pièce sélectionnée et que la case en contient une : on déselectionne la pièce
-				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL)
+				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
+					supprimerSurbillancePiece(pieceSelectionnee, contexte);
 					pieceSelectionnee = NULL;
+				}
+					
 								
 				//Si pièce sélectionnée et que la case n'en contient pas : on déplace la pièce
 				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
@@ -205,6 +211,7 @@ int main(int argc, char* argv[]){
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+						supprimerSurbillancePiece(pieceSelectionnee, contexte);
 						pieceSelectionnee = NULL;
 					}
 				}
