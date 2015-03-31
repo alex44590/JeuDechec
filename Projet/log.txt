@@ -5,6 +5,38 @@ INFO : Création du contexte graphique
 INFO : Création de l'échiquier
 INFO : Initialisation des cases de l'échiquier
 INFO : Initialisation des pièces de l'échiquier
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
 INFO : Création de la défausse blanche
 INFO : Création de la défausse noire
 INFO : Création du plateau de jeu
@@ -13,3 +45,56 @@ INFO : Création du menu de droite
 INFO : Affichage de la défausse blanche
 INFO : Affichage de la défausse noire
 INFO : Lancement de la boucle principale du jeu
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Deplacement de la pièce
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece
+INFO : Affichage de la piece

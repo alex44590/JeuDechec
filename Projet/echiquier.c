@@ -23,6 +23,17 @@ Echiquier* creerEchiquier(){
 
 	logPrint(INFO, "Initialisation des pièces de l'échiquier");
 	initAllPiece(echiquier->tabPieces);
+	
+	//On tague les cases sur lesquelles on a déposé des pièces comme occupées
+	for (i = 0; i < 8; ++i){
+		echiquier->tabCases[0][i]->occupee = TRUE;
+		echiquier->tabCases[1][i]->occupee = TRUE;
+		echiquier->tabCases[6][i]->occupee = TRUE;
+		echiquier->tabCases[7][i]->occupee = TRUE;
+		for (j = 2; j < 6; ++j){
+			echiquier->tabCases[j][i]->occupee = FALSE;
+		}
+	}
 	return echiquier;
 }
 

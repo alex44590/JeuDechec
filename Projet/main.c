@@ -123,8 +123,10 @@ int main(int argc, char* argv[]){
 
 	Piece* pieceSelectionnee = NULL;
 
-	Case* caseSelectionnee = plateau->echiquier->tabCases[0][0];
-	Case* oldCaseSelectionnee = plateau->echiquier->tabCases[0][0];
+	Case* caseSelectionnee = NULL;
+	IDCase idCaseSelectionnee;
+
+	int j = 0;
 
 	while (continuer)
 	{
@@ -181,12 +183,6 @@ int main(int argc, char* argv[]){
 					afficherMenu(menu, contexte);
 				}
 			} //Fin du traitement des boutons
-
-
-			//Traitement des pièces de l'échiquier
-			if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){
-				//A venir
-			}
 			break;
 
 		case SDL_MOUSEBUTTONUP:
