@@ -13,6 +13,7 @@
 #define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (event.motion.x > OFFSET_PLATEAU_GAUCHE && event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.motion.y > OFFSET_PLATEAU_HAUT && event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 #define MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER (event.motion.x < OFFSET_PLATEAU_GAUCHE || event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE || event.motion.y < OFFSET_PLATEAU_HAUT || event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 #define CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE (event.button.x > menu->tabBouton[i]->positionInit.x && event.button.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur && event.button.y > menu->tabBouton[i]->positionInit.y && event.button.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
+#define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE (event.button.x > 0 && event.button.x < OFFSET_PLATEAU_GAUCHE)
 #define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER (event.button.x > OFFSET_PLATEAU_GAUCHE && event.button.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.button.y > OFFSET_PLATEAU_HAUT && event.button.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
 
@@ -122,7 +123,6 @@ int main(int argc, char* argv[]){
 	IDCase idOldCasePointee = oldCasePointee->identifiant;
 
 	Piece* pieceSelectionnee = NULL;
-
 	Case* caseSelectionnee = NULL;
 	IDCase idCaseSelectionnee;
 
@@ -138,51 +138,78 @@ int main(int argc, char* argv[]){
 			break;
 
 
-		case SDL_MOUSEMOTION:
-			if (MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER){
+			/*case SDL_MOUSEMOTION:
+				if (MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER){
 
 				//Calcul de la case visée par la souris et de son id
 				casePointee = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 				idCasePointee = casePointee->identifiant;
 
 				if ((event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE != (oldPosSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE ||
-					(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE != (oldPosSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE)
+				(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE != (oldPosSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE)
 				{
-					//Mise à jour de la couleur de la case puis réaffichage de la pièce
-					mettreEnSurbrillance(casePointee, contexte);
-					if (echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne] != NULL)
-						afficherPiece(echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne], contexte);
+				//Mise à jour de la couleur de la case puis réaffichage de la pièce
+				mettreEnSurbrillance(casePointee, contexte);
+				if (echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne] != NULL)
+				afficherPiece(echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne], contexte);
 
-					supprimerSurbrillance(oldCasePointee, contexte);
-					if (echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne] != NULL)
-						afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
-
-					oldCasePointee = casePointee;
-					idOldCasePointee = oldCasePointee->identifiant;
-				}
-			}
-
-			if (MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER)
-			{
 				supprimerSurbrillance(oldCasePointee, contexte);
 				if (echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne] != NULL)
-					afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
+				afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
 
-			}
+				oldCasePointee = casePointee;
+				idOldCasePointee = oldCasePointee->identifiant;
+				}
+				}
 
-			oldPosSouris.x = event.motion.x;
-			oldPosSouris.y = event.motion.y;
-			break;
+				if (MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER)
+				{
+				supprimerSurbrillance(oldCasePointee, contexte);
+				if (echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne] != NULL)
+				afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
+
+				}
+
+				oldPosSouris.x = event.motion.x;
+				oldPosSouris.y = event.motion.y;
+				break;*/
 
 		case SDL_MOUSEBUTTONDOWN:
-			//Traitement des boutons du menu
-			for (i = 0; i < NB_BOUTON; i++){
-				if (CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE)
-				{
-					enfoncerBouton(menu->tabBouton[i]);
-					afficherMenu(menu, contexte);
+
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON; i++){
+					if (CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE)
+					{
+						enfoncerBouton(menu->tabBouton[i]);
+						afficherMenu(menu, contexte);
+					}
+				} //Fin du traitement des boutons
+			}
+
+			if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){
+				caseSelectionnee = plateau->echiquier->tabCases[(event.button.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.button.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+				idCaseSelectionnee = caseSelectionnee->identifiant;
+		
+				//Si aucune pièce sélectionnée et que la case en contient une
+				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL)
+					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
+
+				//Si pièce sélectionnée et que la case en contient une : on déselectionne la pièce
+				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL)
+					pieceSelectionnee = NULL;
+								
+				//Si pièce sélectionnée et que la case n'en contient pas : on déplace la pièce
+				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
+					if (pieceSelectionnee != NULL){
+						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
+						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne);
+						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+						pieceSelectionnee = NULL;
+					}
 				}
-			} //Fin du traitement des boutons
+				afficherEchiquier(plateau->echiquier, contexte);
+			}
 			break;
 
 		case SDL_MOUSEBUTTONUP:

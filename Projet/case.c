@@ -54,12 +54,16 @@ void afficherCase(Case* c, SDL_Renderer* contexte){
 }
 
 void mettreEnSurbrillance(Case* c, SDL_Renderer* contexte){
+	if (c == NULL)
+		logPrint(ERREUR, "Impossible de mettre en surbrillance l'élément nul !");
 	c->enSurbrillance = TRUE;
 	c->imageCaseActuelle = c->imageCaseSurbrillance;
 	afficherCase(c, contexte);
 }
 
 void supprimerSurbrillance(Case* c, SDL_Renderer* contexte){
+	if (c == NULL)
+		logPrint(ERREUR, "Impossible de supprimer la surbrillance de l'élément nul !");
 	c->enSurbrillance = FALSE;
 	c->imageCaseActuelle = c->imageCaseNormale;
 	afficherCase(c, contexte);
