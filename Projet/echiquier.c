@@ -26,12 +26,12 @@ Echiquier* creerEchiquier(){
 	
 	//On tague les cases sur lesquelles on a déposé des pièces comme occupées
 	for (i = 0; i < 8; ++i){
-		echiquier->tabCases[0][i]->occupee = TRUE;
-		echiquier->tabCases[1][i]->occupee = TRUE;
-		echiquier->tabCases[6][i]->occupee = TRUE;
-		echiquier->tabCases[7][i]->occupee = TRUE;
+		echiquier->tabCases[i][0]->occupee = TRUE;
+		echiquier->tabCases[i][1]->occupee = TRUE;
+		echiquier->tabCases[i][6]->occupee = TRUE;
+		echiquier->tabCases[i][7]->occupee = TRUE;
 		for (j = 2; j < 6; ++j){
-			echiquier->tabCases[j][i]->occupee = FALSE;
+			echiquier->tabCases[i][j]->occupee = FALSE;
 		}
 	}
 	return echiquier;

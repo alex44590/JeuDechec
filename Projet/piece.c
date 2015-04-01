@@ -74,6 +74,7 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	return p;
 }
 
+
 void initAllPiece(Piece* tabPiece[8][8]){
 	int i;
 	int j;
@@ -194,3 +195,4 @@ void supprimerSurbillancePiece(Piece* p, SDL_Renderer* contexte){
 	p->surbrillance = FALSE;
 	afficherPiece(p, contexte);
 }
+

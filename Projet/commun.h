@@ -4,6 +4,7 @@
 #include <SDL2\SDL.h>
 #include <SDL2\SDL_image.h>
 #include "log.h"
+#include "string.h"
 
 #define LARGEUR_BARRE 40
 #define LONGUEUR_BARRE 640

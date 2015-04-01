@@ -9,6 +9,7 @@
 #include "echiquier.h"
 #include "plateauDeJeu.h"
 #include "menuDroite.h"
+#include "deplacementPossible.h"
 
 #define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (event.motion.x > OFFSET_PLATEAU_GAUCHE && event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.motion.y > OFFSET_PLATEAU_HAUT && event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 #define MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER (event.motion.x < OFFSET_PLATEAU_GAUCHE || event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE || event.motion.y < OFFSET_PLATEAU_HAUT || event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
@@ -104,6 +105,8 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Affichage de la défausse noire");
 	afficherDefausse(defausseN, contexte);
 
+	//Création de l'objet Déplacement Possible
+	DeplacementPossible* deplacementPossible = creerDeplacementPossible();
 
 	SDL_RenderPresent(contexte);
 
@@ -137,43 +140,6 @@ int main(int argc, char* argv[]){
 			continuer = 0;
 			break;
 
-
-			/*case SDL_MOUSEMOTION:
-				if (MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER){
-
-				//Calcul de la case visée par la souris et de son id
-				casePointee = plateau->echiquier->tabCases[(event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
-				idCasePointee = casePointee->identifiant;
-
-				if ((event.motion.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE != (oldPosSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE ||
-				(event.motion.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE != (oldPosSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE)
-				{
-				//Mise à jour de la couleur de la case puis réaffichage de la pièce
-				mettreEnSurbrillance(casePointee, contexte);
-				if (echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne] != NULL)
-				afficherPiece(echiquier->tabPieces[idCasePointee.colonne][idCasePointee.ligne], contexte);
-
-				supprimerSurbrillance(oldCasePointee, contexte);
-				if (echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne] != NULL)
-				afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
-
-				oldCasePointee = casePointee;
-				idOldCasePointee = oldCasePointee->identifiant;
-				}
-				}
-
-				if (MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER)
-				{
-				supprimerSurbrillance(oldCasePointee, contexte);
-				if (echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne] != NULL)
-				afficherPiece(echiquier->tabPieces[idOldCasePointee.colonne][idOldCasePointee.ligne], contexte);
-
-				}
-
-				oldPosSouris.x = event.motion.x;
-				oldPosSouris.y = event.motion.y;
-				break;*/
-
 		case SDL_MOUSEBUTTONDOWN:
 
 			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
@@ -196,6 +162,9 @@ int main(int argc, char* argv[]){
 				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
+					//Calcul des déplacements autorisés
+					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible);
+					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 				}
 
 				//Si pièce sélectionnée et que la case en contient une : on déselectionne la pièce
@@ -208,11 +177,19 @@ int main(int argc, char* argv[]){
 				//Si pièce sélectionnée et que la case n'en contient pas : on déplace la pièce
 				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
 					if (pieceSelectionnee != NULL){
-						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne);
-						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
-						supprimerSurbillancePiece(pieceSelectionnee, contexte);
-						pieceSelectionnee = NULL;
+						//Si déplacement autorisé, on l'effectue
+						if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
+							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
+							bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne);
+							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+							supprimerSurbillancePiece(pieceSelectionnee, contexte);
+							pieceSelectionnee = NULL;
+						}
+						//Sinon, on déselectionne la pièce
+						else{
+							supprimerSurbillancePiece(pieceSelectionnee, contexte);
+							pieceSelectionnee = NULL;
+						}
 					}
 				}
 				afficherEchiquier(plateau->echiquier, contexte);
