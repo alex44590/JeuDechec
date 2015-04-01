@@ -1,22 +1,25 @@
 #ifndef LISTEDEPLACEMENT_H
 #define LISTEDEPLACEMENT_H
 
-#include "deplacement.h"
 
-//typedef struct{
-//	Deplacement deplacement;
-//	struct NodeDeplacement* next;
-//	struct NodeDeplacement* before;
-//}NodeDeplacement;
+#include "deplacement.h"
+#include "log.h"
+
 
 typedef struct {
-	Deplacement first;
-	Deplacement current;
-	Deplacement last;
+	Deplacement* first;
+	Deplacement* current;
+	Deplacement* last;
 }ListDeplacement;
 
-
 /**
+* \brief      Créer un nouveau noeud de déplacement
+* \param[in] tous les paramètres du déplacement effectué
+* \return ListDeplacement : Le nouveau noeud créé
+*/
+Deplacement * newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure, Deplacement* next, Deplacement* previous);
+
+/**IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure
 * \brief      initialise à NULL ListeDeplacement
 * \param[in/out] ListeDeplacement : paramaètres à mettre à NULL
 */
@@ -63,6 +66,16 @@ void setOnFirst(ListDeplacement * l);
 void setOnLast(ListDeplacement * l);
 
 /**
+* \brief      insert un noeud en premiere position
+* \param[in/out] ListeDeplacement + éléments de déplacements
+* \return 0 si le déplacement ne s'est pas bien passé 1 sinon
+*/
+int insertFirst(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
+
+int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
+int insertAfterCurrent(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
+
+/**
 * \brief      Positionne le curseur à la position suivante
 * \param[in/out] ListeDeplacement
 */
@@ -82,11 +95,12 @@ void previous(ListDeplacement *l);
 int getCurrent(ListDeplacement * l);
 
 /**
-* \brief     ecrit dans le fichier à l'emplacement courantdu curseur 
+* \brief     ecrit dans le fichier à l'emplacement courantdu curseur
 *			 toutes les informations du déplacement effectué
 * \param[in/out] ListeDeplacement
+* \param[in/out] posCurseur  La position du curseur en lecture/écriture
 */
-void printFileCurrentList(ListDeplacement * l);
+int printFileCurrentList(ListDeplacement * l, int *posCurseur);
 
 /**
 * \brief     Création du fichier contenant toutes les informations relatives
@@ -96,10 +110,13 @@ void printFileCurrentList(ListDeplacement * l);
 int createHistoryFile(void);
 
 /**
-* \brief     Sauvegarde dans un fichier texte le déplacement qui vient d'être effectué 
+* \brief     Sauvegarde dans un fichier texte le déplacement qui vient d'être effectué
 *			 puis décale le curseur pour se préparer pour la pochaine sauvegarde
 * \return    Si la sauvegarde s'est bien passé
 */
 int saveDeplacement(ListDeplacement *l);
 
 #endif
+///////////////////////////////////////////////////////////////////////////////////
+
+
