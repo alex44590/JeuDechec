@@ -163,7 +163,7 @@ int main(int argc, char* argv[]){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 					//Calcul des déplacements autorisés
-					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible);
+					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 				}
 
@@ -171,6 +171,7 @@ int main(int argc, char* argv[]){
 				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
 					supprimerSurbillancePiece(pieceSelectionnee, contexte);
 					pieceSelectionnee = NULL;
+					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 				}
 					
 								
@@ -184,11 +185,13 @@ int main(int argc, char* argv[]){
 							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 							supprimerSurbillancePiece(pieceSelectionnee, contexte);
 							pieceSelectionnee = NULL;
+							supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 						}
 						//Sinon, on déselectionne la pièce
 						else{
 							supprimerSurbillancePiece(pieceSelectionnee, contexte);
 							pieceSelectionnee = NULL;
+							supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 						}
 					}
 				}

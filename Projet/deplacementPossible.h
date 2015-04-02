@@ -21,6 +21,7 @@ typedef struct {
 } DeplacementPossible;
 
 DeplacementPossible* creerDeplacementPossible();
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d);
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
+void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
 #endif

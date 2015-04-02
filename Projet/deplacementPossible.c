@@ -57,7 +57,7 @@ DeplacementPossible* creerDeplacementPossible(){
 
 }
 
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d){
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de calculer les déplacements possible de l'élément NULL");
 	int x = p->idPosition.colonne;//idPosition pièce colonne
@@ -75,6 +75,10 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d)
 			newy = y + d->deltaCavalier[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
 			}
 		}
 		break;
@@ -86,6 +90,10 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d)
 			newy = y + d->deltaRoi[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
 			}
 		}
 		break;
@@ -122,4 +130,23 @@ void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichi
 		fprintf(fichier, "\n");
 	}
 	fclose(fichier);
+}
+
+
+//supprime la surbrillance de toutes les cases de l'échiquier et réaffiche les pièces s'il y en a sur les cases dont on a supprimé la surbrillance
+void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte){
+	if (d == NULL)
+		logPrint(AVERTISSEMENT, "Impossible de supprimer la surbrillances des cases où le déplacement est possible si l'objet DeplacementPossible est NULL");
+	else{
+		int i, j;
+		for (i = 0; i < 8; i++){
+			for (j = 0; j < 8; j++){
+				if (d->deplacementPossible[j][i] == 1){
+					supprimerSurbrillance(e->tabCases[j][i], contexte);
+					if (e->tabPieces[j][i] != NULL)
+						afficherPiece(e->tabPieces[j][i], contexte);
+				}
+			}
+		}
+	}
 }
