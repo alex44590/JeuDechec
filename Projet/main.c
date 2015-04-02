@@ -120,10 +120,10 @@ int main(int argc, char* argv[]){
 	oldPosSouris.x = 0;
 	oldPosSouris.y = 0;
 
-	Case* oldCasePointee = plateau->echiquier->tabCases[0][0];
-	Case* casePointee = plateau->echiquier->tabCases[0][0];
-	IDCase idCasePointee = casePointee->identifiant;
-	IDCase idOldCasePointee = oldCasePointee->identifiant;
+	Case* oldCasePointee = NULL;// plateau->echiquier->tabCases[0][0];
+	Case* casePointee = NULL;//  plateau->echiquier->tabCases[0][0];
+	IDCase idCasePointee;
+	IDCase idOldCasePointee;
 
 	Piece* pieceSelectionnee = NULL;
 	Case* caseSelectionnee = NULL;

@@ -17,6 +17,7 @@ typedef struct {
 	Piece* pieceConcernee; //Pièce dont on cherche à calculer les déplacements possibles
 	int deplacementPossible[LARGEUR_MATRICE_DEPLACEMENT_POSSIBLE][HAUTEUR_MATRICE_DEPLACEMENT_POSSIBLE];
 	int deltaCavalier[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les deltaX possibles du cavalier et dans la colonne 1 les deltaY associés
+	int deltaRoi[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les 8 deltaX possibles du roi et dans la colonne 1 les 8 deltaY associés
 } DeplacementPossible;
 
 DeplacementPossible* creerDeplacementPossible();

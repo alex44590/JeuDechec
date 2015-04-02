@@ -6,12 +6,16 @@ DeplacementPossible* creerDeplacementPossible(){
 		logPrint(ERREUR, "Allocation de la mémoire pour la structure DeplacementPossible échouée...");
 	int i;
 	int j;
+
+	d->pieceConcernee = NULL;
+
 	//En théorie pas besoin d'initialiser à 0 mais bon...
 	for (i = 0; i < LARGEUR_MATRICE_DEPLACEMENT_POSSIBLE; ++i){
 		for (j = 0; j < HAUTEUR_MATRICE_DEPLACEMENT_POSSIBLE; ++j){
 			d->deplacementPossible[i][j] = 0;
 		}
 	}
+
 	//Création du delta cavalier (pas trouvé de méthode plus simple qui marche...)
 	//(d->deltaCavalier) = (int[2][8]){ { 2, 2, 1, -1, -2, -2, -1, 1 }, { 1, -1, -2, -2, -1, 1, 2, 2 } }; //Marche pas ...
 	d->deltaCavalier[0][0] = 2;
@@ -30,7 +34,25 @@ DeplacementPossible* creerDeplacementPossible(){
 	d->deltaCavalier[1][6] = -2;
 	d->deltaCavalier[0][7] = 1;
 	d->deltaCavalier[1][7] = -2;
-	d->pieceConcernee = NULL;
+
+	//Création du delta roi
+	d->deltaRoi[0][0] = 1;
+	d->deltaRoi[1][0] = -1;
+	d->deltaRoi[0][1] = 1;
+	d->deltaRoi[1][1] = 0;
+	d->deltaRoi[0][2] = 1;
+	d->deltaRoi[1][2] = 1;
+	d->deltaRoi[0][3] = 0;
+	d->deltaRoi[1][3] = 1;
+	d->deltaRoi[0][4] = -1;
+	d->deltaRoi[1][4] = 1;
+	d->deltaRoi[0][5] = -1;
+	d->deltaRoi[1][5] = 0;
+	d->deltaRoi[0][6] = -1;
+	d->deltaRoi[1][6] = -1;
+	d->deltaRoi[0][7] = 0;
+	d->deltaRoi[1][7] = -1;
+
 	return d;
 
 }
@@ -51,6 +73,17 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d)
 		for (i = 0; i < 8; ++i){
 			newx = x + d->deltaCavalier[0][i];
 			newy = y + d->deltaCavalier[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+			}
+		}
+		break;
+
+	case 'R':
+		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
+		for (i = 0; i < 8; ++i){
+			newx = x + d->deltaRoi[0][i];
+			newy = y + d->deltaRoi[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
 			}
