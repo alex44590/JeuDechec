@@ -116,6 +116,10 @@ int createHistoryFile(void);
 */
 int saveDeplacement(ListDeplacement *l);
 
+void printPiece(ListDeplacement * l, int *posCurseur);
+
+void printDepart(ListDeplacement * l, int *posCurseur);
+
 #endif
 ///////////////////////////////////////////////////////////////////////////////////
 

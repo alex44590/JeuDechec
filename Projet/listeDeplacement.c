@@ -138,12 +138,15 @@ int printFileCurrentList(ListDeplacement * l, int *posCurseur)
 {
 	FILE * fichierhistorique = NULL;
 
-	if ((fichierhistorique = fopen("historique.txt", "w+")) == NULL)
+	if ((fichierhistorique = fopen("Historique.txt", "w")) == NULL)
 	{
 		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printFile");
 		return -1;
 	}
 	logPrint(INFO, "ouverture du fichier historique depuis printFile avec succès");
+	
+	printPiece(l, *posCurseur);
+	
 
 
 	fclose(fichierhistorique);
@@ -152,10 +155,46 @@ int printFileCurrentList(ListDeplacement * l, int *posCurseur)
 
 int createHistoryFile(void)
 {
-	FILE* fichierHistorique = fopen("Historique.txt", "w");
-	fclose(fichierHistorique);
+	FILE* fichierhistorique = fopen("Historique.txt", "w+");
+	fclose(fichierhistorique);
+
+
 
 
 
 	return 1;
 }
+
+void printPiece(ListDeplacement * l, int *posCurseur)
+{
+	FILE * fichierhistorique = NULL;
+
+	if ((fichierhistorique = fopen("Historique.txt", "r+")) == NULL)
+	{
+		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printPiece");
+	}
+	fseek(fichierhistorique, *posCurseur, SEEK_SET);
+	fprintf(fichierhistorique, "%c", l->current->currentPiece.type);
+	fprintf(fichierhistorique, "%d", l->current->currentPiece.couleur);
+	fprintf(fichierhistorique, "%2.d", l->current->currentPiece.numero);
+	*posCurseur += 4;
+	fclose(fichierhistorique);
+}
+
+void printDepart(ListDeplacement * l, int *posCurseur)
+{
+	FILE * fichierhistorique = NULL;
+
+	if ((fichierhistorique = fopen("Historique.txt", "r+")) == NULL)
+	{
+		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printDepart");
+	}
+	fseek(fichierhistorique, *posCurseur, SEEK_SET);
+	fprintf(fichierhistorique, "%d", l->current->depart.colonne);
+	fprintf(fichierhistorique, "%d", l->current->depart.ligne);
+	*posCurseur += 2;
+	fclose(fichierhistorique);
+}
+	
+
+
