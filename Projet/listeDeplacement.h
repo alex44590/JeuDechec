@@ -17,7 +17,7 @@ typedef struct {
 * \param[in] tous les paramètres du déplacement effectué
 * \return ListDeplacement : Le nouveau noeud créé
 */
-Deplacement * newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure, Deplacement* next, Deplacement* previous);
+Deplacement * newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous);
 
 /**IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure
 * \brief      initialise à NULL ListeDeplacement
@@ -70,10 +70,11 @@ void setOnLast(ListDeplacement * l);
 * \param[in/out] ListeDeplacement + éléments de déplacements
 * \return 0 si le déplacement ne s'est pas bien passé 1 sinon
 */
-int insertFirst(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
+int insertFirst(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
 
-int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
-int insertAfterCurrent(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure);
+int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+//void insertAfterCurrentHL(ListDeplacement *l, Deplacement *Dep);
 
 /**
 * \brief      Positionne le curseur à la position suivante
@@ -100,7 +101,7 @@ int getCurrent(ListDeplacement * l);
 * \param[in/out] ListeDeplacement
 * \param[in/out] posCurseur  La position du curseur en lecture/écriture
 */
-int printFileCurrentList(ListDeplacement * l, int *posCurseur);
+int printFileCurrentDeplacement(ListDeplacement * l, int *posCurseur);
 
 /**
 * \brief     Création du fichier contenant toutes les informations relatives
@@ -119,6 +120,8 @@ int saveDeplacement(ListDeplacement *l);
 void printPiece(ListDeplacement * l, int *posCurseur);
 
 void printDepart(ListDeplacement * l, int *posCurseur);
+void printArrivee(ListDeplacement * l, int *posCurseur);
+
 
 #endif
 ///////////////////////////////////////////////////////////////////////////////////

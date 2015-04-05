@@ -12,35 +12,50 @@
 
 
 int main(int argc, char* argv[]){
-	IDPiece P1 = { 'N', BLANC, 2 };
+	char id[4] ="TN1";
+
+	IDPiece P1 = { 'T', 'N', '0', id};
 	IDCase D1 = { A, A };
 	IDCase A1 = { B, B };
+	IDPiece P2 = { 'T', 'N', '1', id };
+	IDCase D2 = { C, C };
+	IDCase A2 = { D, D };
+	IDPiece P3 = { 'T', 'N', '2', id };
+	IDCase D3 = { E, E };
+	IDCase A3 = { F, F };
 	ListDeplacement *l = malloc(sizeof(Deplacement));
-	Deplacement Dep;
+
+
+	Deplacement *Dep3= newDeplacement(P3, D3, A3, 2, NULL, NULL);
+	Deplacement *Dep2= newDeplacement(P2, D2, A2, 1, NULL, NULL);
+	Deplacement *Dep = newDeplacement(P1, D1, A1, 0, NULL, NULL);
+	int posCurseur = 0;
+
 	if (l == NULL)
 	{
 		logPrint(ERREUR, "malloc pas bon");
 	}
-	Dep.currentPiece = P1;
-	Dep.arrivee = A1;
-	Dep.depart = D1;
-	Dep.numeroDeplacement = 0;
-	Dep.next = NULL;
-	Dep.previous = NULL;
+	
+	l->first = l->current=l->last=Dep;
+	//insertFirst(l, P1, D1, A1, 0);
+	//l->last = Dep3;
+	insertAfterCurrentBL(l, P2, D2, A2, 1);
+	next(l);
+	insertAfterCurrentBL(l, P3, D3, A3, 2);
+	setOnFirst(l);
 
-	l->current = &Dep;
-	//l->current->currentPiece = P1;
-	//l->current->arrivee = A1;
-	//l->current->depart = D1;
-	int posCurseur = 0;
 	//Création ou réinitialisation du fichier de log "log.txt"
 	logInit();
 	createHistoryFile();
 
-	printPiece(l,&posCurseur);
-	printDepart(l,&posCurseur);
-	//printFileCurrentList(l, &posCurseur);
-	logPrint(INFO, "salut");
+	while (!outOfList(l))
+	{
+		printFileCurrentDeplacement(l, &posCurseur);
+		next(l);
+	}
+
+	logPrint(INFO, id);
+
 
 
 	return 0;

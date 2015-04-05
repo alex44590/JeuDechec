@@ -47,13 +47,15 @@ typedef struct {
 
 typedef struct {
 	char type;
-	Couleur couleur;
-	int numero;
+	char couleur;
+	char numero;
+	char id[4];
 }IDPiece;
 
 typedef struct {
 	Lettre colonne;
 	Lettre ligne;
 }IDCase;
+
 
 #endif // !COMMUN_H

@@ -1,6 +1,6 @@
 #include "listeDeplacement.h"
 
-Deplacement* newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure, Deplacement* next, Deplacement* previous)
+Deplacement* newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous)
 {
 	Deplacement* new = malloc(sizeof(Deplacement));
 
@@ -12,7 +12,7 @@ Deplacement* newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int nu
 	new->depart = depart;
 	new->arrivee = arrivee;
 	new->numeroDeplacement = numeroDeplacement;
-	new->heure = heure;
+	//new->heure = heure;
 	new->next = next;
 	new->previous = previous;
 
@@ -54,9 +54,9 @@ void setOnLast(ListDeplacement * l)
 	l->current = l->last;
 }
 
-int insertFirst(ListDeplacement *l, IDPiece piece1, IDCase depart1, IDCase arrivee1, int numeroDeplacement, Timer heure)
+int insertFirst(ListDeplacement *l, IDPiece piece1, IDCase depart1, IDCase arrivee1, int numeroDeplacement)
 {
-	Deplacement* new = newDeplacement(piece1, depart1, arrivee1, numeroDeplacement, heure, l->first, NULL);
+	Deplacement* new = newDeplacement(piece1, depart1, arrivee1, numeroDeplacement, l->first, NULL);
 	if (new == NULL)
 	{
 		return 0;
@@ -71,9 +71,9 @@ int insertFirst(ListDeplacement *l, IDPiece piece1, IDCase depart1, IDCase arriv
 	return 1;
 }
 
-int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure)
+int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
-	Deplacement* new = newDeplacement(piece, depart, arrivee, numeroDeplacement, heure, NULL, l->last);
+	Deplacement* new = newDeplacement(piece, depart, arrivee, numeroDeplacement, NULL, l->last);
 	if (new == NULL)
 	{
 		return 0;
@@ -83,41 +83,48 @@ int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee,
 	{
 		l->first = l->current = new;
 	}
-	l->last = new;
+	while (!last(l))
+	{
+		next(l);
+	}
+	l->current->next= l->last=new;
 	new->next = NULL;
 
 	return 1;
 }
 
-int insertAfterCurrent(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure)
+int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
 	if (empty(l))
 	{
-		insertFirst(l, piece, depart, arrivee, numeroDeplacement, heure);
+		insertFirst(l, piece, depart, arrivee, numeroDeplacement);
 		l->current = l->current = l->last;
 
-		return 1;
 	}
 	else
 	{
 		if (l->current == l->last)
 		{
-			insertLast(l, piece, depart, arrivee, numeroDeplacement, heure);
+			insertLast(l, piece, depart, arrivee, numeroDeplacement);
 		}
 		else
 		{
-			Deplacement* new = newDeplacement(piece, depart, arrivee, numeroDeplacement, heure, l->current->next, l->current);
+			Deplacement* new = newDeplacement(piece, depart, arrivee, numeroDeplacement, l->current->next, l->current);
 
 			if (new == NULL);
 			{
 				return 0;
 			}
 			l->current->next = new;
-
-			return 1;
 		}
 	}
+	return 1;
 }
+
+//void insertAfterCurrentHL(ListDeplacement *l, Deplacement *Dep)
+//{
+//	insertAfterCurrentBL(l, Dep->currentPiece, Dep->depart, Dep->arrivee, Dep->numeroDeplacement);
+//}
 
 void next(ListDeplacement * l)
 {
@@ -134,22 +141,14 @@ void previous(ListDeplacement *l)
 //	return ();
 //}
 
-int printFileCurrentList(ListDeplacement * l, int *posCurseur)
+int printFileCurrentDeplacement(ListDeplacement * l, int *posCurseur)
 {
 	FILE * fichierhistorique = NULL;
-
-	if ((fichierhistorique = fopen("Historique.txt", "w")) == NULL)
-	{
-		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printFile");
-		return -1;
-	}
-	logPrint(INFO, "ouverture du fichier historique depuis printFile avec succès");
-	
-	printPiece(l, *posCurseur);
-	
+	printPiece(l, posCurseur);
+	printDepart(l, posCurseur);
+	printArrivee(l, posCurseur);
 
 
-	fclose(fichierhistorique);
 	return 0;
 }
 
@@ -157,11 +156,6 @@ int createHistoryFile(void)
 {
 	FILE* fichierhistorique = fopen("Historique.txt", "w+");
 	fclose(fichierhistorique);
-
-
-
-
-
 	return 1;
 }
 
@@ -174,10 +168,11 @@ void printPiece(ListDeplacement * l, int *posCurseur)
 		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printPiece");
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
-	fprintf(fichierhistorique, "%c", l->current->currentPiece.type);
-	fprintf(fichierhistorique, "%d", l->current->currentPiece.couleur);
-	fprintf(fichierhistorique, "%2.d", l->current->currentPiece.numero);
+
+	fprintf(fichierhistorique, "%c%c%c:", l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
+	
 	*posCurseur += 4;
+
 	fclose(fichierhistorique);
 }
 
@@ -190,9 +185,21 @@ void printDepart(ListDeplacement * l, int *posCurseur)
 		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printDepart");
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
-	fprintf(fichierhistorique, "%d", l->current->depart.colonne);
-	fprintf(fichierhistorique, "%d", l->current->depart.ligne);
-	*posCurseur += 2;
+	fprintf(fichierhistorique, "%d%d->", l->current->depart.colonne, l->current->depart.ligne);
+	*posCurseur += 4;
+	fclose(fichierhistorique);
+}
+void printArrivee(ListDeplacement * l, int *posCurseur)
+{
+	FILE * fichierhistorique = NULL;
+
+	if ((fichierhistorique = fopen("Historique.txt", "r+")) == NULL)
+	{
+		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printArrivee");
+	}
+	fseek(fichierhistorique, *posCurseur, SEEK_SET);
+	fprintf(fichierhistorique, "%d%d\n", l->current->arrivee.colonne, l->current->arrivee.ligne);
+	*posCurseur += 4;
 	fclose(fichierhistorique);
 }
 	
