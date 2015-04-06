@@ -74,7 +74,8 @@ int insertFirst(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee
 
 int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
 int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
-//void insertAfterCurrentHL(ListDeplacement *l, Deplacement *Dep);
+int createNewDeplacement(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+
 
 /**
 * \brief      Positionne le curseur à la position suivante

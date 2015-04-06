@@ -121,10 +121,11 @@ int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCas
 	return 1;
 }
 
-//void insertAfterCurrentHL(ListDeplacement *l, Deplacement *Dep)
-//{
-//	insertAfterCurrentBL(l, Dep->currentPiece, Dep->depart, Dep->arrivee, Dep->numeroDeplacement);
-//}
+int createNewDeplacement(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
+{
+	insertAfterCurrentBL(l, piece, depart, arrivee, numeroDeplacement);
+	next(l);
+}
 
 void next(ListDeplacement * l)
 {
@@ -136,12 +137,7 @@ void previous(ListDeplacement *l)
 	l->current = l->current->previous;
 }
 
-//int getCurrent(ListDeplacement * l)
-//{
-//	return ();
-//}
-
-int printFileCurrentDeplacement(ListDeplacement * l, int *posCurseur)
+int printFileCurrentDeplacement(ListDeplacement * l, int *posCurseur) // Ne pas oubliez le curseur !! sans lui on est pas capable de se positionner dans le fichier
 {
 	FILE * fichierhistorique = NULL;
 	printPiece(l, posCurseur);
@@ -169,9 +165,9 @@ void printPiece(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 
-	fprintf(fichierhistorique, "%c%c%c:", l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
+	fprintf(fichierhistorique, "%d:%c%c%c:",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
 	
-	*posCurseur += 4;
+	*posCurseur += 6;
 
 	fclose(fichierhistorique);
 }
@@ -189,6 +185,7 @@ void printDepart(ListDeplacement * l, int *posCurseur)
 	*posCurseur += 4;
 	fclose(fichierhistorique);
 }
+
 void printArrivee(ListDeplacement * l, int *posCurseur)
 {
 	FILE * fichierhistorique = NULL;

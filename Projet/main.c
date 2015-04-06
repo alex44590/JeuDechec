@@ -39,20 +39,22 @@ int main(int argc, char* argv[]){
 	l->first = l->current=l->last=Dep;
 	//insertFirst(l, P1, D1, A1, 0);
 	//l->last = Dep3;
-	insertAfterCurrentBL(l, P2, D2, A2, 1);
-	next(l);
-	insertAfterCurrentBL(l, P3, D3, A3, 2);
+	createNewDeplacement(l, P2, D2, A2, 1);
+	createNewDeplacement(l, P3, D3, A3, 2);
 	setOnFirst(l);
 
 	//Création ou réinitialisation du fichier de log "log.txt"
 	logInit();
 	createHistoryFile();
 
-	while (!outOfList(l))
-	{
+
 		printFileCurrentDeplacement(l, &posCurseur);
 		next(l);
-	}
+		//posCurseur -= 14;
+		printFileCurrentDeplacement(l, &posCurseur);
+		next(l);
+		printFileCurrentDeplacement(l, &posCurseur);
+	
 
 	logPrint(INFO, id);
 
