@@ -21,6 +21,7 @@ typedef struct{
 	Booleen active;
 	Booleen pieceSelectionne;
 	Booleen surbrillance;
+	int nbDeplacement;
 }Piece;
 
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);

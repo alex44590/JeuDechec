@@ -27,7 +27,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 	d->pieceConcernee = p;
 	int newx;
 	int newy;
-	int i,j; //Variable de boucle
+	int i, j; //Variable de boucle
 
 	switch (p->idPiece.type){
 	case 'C':
@@ -119,7 +119,59 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			}
 		}
 		break;
-		
+
+
+	case 'P':
+		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
+
+		if (p->idPiece.couleur == 'N'){
+			newx = x + v->deltaPionNoir[0][0];
+			newy = y + v->deltaPionNoir[1][0];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			if (p->nbDeplacement == 1){
+				newx = x + v->deltaPionNoir[0][1];
+				newy = y + v->deltaPionNoir[1][1];
+				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+					d->deplacementPossible[newx][newy] = 1;
+					//On met en surbrillance les cases où l'on peut se déplacer
+					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+					if (e->tabPieces[newx][newy] != NULL)
+						afficherPiece(e->tabPieces[newx][newy], contexte);
+				}
+			}
+		}
+
+		else if (p->idPiece.couleur == 'B'){
+			newx = x + v->deltaPionBlanc[0][0];
+			newy = y + v->deltaPionBlanc[1][0];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			if (p->nbDeplacement == 1){
+				newx = x + v->deltaPionBlanc[0][1];
+				newy = y + v->deltaPionBlanc[1][1];
+				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+					d->deplacementPossible[newx][newy] = 1;
+					//On met en surbrillance les cases où l'on peut se déplacer
+					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+					if (e->tabPieces[newx][newy] != NULL)
+						afficherPiece(e->tabPieces[newx][newy], contexte);
+				}
+			}
+		}
+
+		break;
+
 	default:
 		for (i = 0; i < 8; ++i){
 			for (j = 0; j < 8; ++j){
@@ -331,6 +383,16 @@ VecteurDeplacement* creerVecteurDeplacement(){
 	v->deltaFou[1][26] = -6;
 	v->deltaFou[0][27] = 7;
 	v->deltaFou[1][27] = -7;
+
+	v->deltaPionNoir[0][0] = 0;
+	v->deltaPionNoir[1][0] = 1;
+	v->deltaPionNoir[0][1] = 0;
+	v->deltaPionNoir[1][1] = 2;
+
+	v->deltaPionBlanc[0][0] = 0;
+	v->deltaPionBlanc[1][0] = -1;
+	v->deltaPionBlanc[0][1] = 0;
+	v->deltaPionBlanc[1][1] = -2;
 
 	return v;
 }

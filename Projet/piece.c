@@ -82,11 +82,13 @@ void initAllPiece(Piece* tabPiece[8][8]){
 	for (i = 0; i < 8; i++){
 		tabPiece[i][1] = creerPiece(PION, NOIR, i);
 		bougerPiece(tabPiece[i][1], tabPiece, i, 1);
+		tabPiece[i][1]->nbDeplacement = 1;
 	}
 	//Pions Blancs
 	for (i = 0; i < 8; i++){
 		tabPiece[i][6] = creerPiece(PION, BLANC, i);
 		bougerPiece(tabPiece[i][6], tabPiece, i, 6);
+		tabPiece[i][6]->nbDeplacement = 1;
 	}
 	//Tours Noires
 	tabPiece[0][0] = creerPiece(TOUR, NOIR, 0);
@@ -158,6 +160,7 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
+	p->nbDeplacement++;
 }
 
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){
