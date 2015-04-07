@@ -106,7 +106,13 @@ int main(int argc, char* argv[]){
 	afficherDefausse(defausseN, contexte);
 
 	//Création de l'objet Déplacement Possible
+	logPrint(INFO, "Création de l'objet Déplacement Possible");
 	DeplacementPossible* deplacementPossible = creerDeplacementPossible();
+
+	//Création du vecteur de déplacements
+	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
+	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
+
 
 	SDL_RenderPresent(contexte);
 
@@ -163,7 +169,7 @@ int main(int argc, char* argv[]){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 					//Calcul des déplacements autorisés
-					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, contexte);
+					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 				}
 

@@ -16,12 +16,19 @@
 typedef struct {
 	Piece* pieceConcernee; //Pièce dont on cherche à calculer les déplacements possibles
 	int deplacementPossible[LARGEUR_MATRICE_DEPLACEMENT_POSSIBLE][HAUTEUR_MATRICE_DEPLACEMENT_POSSIBLE];
-	int deltaCavalier[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les deltaX possibles du cavalier et dans la colonne 1 les deltaY associés
-	int deltaRoi[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les 8 deltaX possibles du roi et dans la colonne 1 les 8 deltaY associés
 } DeplacementPossible;
 
+typedef struct{
+	int deltaCavalier[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les deltaX possibles du cavalier et dans la colonne 1 les deltaY associés
+	int deltaRoi[2][8]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les 8 deltaX possibles du roi et dans la colonne 1 les 8 deltaY associés
+	int deltaTour[2][28]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les 8 deltaX possibles de la tour et dans la colonne 1 les 8 deltaY associés
+	int deltaFou[2][28]; //Tableau 2 colonnes et 8 lignes contenant dans la colonne 0 les 8 deltaX possibles du fou et dans la colonne 1 les 8 deltaY associés
+}VecteurDeplacement;
+
+
 DeplacementPossible* creerDeplacementPossible();
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte);
+VecteurDeplacement* creerVecteurDeplacement();
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, SDL_Renderer* contexte);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
 void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
 #endif

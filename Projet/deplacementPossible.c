@@ -16,48 +16,10 @@ DeplacementPossible* creerDeplacementPossible(){
 		}
 	}
 
-	//Création du delta cavalier (pas trouvé de méthode plus simple qui marche...)
-	//(d->deltaCavalier) = (int[2][8]){ { 2, 2, 1, -1, -2, -2, -1, 1 }, { 1, -1, -2, -2, -1, 1, 2, 2 } }; //Marche pas ...
-	d->deltaCavalier[0][0] = 2;
-	d->deltaCavalier[1][0] = -1;
-	d->deltaCavalier[0][1] = 2;
-	d->deltaCavalier[1][1] = 1;
-	d->deltaCavalier[0][2] = 1;
-	d->deltaCavalier[1][2] = 2;
-	d->deltaCavalier[0][3] = -1;
-	d->deltaCavalier[1][3] = 2;
-	d->deltaCavalier[0][4] = -2;
-	d->deltaCavalier[1][4] = 1;
-	d->deltaCavalier[0][5] = -2;
-	d->deltaCavalier[1][5] = -1;
-	d->deltaCavalier[0][6] = -1;
-	d->deltaCavalier[1][6] = -2;
-	d->deltaCavalier[0][7] = 1;
-	d->deltaCavalier[1][7] = -2;
-
-	//Création du delta roi
-	d->deltaRoi[0][0] = 1;
-	d->deltaRoi[1][0] = -1;
-	d->deltaRoi[0][1] = 1;
-	d->deltaRoi[1][1] = 0;
-	d->deltaRoi[0][2] = 1;
-	d->deltaRoi[1][2] = 1;
-	d->deltaRoi[0][3] = 0;
-	d->deltaRoi[1][3] = 1;
-	d->deltaRoi[0][4] = -1;
-	d->deltaRoi[1][4] = 1;
-	d->deltaRoi[0][5] = -1;
-	d->deltaRoi[1][5] = 0;
-	d->deltaRoi[0][6] = -1;
-	d->deltaRoi[1][6] = -1;
-	d->deltaRoi[0][7] = 0;
-	d->deltaRoi[1][7] = -1;
-
 	return d;
-
 }
 
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte){
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, SDL_Renderer* contexte){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de calculer les déplacements possible de l'élément NULL");
 	int x = p->idPosition.colonne;//idPosition pièce colonne
@@ -71,8 +33,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 	case 'C':
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
 		for (i = 0; i < 8; ++i){
-			newx = x + d->deltaCavalier[0][i];
-			newy = y + d->deltaCavalier[1][i];
+			newx = x + v->deltaCavalier[0][i];
+			newy = y + v->deltaCavalier[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
 				//On met en surbrillance les cases où l'on peut se déplacer
@@ -83,11 +45,71 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 		}
 		break;
 
+
 	case 'R':
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
 		for (i = 0; i < 8; ++i){
-			newx = x + d->deltaRoi[0][i];
-			newy = y + d->deltaRoi[1][i];
+			newx = x + v->deltaRoi[0][i];
+			newy = y + v->deltaRoi[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+		}
+		break;
+
+
+	case 'T':
+		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
+		for (i = 0; i < 28; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+		}
+		break;
+
+
+	case 'F':
+		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
+		for (i = 0; i < 28; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+		}
+		break;
+
+
+	case 'D': //Dans le cas de la dame : on combine fou et tour
+		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
+		for (i = 0; i < 28; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+		}
+		for (i = 0; i < 28; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
 				//On met en surbrillance les cases où l'on peut se déplacer
@@ -149,4 +171,166 @@ void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier
 			}
 		}
 	}
+}
+
+
+VecteurDeplacement* creerVecteurDeplacement(){
+	VecteurDeplacement* v = (VecteurDeplacement*)malloc(sizeof(VecteurDeplacement));
+	if (v == NULL)
+		logPrint(ERREUR, "Allocation de la mémoire pour la structure VecteurDeplacement échouée...");
+
+	//Création du delta cavalier (pas trouvé de méthode plus simple qui marche...)
+	//v->deltaCavalier = (int[2][8]){ { 2, 2, 1, -1, -2, -2, -1, 1 }, { 1, -1, -2, -2, -1, 1, 2, 2 } }; //Marche pas ...
+	v->deltaCavalier[0][0] = 2;
+	v->deltaCavalier[1][0] = -1;
+	v->deltaCavalier[0][1] = 2;
+	v->deltaCavalier[1][1] = 1;
+	v->deltaCavalier[0][2] = 1;
+	v->deltaCavalier[1][2] = 2;
+	v->deltaCavalier[0][3] = -1;
+	v->deltaCavalier[1][3] = 2;
+	v->deltaCavalier[0][4] = -2;
+	v->deltaCavalier[1][4] = 1;
+	v->deltaCavalier[0][5] = -2;
+	v->deltaCavalier[1][5] = -1;
+	v->deltaCavalier[0][6] = -1;
+	v->deltaCavalier[1][6] = -2;
+	v->deltaCavalier[0][7] = 1;
+	v->deltaCavalier[1][7] = -2;
+
+	//Création du delta roi
+	v->deltaRoi[0][0] = 1;
+	v->deltaRoi[1][0] = -1;
+	v->deltaRoi[0][1] = 1;
+	v->deltaRoi[1][1] = 0;
+	v->deltaRoi[0][2] = 1;
+	v->deltaRoi[1][2] = 1;
+	v->deltaRoi[0][3] = 0;
+	v->deltaRoi[1][3] = 1;
+	v->deltaRoi[0][4] = -1;
+	v->deltaRoi[1][4] = 1;
+	v->deltaRoi[0][5] = -1;
+	v->deltaRoi[1][5] = 0;
+	v->deltaRoi[0][6] = -1;
+	v->deltaRoi[1][6] = -1;
+	v->deltaRoi[0][7] = 0;
+	v->deltaRoi[1][7] = -1;
+
+	//Création du delta tour
+	v->deltaTour[0][0] = 0;
+	v->deltaTour[1][0] = 1;
+	v->deltaTour[0][1] = 0;
+	v->deltaTour[1][1] = 2;
+	v->deltaTour[0][2] = 0;
+	v->deltaTour[1][2] = 3;
+	v->deltaTour[0][3] = 0;
+	v->deltaTour[1][3] = 4;
+	v->deltaTour[0][4] = 0;
+	v->deltaTour[1][4] = 5;
+	v->deltaTour[0][5] = 0;
+	v->deltaTour[1][5] = 6;
+	v->deltaTour[0][6] = 0;
+	v->deltaTour[1][6] = 7;
+	v->deltaTour[0][7] = 0;
+	v->deltaTour[1][7] = -1;
+	v->deltaTour[0][8] = 0;
+	v->deltaTour[1][8] = -2;
+	v->deltaTour[0][9] = 0;
+	v->deltaTour[1][9] = -3;
+	v->deltaTour[0][10] = 0;
+	v->deltaTour[1][10] = -4;
+	v->deltaTour[0][11] = 0;
+	v->deltaTour[1][11] = -5;
+	v->deltaTour[0][12] = 0;
+	v->deltaTour[1][12] = -6;
+	v->deltaTour[0][13] = 0;
+	v->deltaTour[1][13] = -7;
+	v->deltaTour[0][14] = 1;
+	v->deltaTour[1][14] = 0;
+	v->deltaTour[0][15] = 2;
+	v->deltaTour[1][15] = 0;
+	v->deltaTour[0][16] = 3;
+	v->deltaTour[1][16] = 0;
+	v->deltaTour[0][17] = 4;
+	v->deltaTour[1][17] = 0;
+	v->deltaTour[0][18] = 5;
+	v->deltaTour[1][18] = 0;
+	v->deltaTour[0][19] = 6;
+	v->deltaTour[1][19] = 0;
+	v->deltaTour[0][20] = 7;
+	v->deltaTour[1][20] = 0;
+	v->deltaTour[0][21] = -1;
+	v->deltaTour[1][21] = 0;
+	v->deltaTour[0][22] = -2;
+	v->deltaTour[1][22] = 0;
+	v->deltaTour[0][23] = -3;
+	v->deltaTour[1][23] = 0;
+	v->deltaTour[0][24] = -4;
+	v->deltaTour[1][24] = 0;
+	v->deltaTour[0][25] = -5;
+	v->deltaTour[1][25] = 0;
+	v->deltaTour[0][26] = -6;
+	v->deltaTour[1][26] = 0;
+	v->deltaTour[0][27] = -7;
+	v->deltaTour[1][27] = 0;
+
+	//Création du delta fou
+	v->deltaFou[0][0] = 1;
+	v->deltaFou[1][0] = 1;
+	v->deltaFou[0][1] = 2;
+	v->deltaFou[1][1] = 2;
+	v->deltaFou[0][2] = 3;
+	v->deltaFou[1][2] = 3;
+	v->deltaFou[0][3] = 4;
+	v->deltaFou[1][3] = 4;
+	v->deltaFou[0][4] = 5;
+	v->deltaFou[1][4] = 5;
+	v->deltaFou[0][5] = 6;
+	v->deltaFou[1][5] = 6;
+	v->deltaFou[0][6] = 7;
+	v->deltaFou[1][6] = 7;
+	v->deltaFou[0][7] = -1;
+	v->deltaFou[1][7] = -1;
+	v->deltaFou[0][8] = -2;
+	v->deltaFou[1][8] = -2;
+	v->deltaFou[0][9] = -3;
+	v->deltaFou[1][9] = -3;
+	v->deltaFou[0][10] = -4;
+	v->deltaFou[1][10] = -4;
+	v->deltaFou[0][11] = -5;
+	v->deltaFou[1][11] = -5;
+	v->deltaFou[0][12] = -6;
+	v->deltaFou[1][12] = -6;
+	v->deltaFou[0][13] = -7;
+	v->deltaFou[1][13] = -7;
+	v->deltaFou[0][14] = -1;
+	v->deltaFou[1][14] = 1;
+	v->deltaFou[0][15] = -2;
+	v->deltaFou[1][15] = 2;
+	v->deltaFou[0][16] = -3;
+	v->deltaFou[1][16] = 3;
+	v->deltaFou[0][17] = -4;
+	v->deltaFou[1][17] = 4;
+	v->deltaFou[0][18] = -5;
+	v->deltaFou[1][18] = 5;
+	v->deltaFou[0][19] = -6;
+	v->deltaFou[1][19] = 6;
+	v->deltaFou[0][20] = -7;
+	v->deltaFou[1][20] = 7;
+	v->deltaFou[0][21] = 1;
+	v->deltaFou[1][21] = -1;
+	v->deltaFou[0][22] = 2;
+	v->deltaFou[1][22] = -2;
+	v->deltaFou[0][23] = 3;
+	v->deltaFou[1][23] = -3;
+	v->deltaFou[0][24] = 4;
+	v->deltaFou[1][24] = -4;
+	v->deltaFou[0][25] = 5;
+	v->deltaFou[1][25] = -5;
+	v->deltaFou[0][26] = 6;
+	v->deltaFou[1][26] = -6;
+	v->deltaFou[0][27] = 7;
+	v->deltaFou[1][27] = -7;
+
+	return v;
 }

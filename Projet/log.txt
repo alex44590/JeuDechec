@@ -12,4 +12,6 @@ INFO : Création du menu
 INFO : Création du menu de droite
 INFO : Affichage de la défausse blanche
 INFO : Affichage de la défausse noire
+INFO : Création de l'objet Déplacement Possible
+INFO : Création de l'objet Vecteur Deplacement
 INFO : Lancement de la boucle principale du jeu
