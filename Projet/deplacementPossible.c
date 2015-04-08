@@ -64,7 +64,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 
 	case 'T':
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
-		for (i = 0; i < 28; ++i){
+		int continuer = 1;
+		for (i = 0; i < 7 && continuer; ++i){
 			newx = x + v->deltaTour[0][i];
 			newy = y + v->deltaTour[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
@@ -73,6 +74,57 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 				if (e->tabPieces[newx][newy] != NULL)
 					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 7; i < 14 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 14; i < 21 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 21; i < 28 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
 			}
 		}
 		break;
@@ -80,7 +132,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 
 	case 'F':
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
-		for (i = 0; i < 28; ++i){
+		continuer = 1;
+		for (i = 0; i < 7 && continuer; ++i){
 			newx = x + v->deltaFou[0][i];
 			newy = y + v->deltaFou[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
@@ -89,6 +142,57 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 				if (e->tabPieces[newx][newy] != NULL)
 					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 7; i < 14 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 14; i < 21 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 21; i < 28 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
 			}
 		}
 		break;
@@ -96,18 +200,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 
 	case 'D': //Dans le cas de la dame : on combine fou et tour
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
-		for (i = 0; i < 28; ++i){
-			newx = x + v->deltaFou[0][i];
-			newy = y + v->deltaFou[1][i];
-			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
-				d->deplacementPossible[newx][newy] = 1;
-				//On met en surbrillance les cases où l'on peut se déplacer
-				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
-				if (e->tabPieces[newx][newy] != NULL)
-					afficherPiece(e->tabPieces[newx][newy], contexte);
-			}
-		}
-		for (i = 0; i < 28; ++i){
+		continuer = 1;
+		for (i = 0; i < 7 && continuer; ++i){
 			newx = x + v->deltaTour[0][i];
 			newy = y + v->deltaTour[1][i];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
@@ -116,6 +210,121 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 				if (e->tabPieces[newx][newy] != NULL)
 					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 7; i < 14 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 14; i < 21 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 21; i < 28 && continuer; ++i){
+			newx = x + v->deltaTour[0][i];
+			newy = y + v->deltaTour[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 0; i < 7 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 7; i < 14 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 14; i < 21 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
+			}
+		}
+
+		continuer = 1;
+		for (i = 21; i < 28 && continuer; ++i){
+			newx = x + v->deltaFou[0][i];
+			newy = y + v->deltaFou[1][i];
+			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
+				d->deplacementPossible[newx][newy] = 1;
+				//On met en surbrillance les cases où l'on peut se déplacer
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (e->tabPieces[newx][newy] != NULL)
+					afficherPiece(e->tabPieces[newx][newy], contexte);
+			}
+			else if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+				continuer = 0;
 			}
 		}
 		break;
@@ -169,7 +378,6 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				}
 			}
 		}
-
 		break;
 
 	default:
