@@ -179,9 +179,9 @@ void printPiece(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 
-	fprintf(fichierhistorique, "%d:%c%c%d:",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
+	fprintf(fichierhistorique, "%.2d:%c%c%d ",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
 	
-	*posCurseur += 6;
+	*posCurseur += 7;
 
 	fclose(fichierhistorique);
 }
@@ -195,8 +195,8 @@ void printDepart(ListDeplacement * l, int *posCurseur)
 		logPrint(ERREUR, "Erreur d'ouverture du fichier historique depuis printDepart");
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
-	fprintf(fichierhistorique, "%d%d->", l->current->depart.colonne, l->current->depart.ligne);
-	*posCurseur += 6;
+	fprintf(fichierhistorique, "%d%d -> ", l->current->depart.colonne, l->current->depart.ligne);
+	*posCurseur += 8;
 	fclose(fichierhistorique);
 }
 
