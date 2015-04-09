@@ -24,6 +24,10 @@ int main(int argc, char* argv[]){
 	//Création ou réinitialisation du fichier de log "log.txt"
 	logInit();
 
+	//Création ou réinitialisation du fichier d'historique "Historique.txt"
+	createHistoryFile();
+
+
 
 	//Démarrage de la SDL
 	if (SDL_Init(SDL_INIT_VIDEO) == -1) {

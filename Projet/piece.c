@@ -163,7 +163,8 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
 	p->nbDeplacement++;
-	//createNewDeplacement(l, p->idPiece, caseDepart, p->idPosition, numeroDeplacement++);
+	createNewDeplacement(l, p->idPiece, caseDepart, p->idPosition, numeroDeplacement);
+	numeroDeplacement++;
 }
 
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){

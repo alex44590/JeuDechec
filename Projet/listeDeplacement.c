@@ -127,9 +127,13 @@ int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCas
 int createNewDeplacement(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
 	static int posCurseur = 0;
-	insertAfterCurrentBL(l, piece, depart, arrivee, numeroDeplacement);
-	if (l->first != l->last)
+	if (l->first == l->last)
 	{
+		insertFirst(l, piece, depart, arrivee, numeroDeplacement);
+	}
+	else
+	{
+		insertAfterCurrentBL(l, piece, depart, arrivee, numeroDeplacement);
 		next(l);
 	}
 	printFileCurrentDeplacement(l, &posCurseur);
@@ -175,7 +179,7 @@ void printPiece(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 
-	fprintf(fichierhistorique, "%d:%c%c%c:",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
+	fprintf(fichierhistorique, "%d:%c%c%d:",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
 	
 	*posCurseur += 6;
 
@@ -192,7 +196,7 @@ void printDepart(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 	fprintf(fichierhistorique, "%d%d->", l->current->depart.colonne, l->current->depart.ligne);
-	*posCurseur += 4;
+	*posCurseur += 6;
 	fclose(fichierhistorique);
 }
 
