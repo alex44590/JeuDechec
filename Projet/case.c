@@ -12,10 +12,10 @@ Case* creerCaseBlanche(IDCase id){
 
 	c->imageCaseNormale = IMG_Load("IMBLt.jpg");
 	c->imageCaseSurbrillance = IMG_Load("IMBLSt.jpg");
+	c->imageCaseOccupeeSurbrillance = IMG_Load("IMBLSto.jpg");
 	c->imageCaseActuelle = c->imageCaseNormale;
 
 	c->occupee = FALSE;
-	//c->pieceOccupante = NULL;
 	c->position = POSITION_FROM_ID(id.colonne, id.ligne);
 	c->dimension = TAILLE_CASE;
 	return c;
@@ -32,10 +32,10 @@ Case* creerCaseNoire(IDCase id){
 	
 	c->imageCaseNormale = IMG_Load("IMBFt.jpg");
 	c->imageCaseSurbrillance = IMG_Load("IMBFSt.jpg");
+	c->imageCaseOccupeeSurbrillance = IMG_Load("IMBFSto.jpg");
 	c->imageCaseActuelle = c->imageCaseNormale;
 
 	c->occupee = FALSE;
-	//c->pieceOccupante = NULL;
 	c->position = POSITION_FROM_ID(id.colonne, id.ligne);
 	c->dimension = TAILLE_CASE;
 	return c;
@@ -55,15 +55,23 @@ void afficherCase(Case* c, SDL_Renderer* contexte){
 
 void mettreEnSurbrillance(Case* c, SDL_Renderer* contexte){
 	if (c == NULL)
-		logPrint(ERREUR, "Impossible de mettre en surbrillance l'élément nul !");
+		logPrint(ERREUR, "Impossible de mettre en surbrillance l'élément null !");
 	c->enSurbrillance = TRUE;
 	c->imageCaseActuelle = c->imageCaseSurbrillance;
 	afficherCase(c, contexte);
 }
 
+void mettreEnSurbrillanceOccupee(Case* c, SDL_Renderer* contexte){
+	if (c == NULL)
+		logPrint(ERREUR, "Impossible de mettre en surbrillance l'élément null !");
+	c->enSurbrillance = TRUE;
+	c->imageCaseActuelle = c->imageCaseOccupeeSurbrillance;
+	afficherCase(c, contexte);
+}
+
 void supprimerSurbrillance(Case* c, SDL_Renderer* contexte){
 	if (c == NULL)
-		logPrint(ERREUR, "Impossible de supprimer la surbrillance de l'élément nul !");
+		logPrint(ERREUR, "Impossible de supprimer la surbrillance de l'élément null !");
 	c->enSurbrillance = FALSE;
 	c->imageCaseActuelle = c->imageCaseNormale;
 	afficherCase(c, contexte);

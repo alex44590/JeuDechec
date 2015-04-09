@@ -17,7 +17,7 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	p->dimension.hauteur = HAUTEUR_PIECE;
 	p->dimension.largeur = LARGEUR_PIECE;
 	p->deplacementPossibles = NULL;
-	p->idPosition = (IDCase){ -1, -1 };
+	p->idPosition = (IDCase){ 8, 8 };
 
 	//Cration de l'ID de la pièce
 	//Gestion de la couleur
@@ -155,7 +155,7 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 		logPrint(ERREUR, "Impossible de bouger la pièce car il s'agit de l'élément NULL");
 	static int numeroDeplacement = 0;
 	//On bouge la pièce dans le tableau de pièce de l'échiquier
-	if ((p->idPosition.colonne != -1) && (p->idPosition.ligne != -1))
+	if ((p->idPosition.colonne != 8) && (p->idPosition.ligne != 8))//On évite le cas ou il s'agit de l'initialisation de la position de la pièce.
 		tabPiece[p->idPosition.colonne][p->idPosition.ligne] = NULL;
 	tabPiece[colonneArrivee][ligneArrivee] = p;
 	//On modifie la position enregistrée de manière interne à la pièce

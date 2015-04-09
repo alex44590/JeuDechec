@@ -196,7 +196,7 @@ void printDepart(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 	fprintf(fichierhistorique, "%d%d -> ", l->current->depart.colonne, l->current->depart.ligne);
-	*posCurseur += 8;
+	*posCurseur += 6;
 	fclose(fichierhistorique);
 }
 

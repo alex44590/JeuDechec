@@ -59,3 +59,8 @@ Projet.v12.suo
 Projet.opensdf
 Debug/Projet.exe
 Debug/log.txt
+Debug/Projet.exe
+*.ilk
+Debug/Projet.pdb
+Projet/Historique.txt
+Projet/matDepPoss.txt

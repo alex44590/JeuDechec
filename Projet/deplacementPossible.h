@@ -11,6 +11,7 @@
 /* Matrice qui représente chaque case du tableau afin de savoir si le déplacement est possible
    0 = déplacement interdit
    1 = deplacement OK
+   2 = déplacement OK en mangeant la pièce
 */
 
 typedef struct {
@@ -31,6 +32,7 @@ typedef struct{
 DeplacementPossible* creerDeplacementPossible();
 VecteurDeplacement* creerVecteurDeplacement();
 void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, SDL_Renderer* contexte);
+int mettreEnSurbrillanceCasesSiDeplacementPossible(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
 void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
 #endif
