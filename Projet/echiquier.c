@@ -1,7 +1,7 @@
 #include "echiquier.h"
 #include "piece.h"
 
-Echiquier* creerEchiquier(){
+Echiquier* creerEchiquier(ListDeplacement* l){
 	Echiquier* echiquier;
 	echiquier = malloc(sizeof(Echiquier));
 	if (echiquier == NULL)
@@ -22,7 +22,7 @@ Echiquier* creerEchiquier(){
 	}
 
 	logPrint(INFO, "Initialisation des pièces de l'échiquier");
-	initAllPiece(echiquier->tabPieces);
+	initAllPiece(echiquier->tabPieces, l);
 	
 	//On tague les cases sur lesquelles on a déposé des pièces comme occupées
 	for (i = 0; i < 8; ++i){

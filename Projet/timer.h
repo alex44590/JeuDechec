@@ -4,8 +4,8 @@
 #include <time.h>
 
 typedef struct Timer{
-	struct tm debut;
-	struct tm chrono;
+	clock_t debut;
+	clock_t chrono;
 }Timer;
 
 

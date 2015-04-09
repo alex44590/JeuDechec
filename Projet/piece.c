@@ -75,61 +75,61 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 }
 
 
-void initAllPiece(Piece* tabPiece[8][8]){
+void initAllPiece(Piece* tabPiece[8][8], ListDeplacement* l){
 	int i;
 	int j;
 	//Pions Noirs
 	for (i = 0; i < 8; i++){
 		tabPiece[i][1] = creerPiece(PION, NOIR, i);
-		bougerPiece(tabPiece[i][1], tabPiece, i, 1);
+		bougerPiece(tabPiece[i][1], tabPiece, i, 1, l);
 		tabPiece[i][1]->nbDeplacement = 1;
 	}
 	//Pions Blancs
 	for (i = 0; i < 8; i++){
 		tabPiece[i][6] = creerPiece(PION, BLANC, i);
-		bougerPiece(tabPiece[i][6], tabPiece, i, 6);
+		bougerPiece(tabPiece[i][6], tabPiece, i, 6, l);
 		tabPiece[i][6]->nbDeplacement = 1;
 	}
 	//Tours Noires
 	tabPiece[0][0] = creerPiece(TOUR, NOIR, 0);
 	tabPiece[7][0] = creerPiece(TOUR, NOIR, 1);
-	bougerPiece(tabPiece[0][0], tabPiece, 0, 0);
-	bougerPiece(tabPiece[7][0], tabPiece, 7, 0);
+	bougerPiece(tabPiece[0][0], tabPiece, 0, 0, l);
+	bougerPiece(tabPiece[7][0], tabPiece, 7, 0, l);
 	//Tours Blanches
 	tabPiece[0][7] = creerPiece(TOUR, BLANC, 0);
 	tabPiece[7][7] = creerPiece(TOUR, BLANC, 1);
-	bougerPiece(tabPiece[0][7], tabPiece, 0, 7);
-	bougerPiece(tabPiece[7][7], tabPiece, 7, 7);
+	bougerPiece(tabPiece[0][7], tabPiece, 0, 7, l);
+	bougerPiece(tabPiece[7][7], tabPiece, 7, 7, l);
 	//Cavaliers Noirs
 	tabPiece[1][0] = creerPiece(CAVALIER, NOIR, 0);
 	tabPiece[6][0] = creerPiece(CAVALIER, NOIR, 1);
-	bougerPiece(tabPiece[1][0], tabPiece, 1, 0);
-	bougerPiece(tabPiece[6][0], tabPiece, 6, 0);
+	bougerPiece(tabPiece[1][0], tabPiece, 1, 0, l);
+	bougerPiece(tabPiece[6][0], tabPiece, 6, 0, l);
 	//Cavaliers Blancs
 	tabPiece[1][7] = creerPiece(CAVALIER, BLANC, 0);
 	tabPiece[6][7] = creerPiece(CAVALIER, BLANC, 1);
-	bougerPiece(tabPiece[1][7], tabPiece, 1, 7);
-	bougerPiece(tabPiece[6][7], tabPiece, 6, 7);
+	bougerPiece(tabPiece[1][7], tabPiece, 1, 7, l);
+	bougerPiece(tabPiece[6][7], tabPiece, 6, 7, l);
 	//Fous Noirs
 	tabPiece[2][0] = creerPiece(FOU, NOIR, 0);
 	tabPiece[5][0] = creerPiece(FOU, NOIR, 1);
-	bougerPiece(tabPiece[2][0], tabPiece, 2, 0);
-	bougerPiece(tabPiece[5][0], tabPiece, 5, 0);
+	bougerPiece(tabPiece[2][0], tabPiece, 2, 0, l);
+	bougerPiece(tabPiece[5][0], tabPiece, 5, 0, l);
 	//Fous Blancs
 	tabPiece[2][7] = creerPiece(FOU, BLANC, 0);
 	tabPiece[5][7] = creerPiece(FOU, BLANC, 1);
-	bougerPiece(tabPiece[2][7], tabPiece, 2, 7);
-	bougerPiece(tabPiece[5][7], tabPiece, 5, 7);
+	bougerPiece(tabPiece[2][7], tabPiece, 2, 7, l);
+	bougerPiece(tabPiece[5][7], tabPiece, 5, 7, l);
 	//Rois
 	tabPiece[3][0] = creerPiece(ROI, NOIR, 0);
 	tabPiece[3][7] = creerPiece(ROI, BLANC, 0);
-	bougerPiece(tabPiece[3][0], tabPiece, 3, 0);
-	bougerPiece(tabPiece[3][7], tabPiece, 3, 7);
+	bougerPiece(tabPiece[3][0], tabPiece, 3, 0, l);
+	bougerPiece(tabPiece[3][7], tabPiece, 3, 7, l);
 	//Dames
 	tabPiece[4][0] = creerPiece(DAME, NOIR, 0);
 	tabPiece[4][7] = creerPiece(DAME, BLANC, 0);
-	bougerPiece(tabPiece[4][0], tabPiece, 4, 0);
-	bougerPiece(tabPiece[4][7], tabPiece, 4, 7);
+	bougerPiece(tabPiece[4][0], tabPiece, 4, 0, l);
+	bougerPiece(tabPiece[4][7], tabPiece, 4, 7, l);
 	//Initialisation des autres cases à NULL
 	for (i = 0; i < 8; ++i){
 		for (j = 2; j < 6; ++j){
@@ -150,17 +150,20 @@ void afficherPiece(Piece* p, SDL_Renderer* contexte){
 }
 
 
-void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee){
+void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de bouger la pièce car il s'agit de l'élément NULL");
+	static int numeroDeplacement = 0;
 	//On bouge la pièce dans le tableau de pièce de l'échiquier
 	if ((p->idPosition.colonne != -1) && (p->idPosition.ligne != -1))
 		tabPiece[p->idPosition.colonne][p->idPosition.ligne] = NULL;
 	tabPiece[colonneArrivee][ligneArrivee] = p;
 	//On modifie la position enregistrée de manière interne à la pièce
+	IDCase caseDepart = p->idPosition;
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
 	p->nbDeplacement++;
+	//createNewDeplacement(l, p->idPiece, caseDepart, p->idPosition, numeroDeplacement++);
 }
 
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){

@@ -3,6 +3,7 @@
 
 #include "case.h"
 #include "commun.h"
+#include "listeDeplacement.h"
 #define NB_PION_DEPART 8
 
 
@@ -25,10 +26,10 @@ typedef struct{
 }Piece;
 
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);
-void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee);
+void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l);
 void afficherPiece(Piece* p, SDL_Renderer* contexte);
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte);
-void initAllPiece(Piece* tabPiece[8][8]);
+void initAllPiece(Piece* tabPiece[8][8], ListDeplacement* l);
 void mettreEnSurbillancePiece(Piece* p, SDL_Renderer* contexte);
 void supprimerSurbillancePiece(Piece* p, SDL_Renderer* contexte);
 

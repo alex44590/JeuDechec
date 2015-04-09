@@ -10,6 +10,7 @@
 #include "plateauDeJeu.h"
 #include "menuDroite.h"
 #include "deplacementPossible.h"
+#include "listeDeplacement.h"
 
 #define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (event.motion.x > OFFSET_PLATEAU_GAUCHE && event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.motion.y > OFFSET_PLATEAU_HAUT && event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 #define MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER (event.motion.x < OFFSET_PLATEAU_GAUCHE || event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE || event.motion.y < OFFSET_PLATEAU_HAUT || event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
@@ -31,6 +32,8 @@ int main(int argc, char* argv[]){
 	}
 	logPrint(INFO, "Initialisation de la SDL");
 
+	//Création de la Liste chaîné
+	ListDeplacement* l = initListDeplacement();
 
 	//Création de la fenetre
 	SDL_Window* screen = SDL_CreateWindow("Jeu d'Echec Multijoueur",
@@ -59,7 +62,7 @@ int main(int argc, char* argv[]){
 	//Création de l'échiquier 
 	Echiquier* echiquier = NULL;
 	logPrint(INFO, "Création de l'échiquier");
-	echiquier = creerEchiquier();
+	echiquier = creerEchiquier(l);
 	if (echiquier == NULL)
 		logPrint(ERREUR, "Echec de la création de l'échiquier");
 
@@ -112,6 +115,8 @@ int main(int argc, char* argv[]){
 	//Création du vecteur de déplacements
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
+
+
 
 
 	SDL_RenderPresent(contexte);
@@ -187,7 +192,7 @@ int main(int argc, char* argv[]){
 						//Si déplacement autorisé, on l'effectue
 						if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
 							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-							bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne);
+							bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 							supprimerSurbillancePiece(pieceSelectionnee, contexte);
 							pieceSelectionnee = NULL;
