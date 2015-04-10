@@ -21,6 +21,12 @@ Defausse* creerDefausse(Couleur couleur){
 	if (defausse->imageDefausse == NULL)
 		logPrint(AVERTISSEMENT, "Echec du chargement de l'image de la defausse");
 	
+	//Vidage du tableau de piece defaussees
+	int i;
+	for (i = 0; i < 8; i++){
+		defausse->tabPiecesDefaussees[0][i] = NULL;
+		defausse->tabPiecesDefaussees[1][i] = NULL;
+	}
 	return defausse;
 }
 
@@ -39,4 +45,33 @@ void afficherDefausse(Defausse* d, SDL_Renderer* contexte){
 	SDL_free(&positionAffichage);
 }
 
+void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte){
+	int i, j;
+	int x, y;
+	int continuer = 1;
+	for (j = 0; j < 2 && continuer; j++){
+		for (i = 0; i < 8 && continuer; i++){
+			if (d->tabPiecesDefaussees[j][i] == NULL){
+				d->tabPiecesDefaussees[j][i] = p;
+				x = d->position.x + OFFSET_GAUCHE_PIECE_DEFAUSSE + i*(LARGEUR_ESPACE_PIECE_DEFAUSSE+LARGEUR_PIECE_DEFAUSSE);
+				y = d->position.y + OFFSET_HAUT_PIECE_DEFAUSSE + j*(HAUTEUR_ESPACE_PIECE_DEFAUSSE+HAUTEUR_PIECE_DEFAUSSE);
+				afficherPieceDefausse(d, p, contexte, x, y);
+				continuer = 0;
+			}
+		}
+	}
+}
 
+void afficherPieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte, int x, int y){
+	SDL_Texture* texturePiece = SDL_CreateTextureFromSurface(contexte, p->imagePieceDefausse);
+	if (texturePiece == NULL)
+		logPrint(ERREUR, "Echec de la création de la texture de la pièce dans la défausse");
+	SDL_Rect positionAffichage;
+	positionAffichage.x = x;
+	positionAffichage.y = y;
+	positionAffichage.w = LARGEUR_PIECE_DEFAUSSE;
+	positionAffichage.h = HAUTEUR_PIECE_DEFAUSSE;
+	SDL_RenderCopy(contexte, texturePiece, NULL, &positionAffichage);
+	SDL_DestroyTexture(texturePiece);
+	SDL_free(&positionAffichage);
+}

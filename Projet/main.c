@@ -120,8 +120,27 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
 
+	//Insertion d'une piece dans la défausse blanche
+	logPrint(INFO, "Insertion d'une pièce dans la défausse blanche");
+	int m,n;
+	
 
 
+	//*******************TEST********************
+	//*******AJOUT DES PIECES EN DEFAUSSE********
+	//*******************************************
+	for (m = 0; m < 2; m++){
+		for (n = 0; n < 8; n++){
+			mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[n][m], contexte);
+		}
+	}
+
+	for (m = 6; m < 8; m++){
+		for (n = 0; n < 8; n++){
+			mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[n][m], contexte);
+		}
+	}
+	
 
 	SDL_RenderPresent(contexte);
 

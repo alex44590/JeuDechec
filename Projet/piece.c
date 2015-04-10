@@ -71,6 +71,10 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	p->imagePieceSurbrillance = IMG_Load(nomImageSurbrillance);
 	if (p->imagePieceSurbrillance == NULL)
 		logPrint(ERREUR, "Echec du chargement de l'image de surbrillance de la pièce");
+	char nomImageDefausse[15] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, 'D', '.', 'p', 'n', 'g', '\0' };
+	p->imagePieceDefausse = IMG_Load(nomImageDefausse);
+	if (p->imagePieceDefausse == NULL)
+		logPrint(ERREUR, "Echec du chargement de l'image de défausse de la pièce");
 	return p;
 }
 
