@@ -28,7 +28,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 	d->pieceConcernee = p;
 	int newx;
 	int newy;
-	int i, j,k; //Variable de boucle
+	int i, j; //Variable de boucle
 
 	switch (p->idPiece.type){
 	case 'C':

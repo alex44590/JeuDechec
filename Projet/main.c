@@ -120,27 +120,6 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
 
-	//Insertion d'une piece dans la défausse blanche
-	logPrint(INFO, "Insertion d'une pièce dans la défausse blanche");
-	int m,n;
-	
-
-
-	//*******************TEST********************
-	//*******AJOUT DES PIECES EN DEFAUSSE********
-	//*******************************************
-	for (m = 0; m < 2; m++){
-		for (n = 0; n < 8; n++){
-			mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[n][m], contexte);
-		}
-	}
-
-	for (m = 6; m < 8; m++){
-		for (n = 0; n < 8; n++){
-			mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[n][m], contexte);
-		}
-	}
-	
 
 	SDL_RenderPresent(contexte);
 
@@ -156,8 +135,6 @@ int main(int argc, char* argv[]){
 
 	Case* oldCasePointee = NULL;// plateau->echiquier->tabCases[0][0];
 	Case* casePointee = NULL;//  plateau->echiquier->tabCases[0][0];
-	IDCase idCasePointee;
-	IDCase idOldCasePointee;
 
 	Piece* pieceSelectionnee = NULL;
 	Case* caseSelectionnee = NULL;
@@ -196,20 +173,46 @@ int main(int argc, char* argv[]){
 				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
-					//Calcul des déplacements autorisés
+					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
 					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 				}
 
-				//Si pièce sélectionnée et que la case en contient une : on déselectionne la pièce
+				//Si pièce sélectionnée et que la case en contient une
 				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
-					supprimerSurbillancePiece(pieceSelectionnee, contexte);
-					pieceSelectionnee = NULL;
-					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+					//Si le déplacement n'est pas possible
+					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 0){
+						supprimerSurbillancePiece(pieceSelectionnee, contexte);
+						pieceSelectionnee = NULL;
+						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+					}
+
+					//S'il y a possibilité de manger une pièce
+					else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
+
+						//On met la pièce en défausse
+						if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
+							mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
+						else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
+							mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
+
+						//On mange la pièce 
+						mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
+						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
+
+						//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
+						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
+						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+						supprimerSurbillancePiece(pieceSelectionnee, contexte);
+
+						//On déselectionne la pièce
+						pieceSelectionnee = NULL;
+						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+					}
 				}
 					
 								
-				//Si pièce sélectionnée et que la case n'en contient pas : on déplace la pièce
+				//Si pièce sélectionnée et que la case n'en contient pas
 				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
 					if (pieceSelectionnee != NULL){
 						//Si déplacement autorisé, on l'effectue
@@ -218,9 +221,11 @@ int main(int argc, char* argv[]){
 							bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 							supprimerSurbillancePiece(pieceSelectionnee, contexte);
+							//Ensuite on déselectionne la pièce
 							pieceSelectionnee = NULL;
 							supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 						}
+
 						//Sinon, on déselectionne la pièce
 						else{
 							supprimerSurbillancePiece(pieceSelectionnee, contexte);

@@ -33,5 +33,6 @@ void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte);
 void initAllPiece(Piece* tabPiece[8][8], ListDeplacement* l);
 void mettreEnSurbillancePiece(Piece* p, SDL_Renderer* contexte);
 void supprimerSurbillancePiece(Piece* p, SDL_Renderer* contexte);
+void mangerPiece(Piece* p, Piece* tabPiece[8][8], ListDeplacement* l);
 
 #endif

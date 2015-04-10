@@ -171,6 +171,15 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 	numeroDeplacement++;
 }
 
+void mangerPiece(Piece* p, Piece* tabPiece[8][8], ListDeplacement* l){
+	if (p == NULL)
+		logPrint(ERREUR, "Impossible de manger la pièce car il s'agit de l'élément NULL");
+	if ((p->idPosition.colonne != 8) && (p->idPosition.ligne != 8))//On évite le cas ou il s'agit de l'initialisation de la position de la pièce.
+		tabPiece[p->idPosition.colonne][p->idPosition.ligne] = NULL;
+	//On range la pièce dans sa position fictive d'initialisation la case 8.8
+	p->idPosition.colonne = 8;
+	p->idPosition.ligne = 8;
+}
 void afficherAllPiece(Piece* tabPiece[8][8], SDL_Renderer* contexte){
 	int i;
 	int j;
