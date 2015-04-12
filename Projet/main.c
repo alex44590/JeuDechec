@@ -162,7 +162,6 @@ int main(int argc, char* argv[]){
 						afficherMenu(menu, contexte);
 					}
 				} //Fin du traitement des boutons
-				pieceSelectionnee = NULL;
 			}
 
 			if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){

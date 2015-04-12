@@ -103,6 +103,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 		memset(d->deplacementPossible, 0, sizeof(d->deplacementPossible));// On remet à 0 toute la matrice
 
 		if (p->idPiece.couleur == 'N'){
+			//Partie Déplacement
 			newx = x + v->deltaPionNoir[0][0];
 			newy = y + v->deltaPionNoir[1][0];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
@@ -124,9 +125,24 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 						afficherPiece(e->tabPieces[newx][newy], contexte);*/
 				}
 			}
+
+			//Partie Prise
+			for (i = 0; i < 2; i++){
+				newx = x + v->deltaPionNoirPrise[0][i];
+				newy = y + v->deltaPionNoirPrise[1][i];
+				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+					d->deplacementPossible[newx][newy] = 2;
+					//On met en surbrillance les cases où l'on peut manger la pièce
+					mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+					if (e->tabPieces[newx][newy] != NULL)
+						afficherPiece(e->tabPieces[newx][newy], contexte);
+				}
+			}
+			
 		}
 
 		else if (p->idPiece.couleur == 'B'){
+			//Partie déplacement
 			newx = x + v->deltaPionBlanc[0][0];
 			newy = y + v->deltaPionBlanc[1][0];
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
@@ -145,6 +161,19 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 					/*if (e->tabPieces[newx][newy] != NULL)
 						afficherPiece(e->tabPieces[newx][newy], contexte);*/
+				}
+			}
+
+			//Partie prise
+			for (i = 0; i < 2; i++){
+				newx = x + v->deltaPionBlancPrise[0][i];
+				newy = y + v->deltaPionBlancPrise[1][i];
+				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
+					d->deplacementPossible[newx][newy] = 2;
+					//On met en surbrillance les cases où l'on peut manger la pièce
+					mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+					if (e->tabPieces[newx][newy] != NULL)
+						afficherPiece(e->tabPieces[newx][newy], contexte);
 				}
 			}
 		}
@@ -394,10 +423,20 @@ VecteurDeplacement* creerVecteurDeplacement(){
 	v->deltaPionNoir[0][1] = 0;
 	v->deltaPionNoir[1][1] = 2;
 
+	v->deltaPionNoirPrise[0][0] = 1;
+	v->deltaPionNoirPrise[1][0] = 1;
+	v->deltaPionNoirPrise[0][1] = -1;
+	v->deltaPionNoirPrise[1][1] = 1;
+
 	v->deltaPionBlanc[0][0] = 0;
 	v->deltaPionBlanc[1][0] = -1;
 	v->deltaPionBlanc[0][1] = 0;
 	v->deltaPionBlanc[1][1] = -2;
+
+	v->deltaPionBlancPrise[0][0] = -1;
+	v->deltaPionBlancPrise[1][0] = -1;
+	v->deltaPionBlancPrise[0][1] = 1;
+	v->deltaPionBlancPrise[1][1] = -1;
 
 	return v;
 }
