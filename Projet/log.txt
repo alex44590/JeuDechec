@@ -1,5 +1,7 @@
 
+INFO : Création du fichier historique
 INFO : Initialisation de la SDL
+INFO : Initialisation de la SDL_ttf
 INFO : Chargement de l'icone
 INFO : Création du contexte graphique
 INFO : Création de l'échiquier
@@ -14,4 +16,5 @@ INFO : Affichage de la défausse blanche
 INFO : Affichage de la défausse noire
 INFO : Création de l'objet Déplacement Possible
 INFO : Création de l'objet Vecteur Deplacement
+INFO : Création du menu 2 joueurs
 INFO : Lancement de la boucle principale du jeu

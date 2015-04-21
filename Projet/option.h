@@ -1,10 +1,6 @@
 #ifndef OPTION_H
 #define OPTION_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <SDL2\SDL.h>
-#include <SDL2\SDL_image.h>
 #include "commun.h"
 #include "bouton.h"
 

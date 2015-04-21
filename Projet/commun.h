@@ -1,10 +1,13 @@
 #ifndef COMMUN_H
 #define COMMUN_H
 
-#include <SDL2\SDL.h>
-#include <SDL2\SDL_image.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "log.h"
-#include "string.h"
+#include <string.h>
 
 #define LARGEUR_BARRE 40
 #define LONGUEUR_BARRE 640

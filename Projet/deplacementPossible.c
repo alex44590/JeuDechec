@@ -131,14 +131,15 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				newx = x + v->deltaPionNoirPrise[0][i];
 				newy = y + v->deltaPionNoirPrise[1][i];
 				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
-					d->deplacementPossible[newx][newy] = 2;
-					//On met en surbrillance les cases où l'on peut manger la pièce
-					mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
-					if (e->tabPieces[newx][newy] != NULL)
-						afficherPiece(e->tabPieces[newx][newy], contexte);
+					if (e->tabPieces[newx][newy]->couleur == BLANC){
+						d->deplacementPossible[newx][newy] = 2;
+						//On met en surbrillance les cases où l'on peut manger la pièce
+						mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+						if (e->tabPieces[newx][newy] != NULL)
+							afficherPiece(e->tabPieces[newx][newy], contexte);
+					}
 				}
 			}
-			
 		}
 
 		else if (p->idPiece.couleur == 'B'){
@@ -169,11 +170,13 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				newx = x + v->deltaPionBlancPrise[0][i];
 				newy = y + v->deltaPionBlancPrise[1][i];
 				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == TRUE){
-					d->deplacementPossible[newx][newy] = 2;
-					//On met en surbrillance les cases où l'on peut manger la pièce
-					mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
-					if (e->tabPieces[newx][newy] != NULL)
-						afficherPiece(e->tabPieces[newx][newy], contexte);
+					if (e->tabPieces[newx][newy]->couleur == NOIR){
+						d->deplacementPossible[newx][newy] = 2;
+						//On met en surbrillance les cases où l'on peut manger la pièce
+						mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+						if (e->tabPieces[newx][newy] != NULL)
+							afficherPiece(e->tabPieces[newx][newy], contexte);
+					}
 				}
 			}
 		}
