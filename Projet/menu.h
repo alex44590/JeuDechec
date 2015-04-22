@@ -3,6 +3,7 @@
 
 #include "commun.h"
 #include "bouton.h"
+#include "evenement.h"
 
 #define LARGEUR_ZONE_PSEUDO 260
 #define HAUTEUR_ZONE_PSEUDO 40
@@ -11,10 +12,10 @@
 #define Y_ZONE_PSEUDO_1 150
 #define Y_ZONE_PSEUDO_2 220
 #define ESPACEMENT_NUMJ_ZONE -3 //Espacement vertical entre l'écriture "Joueur 1 (ou 2)" et la zone dans laquelle on écrit le pseudo correspondant
-#define PSEUDO_LONGUEUR_MAX 20
+#define PSEUDO_LONGUEUR_MAX 20 //Caractère de fin de chaine compris
 
-#define CLIC_SOURIS_INTERIEUR_PSEUDO_1 (event.button.x > X_ZONE_PSEUDO_1 && event.button.x < X_ZONE_PSEUDO_1 + LARGEUR_ZONE_PSEUDO && event.button.y > Y_ZONE_PSEUDO_1 && event.button.y < Y_ZONE_PSEUDO_1 + HAUTEUR_ZONE_PSEUDO)
-#define CLIC_SOURIS_INTERIEUR_PSEUDO_2 (event.button.x > X_ZONE_PSEUDO_2 && event.button.x < X_ZONE_PSEUDO_2 + LARGEUR_ZONE_PSEUDO && event.button.y > Y_ZONE_PSEUDO_2 && event.button.y < Y_ZONE_PSEUDO_2 + HAUTEUR_ZONE_PSEUDO)
+#define CLIC_SOURIS_INTERIEUR_PSEUDO_1 (in.clicSouris.x > X_ZONE_PSEUDO_1 && in.clicSouris.x < X_ZONE_PSEUDO_1 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_1 && in.clicSouris.y < Y_ZONE_PSEUDO_1 + HAUTEUR_ZONE_PSEUDO)
+#define CLIC_SOURIS_INTERIEUR_PSEUDO_2 (in.clicSouris.x > X_ZONE_PSEUDO_2 && in.clicSouris.x < X_ZONE_PSEUDO_2 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_2 && in.clicSouris.y < Y_ZONE_PSEUDO_2 + HAUTEUR_ZONE_PSEUDO)
 
 
 typedef struct{
@@ -59,7 +60,7 @@ void afficherAllZonesPseudo(ZonePseudo* zone1, ZonePseudo* zone2, SDL_Renderer* 
 void afficherZonePseudo(ZonePseudo* z, SDL_Renderer* contexte);
 void selectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
 void deselectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
-void catSaisiePseudo(SDL_Event event, ZonePseudo* z, int* continuer, int* continuerBouclePrincipale);
+void catSaisiePseudo(Input* in, ZonePseudo* z, int* continuerSaisiePseudo);
 
 //PARTIE TEXTE
 SDL_Surface* creerTexte(char* texte, char* font, int taille, int r, int g, int b);

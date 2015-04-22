@@ -8,13 +8,8 @@
 #include "menuDroite.h"
 #include "deplacementPossible.h"
 #include "listeDeplacement.h"
+#include "evenement.h"
 
-
-#define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (event.motion.x > OFFSET_PLATEAU_GAUCHE && event.motion.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.motion.y > OFFSET_PLATEAU_HAUT && event.motion.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
-#define MOUVEMENT_SOURIS_EXTERIEUR_ECHIQUIER (event.motion.x < OFFSET_PLATEAU_GAUCHE || event.motion.x > LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE || event.motion.y < OFFSET_PLATEAU_HAUT || event.motion.y > HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
-#define CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE (event.button.x > menu->tabBouton[i]->positionInit.x && event.button.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur && event.button.y > menu->tabBouton[i]->positionInit.y && event.button.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
-#define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE (event.button.x > 0 && event.button.x < OFFSET_PLATEAU_GAUCHE)
-#define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER (event.button.x > OFFSET_PLATEAU_GAUCHE && event.button.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && event.button.y > OFFSET_PLATEAU_HAUT && event.button.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
 
 int main(int argc, char* argv[]){
@@ -138,9 +133,14 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création du menu 2 joueurs");
 	Menu2J* menu2J = creerMenuDeuxJoueurs();
 
+
+	//Création de la structure input permettant la gestion des évènements
+	logPrint(INFO, "Création de la Structure input permettant la gestion des évènements");
+	Input in;
+	memset(&in, 0, sizeof(in)); //Mise à 0 de toute la structure
+
+
 	SDL_RenderPresent(contexte);
-
-
 
 
 	//BOUCLE PRINCIPALE 
@@ -153,8 +153,6 @@ int main(int argc, char* argv[]){
 	int continuerSaisiePseudo = 0;
 	int i, j = 0;
 
-	SDL_Event event;
-	SDL_Event eventPseudo;
 	Position oldPosSouris;
 
 	oldPosSouris.x = 0;
@@ -169,18 +167,11 @@ int main(int argc, char* argv[]){
 
 
 
-	while (continuer)
+	while (!in.quit)
 	{
-		SDL_PollEvent(&event);
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			continuer = 0;
-			break;
+		mettreAJourEvent(&in);
 
-
-
-		case SDL_MOUSEBUTTONDOWN:
+		if (in.sourisEnfoncee){
 			//Cas du Menu princpal
 			if (menuEnCours == 0){
 				if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
@@ -196,132 +187,116 @@ int main(int argc, char* argv[]){
 							enfoncerBouton(menu->tabBouton[i]);
 							afficherMenu(menu, contexte);
 						}
-					} //Fin du traitement des boutons
+					}
+				}
+			}
+		}
+
+		//Cas du Menu 2 joueurs
+		if (menuEnCours == 1){
+			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
+				continuerSaisiePseudo = 1;
+
+			if (CLIC_SOURIS_INTERIEUR_PSEUDO_1 && continuerSaisiePseudo){
+				deselectionnerZonePseudo(menu2J, menu2J->zone2, FALSE, contexte);
+				selectionnerZonePseudo(menu2J, menu2J->zone1, TRUE, contexte);
+				catSaisiePseudo(&in, menu2J->zone1, &continuerSaisiePseudo);
+				menu2J->zone1->ttfPseudo = creerTexte(menu2J->zone1->pseudo, "calibri.ttf", 16, 240, 240, 240);
+				afficherMenu2J(menu2J, contexte);
+			}
+
+			if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
+				deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
+				selectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
+				catSaisiePseudo(&in, menu2J->zone2, &continuerSaisiePseudo);
+				menu2J->zone2->ttfPseudo = creerTexte(menu2J->zone2->pseudo, "calibri.ttf", 16, 240, 240, 240);
+				afficherMenu2J(menu2J, contexte);
+			}
+
+			if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+				deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
+				deselectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
+			}
+
+		}
+
+
+		//Cas de l'échiquier
+		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee){
+			caseSelectionnee = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+			idCaseSelectionnee = caseSelectionnee->identifiant;
+
+			//Si aucune pièce sélectionnée et que la case en contient une
+			if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
+				pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
+				mettreEnSurbillancePiece(pieceSelectionnee, contexte);
+				//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
+				calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, contexte);
+				enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
+			}
+
+			//Si pièce sélectionnée et que la case en contient une
+			else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
+				//Si le déplacement n'est pas possible
+				if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 0){
+					supprimerSurbillancePiece(pieceSelectionnee, contexte);
+					pieceSelectionnee = NULL;
+					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+				}
+
+				//S'il y a possibilité de manger une pièce
+				else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
+
+					//On met la pièce en défausse
+					if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
+						mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
+					else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
+						mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
+
+					//On mange la pièce 
+					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
+					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
+
+					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
+					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
+					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+					supprimerSurbillancePiece(pieceSelectionnee, contexte);
+
+					//On déselectionne la pièce
+					pieceSelectionnee = NULL;
+					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 				}
 			}
 
 
-			//Cas du Menu 2 joueurs
-			else if (menuEnCours == 1){
-				if (CLIC_SOURIS_INTERIEUR_PSEUDO_1){
-					deselectionnerZonePseudo(menu2J, menu2J->zone2, FALSE, contexte);
-					selectionnerZonePseudo(menu2J, menu2J->zone1, TRUE, contexte);
-					continuerSaisiePseudo = 1;
-
-					while (continuerSaisiePseudo == 1){
-						SDL_WaitEvent(&eventPseudo);
-						catSaisiePseudo(eventPseudo, menu2J->zone1, &continuerSaisiePseudo, &continuer);
-						menu2J->zone1->ttfPseudo = creerTexte(menu2J->zone1->pseudo, "calibri.ttf", 16, 240, 240, 240);
-						afficherMenu2J(menu2J, contexte);
-						SDL_RenderPresent(contexte);
-						SDL_Delay(10);
-					}
-					event = eventPseudo;
-					deselectionnerZonePseudo(menu2J, menu2J->zone1, TRUE, contexte);
-				}
-
-				if (CLIC_SOURIS_INTERIEUR_PSEUDO_2){
-					deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
-					selectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
-					continuerSaisiePseudo = 1;
-
-					while (continuerSaisiePseudo == 1){
-						SDL_WaitEvent(&eventPseudo);
-						catSaisiePseudo(eventPseudo, menu2J->zone2, &continuerSaisiePseudo, &continuer);
-						menu2J->zone2->ttfPseudo = creerTexte(menu2J->zone2->pseudo, "calibri.ttf", 16, 240, 240, 240);
-						afficherMenu2J(menu2J, contexte);
-						SDL_RenderPresent(contexte);
-						SDL_Delay(10);
-					}
-					event = eventPseudo;
-					deselectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
-				}
-
-				if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
-					deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
-					deselectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
-				}
-
-			}
-
-
-			//Cas de l'échiquier
-			if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){
-				caseSelectionnee = plateau->echiquier->tabCases[(event.button.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(event.button.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
-				idCaseSelectionnee = caseSelectionnee->identifiant;
-
-				//Si aucune pièce sélectionnée et que la case en contient une
-				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
-					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
-					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
-					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
-					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, contexte);
-					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
-				}
-
-				//Si pièce sélectionnée et que la case en contient une
-				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
-					//Si le déplacement n'est pas possible
-					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 0){
-						supprimerSurbillancePiece(pieceSelectionnee, contexte);
-						pieceSelectionnee = NULL;
-						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
-					}
-
-					//S'il y a possibilité de manger une pièce
-					else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
-
-						//On met la pièce en défausse
-						if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
-							mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
-						else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
-							mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
-
-						//On mange la pièce 
-						mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
+			//Si pièce sélectionnée et que la case n'en contient pas
+			else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
+				if (pieceSelectionnee != NULL){
+					//Si déplacement autorisé, on l'effectue
+					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-
-						//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 						supprimerSurbillancePiece(pieceSelectionnee, contexte);
+						//Ensuite on déselectionne la pièce
+						pieceSelectionnee = NULL;
+						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+					}
 
-						//On déselectionne la pièce
+					//Sinon, on déselectionne la pièce
+					else{
+						supprimerSurbillancePiece(pieceSelectionnee, contexte);
 						pieceSelectionnee = NULL;
 						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 					}
 				}
-
-
-				//Si pièce sélectionnée et que la case n'en contient pas
-				else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == NULL){
-					if (pieceSelectionnee != NULL){
-						//Si déplacement autorisé, on l'effectue
-						if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
-							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-							bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
-							plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
-							supprimerSurbillancePiece(pieceSelectionnee, contexte);
-							//Ensuite on déselectionne la pièce
-							pieceSelectionnee = NULL;
-							supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
-						}
-
-						//Sinon, on déselectionne la pièce
-						else{
-							supprimerSurbillancePiece(pieceSelectionnee, contexte);
-							pieceSelectionnee = NULL;
-							supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
-						}
-					}
-				}
-				afficherEchiquier(plateau->echiquier, contexte);
 			}
-			break;
+			afficherEchiquier(plateau->echiquier, contexte);
+		}
 
 
 
-		case SDL_MOUSEBUTTONUP:
+		if (in.sourisRelachee){
 			if (menuEnCours == 0){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_MP; i++){
@@ -339,12 +314,10 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
-			break;
-
 		}
 
 		SDL_RenderPresent(contexte);
-		SDL_Delay(10);
+		
 	}
 
 	SDL_DestroyWindow(screen);
