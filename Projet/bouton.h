@@ -3,10 +3,10 @@
 
 #include "commun.h"
 
-typedef enum { ENTRAINEMENT, DEUXJOUEURS, OPTION, APROPOS/*, QUITTER*/ }idBouton;
-
-#define NB_BOUTON_MP (APROPOS+1) // Menu principal
+#define NB_BOUTON_MP 4 // Menu principal
 #define NB_BOUTON_M2J 1 // Menu 2 joueurs
+
+typedef enum { ENTRAINEMENT, DEUXJOUEURS, OPTION, APROPOS, ACCUEIL/*, QUITTER*/ }idBouton;
 
 typedef struct{
 	idBouton idBouton;
@@ -19,6 +19,8 @@ typedef struct{
 
 
 Bouton* creerBouton(idBouton cible, char* nomImage);
+void setPositionBouton(Bouton* b, int x, int y);
+void setTailleBouton(Bouton* b, int largeur, int hauteur);
 void afficherBouton(Bouton* b, SDL_Renderer* contexte);
 void enfoncerBouton(Bouton* b);
 void desenfoncerBouton(Bouton* b);

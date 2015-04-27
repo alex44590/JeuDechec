@@ -12,13 +12,15 @@ void mettreAJourEvent(Input* in){
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym <= 127)
 				in->clavier[event.key.keysym.sym] = 1;
-			else if (KEYCODE_REDUIT(event.key.keysym.sym) >= 128 && KEYCODE_REDUIT(event.key.keysym.sym) <= 353)
+			else if (KEYCODE_REDUIT(event.key.keysym.sym) > 128 && KEYCODE_REDUIT(event.key.keysym.sym) <= 353)
 				in->clavier[KEYCODE_REDUIT(event.key.keysym.sym)] = 1;
+			else if (KEYCODE_REDUIT(event.key.keysym.sym) == 128) // Cas de la touche VerrouillerMajuscule (CAPSLOCK)
+				in->clavier[KEYCODE_REDUIT(event.key.keysym.sym)] = !in->clavier[KEYCODE_REDUIT(event.key.keysym.sym)];
 			break;
 		case SDL_KEYUP:
 			if (event.key.keysym.sym <= 127)
 				in->clavier[event.key.keysym.sym] = 0;
-			else if (KEYCODE_REDUIT(event.key.keysym.sym) >= 128 && KEYCODE_REDUIT(event.key.keysym.sym) <= 353)
+			else if (KEYCODE_REDUIT(event.key.keysym.sym) > 128 && KEYCODE_REDUIT(event.key.keysym.sym) <= 353)
 				in->clavier[KEYCODE_REDUIT(event.key.keysym.sym)] = 0;
 			break;
 
@@ -47,6 +49,6 @@ void mettreAJourEvent(Input* in){
 		default:
 			break;
 		}
-		SDL_Delay(20);
+		SDL_Delay(5);
 	}
 }

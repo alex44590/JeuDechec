@@ -16,6 +16,17 @@ Bouton* creerBouton(idBouton cible, char* nomImage){
 	return b;
 }
 
+void setPositionBouton(Bouton* b, int x, int y){
+	b->positionInit.x = x;
+	b->positionInit.y = y;
+	b->positionActuelle = b->positionInit;
+}
+
+void setTailleBouton(Bouton* b, int largeur, int hauteur){
+	b->dimension.hauteur = hauteur;
+	b->dimension.largeur = largeur;
+}
+
 void afficherBouton(Bouton* b, SDL_Renderer* contexte){
 	SDL_Texture* textureBouton = SDL_CreateTextureFromSurface(contexte, b->image);
 	SDL_Rect positionAffichage;

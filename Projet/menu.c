@@ -117,6 +117,86 @@ void deselectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, 
 }
 
 
+//Récupère une lettre ou un chiffre pressé sur le clavier (au travers d'une objet event) et l'ajoute en fin de chaine dest s'il reste de la place
+void catSaisiePseudo(Input* in, ZonePseudo* z, int* continuerSaisiePseudo){
+	int i;
+	int j;
+	char src[2];
+	src[1] = '\0';
+
+	//Cas ou l'on a appuyé sur un chiffre (pas du Numpad) et que la majuscule est activée
+	for (i = SDLK_0; i <= SDLK_9; i++){
+		if (in->clavier[i] && (in->clavier[KEYCODE_REDUIT(SDLK_LSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_RSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_CAPSLOCK)])){
+			src[0] = i;
+			in->clavier[i] = 0;
+		}
+	}
+
+	//Cas des touches numériques du pavé numérique sauf le 0 plus galère...
+	for (i = KEYCODE_REDUIT(SDLK_KP_1); i <= KEYCODE_REDUIT(SDLK_KP_9); i++){
+		if (in->clavier[i]){
+			src[0] = i-111;
+			in->clavier[i] = 0;
+		}
+	}
+
+	//Cas du 0 du numpad
+	if (in->clavier[KEYCODE_REDUIT(SDLK_KP_0)]){
+		src[0] = '0';
+		in->clavier[KEYCODE_REDUIT(SDLK_KP_0)] = 0;
+	}
+
+	//Cas des chiffres (pas du numpad) si la majuscule n'est pas active et qu'on apuuie pas sur alt-gr
+	j = 0;
+	for (i = SDLK_0; i <= SDLK_9; i++){
+		if (in->clavier[i] && !(in->clavier[KEYCODE_REDUIT(SDLK_LSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_RSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_CAPSLOCK)])){
+			char caracSpec[10] = {'à', '&', 'é', '"', '\'', '(', '-', 'è', '_', 'ç'};
+			src[0] = caracSpec[j];
+			in->clavier[i] = 0;
+		}
+		++j;
+	}
+
+	if (in->clavier[SDLK_ESCAPE]) /* Appui sur la touche Echap, on sort de la zone*/
+		*continuerSaisiePseudo = 0;
+
+	for (i = SDLK_a; i <= SDLK_z; i++){
+		if (in->clavier[i] && (in->clavier[KEYCODE_REDUIT(SDLK_LSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_RSHIFT)] || in->clavier[KEYCODE_REDUIT(SDLK_CAPSLOCK)])){
+			src[0] = i-32;
+			in->clavier[i] = 0;
+		}
+		else if (in->clavier[i]){
+			src[0] = i;
+			in->clavier[i] = 0;
+		}
+	}
+
+	if (in->clavier[SDLK_SPACE]){
+		src[0] = ' ';
+		in->clavier[SDLK_SPACE] = 0;
+	}
+
+	if (in->clavier[SDLK_BACKSPACE]){
+		z->pseudo[strlen(z->pseudo) - 1] = '\0';
+		in->clavier[SDLK_BACKSPACE] = 0;
+	}
+
+	if (in->clavier[SDLK_TAB]){
+		*continuerSaisiePseudo = 0;
+		in->clavier[SDLK_TAB] = 0;
+	}
+
+	if (in->clavier[SDLK_RETURN]){
+		*continuerSaisiePseudo = 0;
+		in->clavier[SDLK_RETURN] = 0;
+	}
+
+	if ((strlen(z->pseudo) + 1) < PSEUDO_LONGUEUR_MAX && src[0] != -52)
+		strcat(z->pseudo, src);
+
+
+}
+
 //***************************************
 //*********PARTIE MENU 2 JOUEURS*********
 //***************************************
@@ -133,6 +213,10 @@ Menu2J* creerMenuDeuxJoueurs(){
 	m->position.y = 0;
 	m->dimension.hauteur = HAUTEUR_MENU;
 	m->dimension.largeur = LARGEUR_MENU;
+
+	m->tabBouton[0] = creerBouton(ACCUEIL, "bouton4.png");
+	setPositionBouton(m->tabBouton[0], 25, 430);
+	setTailleBouton(m->tabBouton[0], m->tabBouton[0]->dimension.largeur - 40, m->tabBouton[0]->dimension.hauteur - 10);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
@@ -152,6 +236,7 @@ void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte){
 		afficherTexte(m->zone1->ttfPseudo, m->zone1->position.x + 15, m->zone1->position.y + 11, contexte);
 	if (m->zone2->ttfPseudo != NULL)
 		afficherTexte(m->zone2->ttfPseudo, m->zone2->position.x + 15, m->zone2->position.y + 11, contexte);
+	afficherBouton(m->tabBouton[0], contexte);
 
 }
 
@@ -198,52 +283,3 @@ void afficherTexte(SDL_Surface* texte, int x, int y, SDL_Renderer* contexte){
 }
 
 
-//Récupère une lettre ou un chiffre pressé sur le clavier (au travers d'une objet event) et l'ajoute en fin de chaine dest s'il reste de la place
-void catSaisiePseudo(Input* in, ZonePseudo* z, int* continuerSaisiePseudo){
-	int i;
-	char src[2];
-	src[1] = '\0';
-
-	//Cas ou l'on a appuyé sur un chiffre (pas du Numpad)
-	for (i = SDLK_0; i <= SDLK_9; i++){
-		if (in->clavier[i]){
-			src[0] = i;
-			in->clavier[i] = 0;
-		}
-	}
-	
-	if (in->clavier[SDLK_ESCAPE]) /* Appui sur la touche Echap, on sort de la zone*/
-		*continuerSaisiePseudo = 0;
-
-	for (i = SDLK_a; i <= SDLK_z; i++){
-		if (in->clavier[i]){
-			src[0] = i;
-			in->clavier[i] = 0;
-		}
-	}
-
-	if (in->clavier[SDLK_SPACE]){
-		src[0] = ' ';
-		in->clavier[SDLK_SPACE] = 0;
-	}
-
-	if (in->clavier[SDLK_BACKSPACE]){
-		z->pseudo[strlen(z->pseudo) - 1] = '\0';
-		in->clavier[SDLK_BACKSPACE] = 0;
-	}
-
-	if (in->clavier[SDLK_TAB]){
-		*continuerSaisiePseudo = 0;
-		in->clavier[SDLK_TAB] = 0;
-	}
-
-	if (in->clavier[SDLK_RETURN]){
-		*continuerSaisiePseudo = 0;
-		in->clavier[SDLK_RETURN] = 0;
-	}
-
-	if ((strlen(z->pseudo) + 1) < PSEUDO_LONGUEUR_MAX && src[0] != -52)
-		strcat(z->pseudo, src);
-
-
-}
