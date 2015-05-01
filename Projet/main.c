@@ -124,9 +124,20 @@ int main(int argc, char* argv[]){
 	DeplacementPossible* deplacementPossible = creerDeplacementPossible();
 
 
+	//Création de l'objet Déplacement Possible pour le calcul des positions d'échec
+	logPrint(INFO, "Création de l'objet Déplacement Possible pour les positions d'échec");
+	DeplacementPossible* deplacementPossibleEchec = creerDeplacementPossible();
+
+
 	//Création du vecteur de déplacements
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
+
+
+	//Création de la situation de jeu qui indiquera s'il y a échec, pat ...
+	logPrint(INFO, "Création de la situation de jeu");
+	SituationEchec situationEchec;
+	situationEchec = RIEN;
 
 
 	//Création du menu 2 joueurs 
@@ -165,7 +176,13 @@ int main(int argc, char* argv[]){
 	Case* caseSelectionnee = NULL;
 	IDCase idCaseSelectionnee;
 
+	IDCase positionRoi[2];
+	positionRoi[BLANC].colonne = D;
+	positionRoi[BLANC].ligne = 7;
+	positionRoi[NOIR].colonne = D;
+	positionRoi[NOIR].ligne = 0;
 
+	Booleen echec;
 
 	while (!in.quit)
 	{
@@ -177,7 +194,7 @@ int main(int argc, char* argv[]){
 				if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
 					//Traitement des boutons du menu
 					for (i = 0; i < NB_BOUTON_MP; i++){
-						if (CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE)
+						if (CLIC_DOWN_SOURIS_BOUTON_MENU_PRINCIPAL)
 						{
 							switch (menu->tabBouton[i]->idBouton){
 							case DEUXJOUEURS:
@@ -192,8 +209,27 @@ int main(int argc, char* argv[]){
 			}
 		}
 
+
 		//Cas du Menu 2 joueurs
 		if (menuEnCours == 1){
+
+			//Si l'on appuie sur le bouton accueil
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON_M2J; i++){
+					if (CLIC_DOWN_SOURIS_BOUTON_MENU_2JOUEURS)
+					{
+						switch (menu2J->tabBouton[i]->idBouton){
+						case ACCUEIL:
+							menuSelectionne = 0;
+							break;
+						}
+						enfoncerBouton(menu2J->tabBouton[i]);
+						afficherMenu(menu, contexte);
+					}
+				}
+			}
+
 			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
 				continuerSaisiePseudo = 1;
 
@@ -231,7 +267,7 @@ int main(int argc, char* argv[]){
 				pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 				mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 				//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
-				calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, contexte);
+				calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, TRUE, contexte);
 				enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 			}
 
@@ -246,6 +282,7 @@ int main(int argc, char* argv[]){
 
 				//S'il y a possibilité de manger une pièce
 				else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
+
 
 					//On met la pièce en défausse
 					if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
@@ -262,6 +299,30 @@ int main(int argc, char* argv[]){
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 					supprimerSurbillancePiece(pieceSelectionnee, contexte);
 
+					//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
+					if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == BLANC){
+						positionRoi[BLANC].colonne = caseSelectionnee->identifiant.colonne;
+						positionRoi[BLANC].ligne = caseSelectionnee->identifiant.ligne;
+					}
+					else if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == NOIR){
+						positionRoi[NOIR].colonne = caseSelectionnee->identifiant.colonne;
+						positionRoi[NOIR].ligne = caseSelectionnee->identifiant.ligne;
+					}
+
+					//On vérifie une éventuelle position d'échec du côté adverse
+					echec = calculerEchec(!pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
+					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
+					if (echec){
+						logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+						if (pieceSelectionnee->couleur == NOIR)
+							situationEchec = ECHEC_BLANC;
+						else
+							situationEchec = ECHEC_NOIR;
+					}
+					else
+						situationEchec = RIEN;
+
+
 					//On déselectionne la pièce
 					pieceSelectionnee = NULL;
 					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
@@ -274,10 +335,36 @@ int main(int argc, char* argv[]){
 				if (pieceSelectionnee != NULL){
 					//Si déplacement autorisé, on l'effectue
 					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
+
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
+						echec = calculerEchec(pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 						supprimerSurbillancePiece(pieceSelectionnee, contexte);
+
+						//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
+						if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == BLANC){
+							positionRoi[BLANC].colonne = caseSelectionnee->identifiant.colonne;
+							positionRoi[BLANC].ligne = caseSelectionnee->identifiant.ligne;
+						}
+						else if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == NOIR){
+							positionRoi[NOIR].colonne = caseSelectionnee->identifiant.colonne;
+							positionRoi[NOIR].ligne = caseSelectionnee->identifiant.ligne;
+						}
+
+						//On vérifie une éventuelle position d'échec du côté adverse
+						Booleen echec = calculerEchec(!pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
+						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
+						if (echec){
+							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+							if (pieceSelectionnee->couleur == NOIR)
+								situationEchec = ECHEC_BLANC;
+							else
+								situationEchec = ECHEC_NOIR;
+						}
+						else
+							situationEchec = RIEN;
+
 						//Ensuite on déselectionne la pièce
 						pieceSelectionnee = NULL;
 						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
@@ -292,6 +379,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 			afficherEchiquier(plateau->echiquier, contexte);
+			afficherTexteEchec(menuDroite, situationEchec, contexte);
 		}
 
 
@@ -306,6 +394,7 @@ int main(int argc, char* argv[]){
 					}
 				}
 
+
 				//Si un changement de menu a été demandé, on l'effectue
 				if (menuSelectionne != menuEnCours){
 					if (menuSelectionne == 1){
@@ -314,10 +403,30 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
+
+			if (menuEnCours == 1){
+				//On vérifie que tous les boutons sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_M2J; i++){
+					if (menu2J->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menu2J->tabBouton[i]);
+						afficherMenu2J(menu2J, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (menuSelectionne != menuEnCours){
+					if (menuSelectionne == 0){
+						afficherMenu(menu, contexte);
+						menuEnCours = 0;
+					}
+				}
+			}
+
+
 		}
 
 		SDL_RenderPresent(contexte);
-		
+
 	}
 
 	SDL_DestroyWindow(screen);

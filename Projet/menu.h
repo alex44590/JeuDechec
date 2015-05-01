@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include "commun.h"
+#include "texte.h"
 #include "bouton.h"
 #include "evenement.h"
 
@@ -63,7 +64,4 @@ void selectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SD
 void deselectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
 void catSaisiePseudo(Input* in, ZonePseudo* z, int* continuerSaisiePseudo);
 
-//PARTIE TEXTE
-SDL_Surface* creerTexte(char* texte, char* font, int taille, int r, int g, int b);
-void afficherTexte(SDL_Surface* texte, int x, int y, SDL_Renderer* contexte);
 #endif

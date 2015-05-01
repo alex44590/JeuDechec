@@ -45,6 +45,7 @@ void afficherDefausse(Defausse* d, SDL_Renderer* contexte){
 	SDL_free(&positionAffichage);
 }
 
+
 void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte){
 	int i, j;
 	int x, y;
@@ -61,6 +62,25 @@ void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte){
 		}
 	}
 }
+
+
+void afficherAllPiecesDefausse(Defausse* d, SDL_Renderer* contexte){
+	int i, j;
+	int x, y;
+	int continuer = 1;
+	for (j = 0; j < 2 && continuer; j++){
+		for (i = 0; i < 8 && continuer; i++){
+			if (d->tabPiecesDefaussees[j][i] != NULL){
+				x = d->position.x + OFFSET_GAUCHE_PIECE_DEFAUSSE + i*(LARGEUR_ESPACE_PIECE_DEFAUSSE + LARGEUR_PIECE_DEFAUSSE);
+				y = d->position.y + OFFSET_HAUT_PIECE_DEFAUSSE + j*(HAUTEUR_ESPACE_PIECE_DEFAUSSE + HAUTEUR_PIECE_DEFAUSSE);
+				afficherPieceDefausse(d, d->tabPiecesDefaussees[j][i], contexte, x, y);
+			}
+			else
+				continuer = 0;
+		}
+	}
+}
+
 
 void afficherPieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte, int x, int y){
 	SDL_Texture* texturePiece = SDL_CreateTextureFromSurface(contexte, p->imagePieceDefausse);

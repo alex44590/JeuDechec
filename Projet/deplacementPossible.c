@@ -20,7 +20,7 @@ DeplacementPossible* creerDeplacementPossible(){
 }
 
 
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, SDL_Renderer* contexte){
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, Booleen surbrillance, SDL_Renderer* contexte){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de calculer les déplacements possible de l'élément NULL");
 	int x = p->idPosition.colonne;//idPosition pièce colonne
@@ -36,7 +36,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 		for (i = 0; i < 8; ++i){
 			newx = x + v->deltaCavalier[0][i];
 			newy = y + v->deltaCavalier[1][i];
-			mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy);
+			calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance);
 		}
 		break;
 
@@ -46,7 +46,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 		for (i = 0; i < 8; ++i){
 			newx = x + v->deltaRoi[0][i];
 			newy = y + v->deltaRoi[1][i];
-			mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy);
+			calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance);
 		}
 		break;
 
@@ -56,10 +56,10 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 		int continuer = 1;
 		for (j = 0; j < 4; j++){
 			continuer = 1;
-			for (i = j*7; i < (j+1)*7 && continuer; ++i){
+			for (i = j * 7; i < (j + 1) * 7 && continuer; ++i){
 				newx = x + v->deltaTour[0][i];
 				newy = y + v->deltaTour[1][i];
-				continuer = mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy); //On met en surbrillance et on s'arrête si on rencontre une case pleine
+				continuer = calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance); //On met en surbrillance et on s'arrête si on rencontre une case pleine
 			}
 		}
 		break;
@@ -72,7 +72,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			for (i = j * 7; i < (j + 1) * 7 && continuer; ++i){
 				newx = x + v->deltaFou[0][i];
 				newy = y + v->deltaFou[1][i];
-				continuer = mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy); //On met en surbrillance et on s'arrête si on rencontre une case pleine
+				continuer = calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance); //On met en surbrillance et on s'arrête si on rencontre une case pleine
 			}
 		}
 		break;
@@ -85,7 +85,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			for (i = j * 7; i < (j + 1) * 7 && continuer; ++i){
 				newx = x + v->deltaTour[0][i];
 				newy = y + v->deltaTour[1][i];
-				continuer = mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy); //On met en surbrillance et on s'arrête si on rencontre une case pleine
+				continuer = calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance); //On met en surbrillance et on s'arrête si on rencontre une case pleine
 			}
 		}
 		for (j = 0; j < 4; j++){
@@ -93,7 +93,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			for (i = j * 7; i < (j + 1) * 7 && continuer; ++i){
 				newx = x + v->deltaFou[0][i];
 				newy = y + v->deltaFou[1][i];
-				continuer = mettreEnSurbrillanceCasesSiDeplacementPossible(e, d, contexte, x, y, newx, newy); //On met en surbrillance et on s'arrête si on rencontre une case pleine
+				continuer = calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance); //On met en surbrillance et on s'arrête si on rencontre une case pleine
 			}
 		}
 		break;
@@ -109,7 +109,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
 				//On met en surbrillance les cases où l'on peut se déplacer
-				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (surbrillance)
+					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 				/*if (e->tabPieces[newx][newy] != NULL)
 					afficherPiece(e->tabPieces[newx][newy], contexte);*/
 			}
@@ -117,12 +118,13 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				newx = x + v->deltaPionNoir[0][1];
 				newy = y + v->deltaPionNoir[1][1];
 				//Si le pion ne s'est jamais déplacé, il peut avancer de deux cases si les 2 cases devant lui sont libres
-				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE && e->tabCases[newx][newy-1]->occupee == FALSE){
+				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE && e->tabCases[newx][newy - 1]->occupee == FALSE){
 					d->deplacementPossible[newx][newy] = 1;
 					//On met en surbrillance les cases où l'on peut se déplacer
-					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
-				/*	if (e->tabPieces[newx][newy] != NULL)
-						afficherPiece(e->tabPieces[newx][newy], contexte);*/
+					if (surbrillance)
+						mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+					/*	if (e->tabPieces[newx][newy] != NULL)
+							afficherPiece(e->tabPieces[newx][newy], contexte);*/
 				}
 			}
 
@@ -134,9 +136,11 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 					if (e->tabPieces[newx][newy]->couleur == BLANC){
 						d->deplacementPossible[newx][newy] = 2;
 						//On met en surbrillance les cases où l'on peut manger la pièce
-						mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
-						if (e->tabPieces[newx][newy] != NULL)
-							afficherPiece(e->tabPieces[newx][newy], contexte);
+						if (surbrillance){
+							mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+							if (e->tabPieces[newx][newy] != NULL)
+								afficherPiece(e->tabPieces[newx][newy], contexte);
+						}
 					}
 				}
 			}
@@ -149,7 +153,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE){
 				d->deplacementPossible[newx][newy] = 1;
 				//On met en surbrillance les cases où l'on peut se déplacer
-				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+				if (surbrillance)
+					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 				/*if (e->tabPieces[newx][newy] != NULL)
 					afficherPiece(e->tabPieces[newx][newy], contexte);*/
 			}
@@ -159,7 +164,8 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 				if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0 && e->tabCases[newx][newy]->occupee == FALSE && e->tabCases[newx][newy + 1]->occupee == FALSE){
 					d->deplacementPossible[newx][newy] = 1;
 					//On met en surbrillance les cases où l'on peut se déplacer
-					mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
+					if (surbrillance)
+						mettreEnSurbrillance(e->tabCases[newx][newy], contexte);
 					/*if (e->tabPieces[newx][newy] != NULL)
 						afficherPiece(e->tabPieces[newx][newy], contexte);*/
 				}
@@ -173,9 +179,11 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 					if (e->tabPieces[newx][newy]->couleur == NOIR){
 						d->deplacementPossible[newx][newy] = 2;
 						//On met en surbrillance les cases où l'on peut manger la pièce
-						mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
-						if (e->tabPieces[newx][newy] != NULL)
-							afficherPiece(e->tabPieces[newx][newy], contexte);
+						if (surbrillance){
+							mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);
+							if (e->tabPieces[newx][newy] != NULL)
+								afficherPiece(e->tabPieces[newx][newy], contexte);
+						}
 					}
 				}
 			}
@@ -193,19 +201,76 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 }
 
 
+//Fonction qui rend vrai si le roi de la couleur c est en échec
+//La pièce p correspond à la pièce qui va être jouée ou vient d'être jouée
+Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte){
+	int i, j;
+
+	//Pour toutes les pièces de l'échiquier
+	for (i = 0; i < 8; i++){
+		for (j = 0; j < 8; j++){
+			if (e->tabPieces[j][i] != NULL){
+
+				//Si la pièce testée est de la couleur adverse
+				if (e->tabPieces[j][i]->couleur != c){
+
+					//On calcule tous ses déplacements possibles
+					calculerDeplacementPossible(e->tabPieces[j][i], e, dEchec, v, FALSE, contexte);
+					//Si la case contenant le roi possiblement en danger coincide avec un deplacement autorisé de la pièce testée
+					if (dEchec->deplacementPossible[posRoi[c].colonne][posRoi[c].ligne] == 2){
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+	//Si on n'a pas détecté de position d'échec
+	return FALSE;
+}
+
+
+Booleen seMetEnEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte){
+	int i, j;
+
+	//Pour toutes les pièces de l'échiquier
+	for (i = 0; i < 8; i++){
+		for (j = 0; j < 8; j++){
+			if (e->tabPieces[j][i] != NULL){
+
+				//Si la pièce testée est de la couleur adverse
+				if (e->tabPieces[j][i]->couleur != c){
+
+					//On calcule tous ses déplacements possibles
+					calculerDeplacementPossible(e->tabPieces[j][i], e, dEchec, v, FALSE, contexte);
+					//Si la case contenant le roi possiblement en danger coincide avec un deplacement autorisé de la pièce testée
+					if (dEchec->deplacementPossible[posRoi[c].colonne][posRoi[c].ligne] == 2){
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+	//Si on n'a pas détecté de position d'échec
+	return FALSE;
+}
+
 
 //Fonction permettant de mettre en surbrillance les cases où la pièce peut soit se déplacer, soit manger une pièce adverse
-//return 1 si la case est libre 0 si ell est occupee
-int mettreEnSurbrillanceCasesSiDeplacementPossible(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy){
+//return 1 si la case est libre 0 si elle est occupee
+int calculerDeplacementPossibleCaseParCase(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy, Booleen surbrillance){
 	if (newx < 8 && newx >= 0 && newy < 8 && newy >= 0){
 		if (e->tabCases[newx][newy]->occupee == FALSE){
 			d->deplacementPossible[newx][newy] = 1;
-			mettreEnSurbrillance(e->tabCases[newx][newy], contexte);//On met en surbrillance les cases où l'on peut se déplacer
+			if (surbrillance)
+				mettreEnSurbrillance(e->tabCases[newx][newy], contexte);//On met en surbrillance les cases où l'on peut se déplacer
 			return 1;
 		}
 		else if (e->tabCases[newx][newy]->occupee == TRUE && e->tabPieces[newx][newy]->couleur != e->tabPieces[x][y]->couleur){
 			d->deplacementPossible[newx][newy] = 2;
-			mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);//On met en surbrillance rouge la case où l'on peut manger une pièce de la couleur adverse
+			if (surbrillance)
+				mettreEnSurbrillanceOccupee(e->tabCases[newx][newy], contexte);//On met en surbrillance rouge la case où l'on peut manger une pièce de la couleur adverse
 			afficherPiece(e->tabPieces[newx][newy], contexte);
 			return 0;
 		}

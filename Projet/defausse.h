@@ -23,6 +23,7 @@ typedef struct{
 Defausse* creerDefausse(Couleur couleur);
 void afficherDefausse(Defausse* d, SDL_Renderer* contexte);
 void afficherPieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte, int x, int y);
+void afficherAllPiecesDefausse(Defausse* d, SDL_Renderer* contexte);
 void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte);
 
 #endif

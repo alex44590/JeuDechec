@@ -33,8 +33,9 @@ typedef struct{
 
 DeplacementPossible* creerDeplacementPossible();
 VecteurDeplacement* creerVecteurDeplacement();
-void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, SDL_Renderer* contexte);
-int mettreEnSurbrillanceCasesSiDeplacementPossible(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy);
+int calculerDeplacementPossibleCaseParCase(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy, Booleen surbrillance);
+void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, Booleen surbrillance, SDL_Renderer* contexte);
+Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
 void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
 #endif

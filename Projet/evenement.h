@@ -4,7 +4,10 @@
 #include "commun.h"
 
 #define MOUVEMENT_SOURIS_INTERIEUR_ECHIQUIER (in.posSouris.x > OFFSET_PLATEAU_GAUCHE && in.posSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.posSouris.y > OFFSET_PLATEAU_HAUT && in.posSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
-#define CLIC_DOWN_SOURIS_SUR_BOUTON_MENU_GAUCHE in.sourisEnfoncee && (in.clicSouris.x > menu->tabBouton[i]->positionInit.x && in.clicSouris.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur && in.clicSouris.y > menu->tabBouton[i]->positionInit.y && in.clicSouris.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
+
+#define CLIC_DOWN_SOURIS_BOUTON_MENU_PRINCIPAL in.sourisEnfoncee && (in.clicSouris.x > menu->tabBouton[i]->positionInit.x && in.clicSouris.x < menu->tabBouton[i]->positionInit.x + menu->tabBouton[i]->dimension.largeur && in.clicSouris.y > menu->tabBouton[i]->positionInit.y && in.clicSouris.y < menu->tabBouton[i]->positionInit.y + menu->tabBouton[i]->dimension.hauteur)
+#define CLIC_DOWN_SOURIS_BOUTON_MENU_2JOUEURS in.sourisEnfoncee && (in.clicSouris.x > menu2J->tabBouton[i]->positionInit.x && in.clicSouris.x < menu2J->tabBouton[i]->positionInit.x + menu2J->tabBouton[i]->dimension.largeur && in.clicSouris.y > menu2J->tabBouton[i]->positionInit.y && in.clicSouris.y < menu2J->tabBouton[i]->positionInit.y + menu2J->tabBouton[i]->dimension.hauteur)
+
 #define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE in.sourisEnfoncee && (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)
 #define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER in.sourisEnfoncee && (in.clicSouris.x > OFFSET_PLATEAU_GAUCHE && in.clicSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.clicSouris.y > OFFSET_PLATEAU_HAUT && in.clicSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
