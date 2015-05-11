@@ -5,13 +5,14 @@
 #include "texte.h"
 #include "bouton.h"
 #include "evenement.h"
+#include "entrainement.h"
 
 #define LARGEUR_ZONE_PSEUDO 260
 #define HAUTEUR_ZONE_PSEUDO 40
 #define X_ZONE_PSEUDO_1 20
 #define X_ZONE_PSEUDO_2 20
-#define Y_ZONE_PSEUDO_1 150
-#define Y_ZONE_PSEUDO_2 220
+#define Y_ZONE_PSEUDO_1 190
+#define Y_ZONE_PSEUDO_2 260
 #define ESPACEMENT_NUMJ_ZONE -3 //Espacement vertical entre l'écriture "Joueur 1 (ou 2)" et la zone dans laquelle on écrit le pseudo correspondant
 
 #define PSEUDO_LONGUEUR_MAX 20 //Caractère de fin de chaine compris
@@ -57,6 +58,8 @@ typedef struct{
 	Bouton* tabBouton[NB_BOUTON_MENT];
 	ZonePseudo* zone1;
 	ZonePseudo* zone2;
+	Reserve* reserveB;
+	Reserve* reserveN;
 }MenuEntrainement;
 
 typedef union{
@@ -76,7 +79,7 @@ Menu2J* creerMenuDeuxJoueurs();
 void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte);
 
 //PARTIE MENU ENTRAINEMENT
-MenuEntrainement* creerMenuEntrainement();
+MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN);
 void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte);
 
 //PARTIE ZONE PSEUDO

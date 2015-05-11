@@ -242,8 +242,8 @@ Menu2J* creerMenuDeuxJoueurs(){
 	m->dimension.largeur = LARGEUR_MENU;
 
 	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
-	setTailleBouton(m->tabBouton[0], 52, 52);
-	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 430);
+	setTailleBouton(m->tabBouton[0], 45, 45);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 110);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
@@ -273,7 +273,7 @@ void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte){
 //******  PARTIE MENU ENTRAINEMENT  *******
 //*****************************************
 
-MenuEntrainement* creerMenuEntrainement(){
+MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN){
 	MenuEntrainement* m = (MenuEntrainement*)malloc(sizeof(MenuEntrainement));
 
 	m->fondMenu = NULL;
@@ -287,13 +287,17 @@ MenuEntrainement* creerMenuEntrainement(){
 	m->dimension.largeur = LARGEUR_MENU;
 
 	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
-	setTailleBouton(m->tabBouton[0], 52, 52);
-	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 430);
+	setTailleBouton(m->tabBouton[0], 45, 45);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 110);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
 	m->zone1 = creerZonePseudo(1);
 	m->zone2 = creerZonePseudo(2);
+
+	m->reserveB = reserveB;
+	m->reserveN = reserveN;
+
 	if (m->zone1 == NULL || m->zone2 == NULL)
 		logPrint(ERREUR, "Erreur lors de l'assignation des zones pseudo dans le menu entrainement");
 
@@ -309,5 +313,6 @@ void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte){
 	if (m->zone2->ttfPseudo != NULL)
 		afficherTexte(m->zone2->ttfPseudo, m->zone2->position.x + 15, m->zone2->position.y + 11, contexte);
 	afficherBouton(m->tabBouton[0], contexte);
-
+	afficherReserve(m->reserveB, contexte);
+	afficherReserve(m->reserveN, contexte);
 }

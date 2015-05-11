@@ -9,6 +9,7 @@
 #include "deplacementPossible.h"
 #include "listeDeplacement.h"
 #include "evenement.h"
+#include "entrainement.h"
 
 
 
@@ -140,6 +141,14 @@ int main(int argc, char* argv[]){
 	PlateauDeJeu* plateau = plateauEntrainement;
 
 
+	//Créations des réserves pour le mode entrainement
+	logPrint(INFO, "Création des réserves de pièces à placer pour l'entrainement");
+	Reserve* reserveB = creerReserve(BLANC);
+	Reserve* reserveN = creerReserve(NOIR);
+	if (reserveB == NULL || reserveN == NULL)
+		logPrint(ERREUR, "Echec de la création d'une réserve");
+
+
 
 	/******************************************/
 	/*******        MENUS DU JEU         ******/
@@ -162,7 +171,7 @@ int main(int argc, char* argv[]){
 
 	//Création du menu entrainement
 	logPrint(INFO, "Création du menu entrainement");
-	MenuEntrainement* menuEntrainement = creerMenuEntrainement();
+	MenuEntrainement* menuEntrainement = creerMenuEntrainement(reserveB, reserveN);
 
 	//Création d'un menu générique prenant soit la valeur menu2J soit menuEntrainement
 	MenuGenerique menuEnCours;
@@ -454,6 +463,10 @@ int main(int argc, char* argv[]){
 			}
 		}
 
+
+		/**************************************************************/
+		/*******  DISPOSITION DES PIECES - MODE ENTRAINEMENT   ********/
+		/**************************************************************/
 
 
 
