@@ -1,24 +1,26 @@
 
 INFO : Création du fichier historique
-INFO : Initialisation de la SDL
-INFO : Initialisation de la SDL_ttf
-INFO : Chargement de l'icone
-INFO : Création du contexte graphique
-INFO : Création de l'échiquier
+INFO : Création de la situation de jeu 2 joueurs
+INFO : Création de la situation de jeu entrainement
+INFO : Création de l'échiquier 2 joueurs
 INFO : Initialisation des cases de l'échiquier
 INFO : Initialisation des pièces de l'échiquier
-INFO : Création de la défausse blanche
-INFO : Création de la défausse noire
-INFO : Création du plateau de jeu
+INFO : Création de l'échiquier entrainement
+INFO : Initialisation des cases de l'échiquier
+INFO : Création de la défausse blanche 2 joueurs
+INFO : Création de la défausse blanche entrainement
+INFO : Création de la défausse noire 2 joueurs
+INFO : Création de la défausse noire entrainement
+INFO : Création du plateau de jeu 2 joueurs
+INFO : Création du plateau de jeu entrainement
 INFO : Création du menu
-INFO : Création du menu de droite
-INFO : Affichage de la défausse blanche
-INFO : Affichage de la défausse noire
+INFO : Affichage de l'image d'accueil
+INFO : Création du menu 2 joueurs
+INFO : Création du menu entrainement
+INFO : Création du menu de droite 2 joueurs
+INFO : Création du menu de droite entrainement
 INFO : Création de l'objet Déplacement Possible
 INFO : Création de l'objet Déplacement Possible pour les positions d'échec
 INFO : Création de l'objet Vecteur Deplacement
-INFO : Création de la situation de jeu
-INFO : Création du menu 2 joueurs
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
-INFO : ********** POSITION D'ECHEC DETECTEE ! **********

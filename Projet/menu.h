@@ -19,9 +19,13 @@
 #define CLIC_SOURIS_INTERIEUR_PSEUDO_1 (in.clicSouris.x > X_ZONE_PSEUDO_1 && in.clicSouris.x < X_ZONE_PSEUDO_1 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_1 && in.clicSouris.y < Y_ZONE_PSEUDO_1 + HAUTEUR_ZONE_PSEUDO)
 #define CLIC_SOURIS_INTERIEUR_PSEUDO_2 (in.clicSouris.x > X_ZONE_PSEUDO_2 && in.clicSouris.x < X_ZONE_PSEUDO_2 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_2 && in.clicSouris.y < Y_ZONE_PSEUDO_2 + HAUTEUR_ZONE_PSEUDO)
 
+typedef enum TYPE_MENU{MENU_ACCUEIL, MENU_2J, MENU_ENTRAINEMENT, MENU_OPTION}TYPE_MENU;
+
+
 
 typedef struct{
 	SDL_Surface* fondMenu;
+	SDL_Surface* imageAccueil;
 	Bouton* tabBouton[NB_BOUTON_MP];
 }Menu;
 
@@ -46,22 +50,43 @@ typedef struct{
 	ZonePseudo* zone2;
 }Menu2J;
 
+typedef struct{
+	Dimension dimension;
+	Position position;
+	SDL_Surface* fondMenu;
+	Bouton* tabBouton[NB_BOUTON_MENT];
+	ZonePseudo* zone1;
+	ZonePseudo* zone2;
+}MenuEntrainement;
+
+typedef union{
+	Menu2J* menu2J;
+	MenuEntrainement* menuEntrainement;
+	Menu* menuAccueil;
+}MenuGenerique;
 
 //PARTIE MENU PRINCIPAL
 Menu* creerMenu();
 void afficherFondMenu(SDL_Surface* fondMenu, SDL_Renderer* contexte);
 void afficherMenu(Menu* m, SDL_Renderer* contexte);
+void afficherImageAccueil(SDL_Surface* imageAccueil, SDL_Renderer* contexte);
 
 //PARTIE MENU 2 JOUEURS
 Menu2J* creerMenuDeuxJoueurs();
 void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte);
 
+//PARTIE MENU ENTRAINEMENT
+MenuEntrainement* creerMenuEntrainement();
+void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte);
+
 //PARTIE ZONE PSEUDO
 ZonePseudo* creerZonePseudo(int numZone);
 void afficherAllZonesPseudo(ZonePseudo* zone1, ZonePseudo* zone2, SDL_Renderer* contexte);
 void afficherZonePseudo(ZonePseudo* z, SDL_Renderer* contexte);
-void selectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
-void deselectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
+void selectionnerZonePseudo2J(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
+void deselectionnerZonePseudo2J(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
+void selectionnerZonePseudoEntrainement(MenuEntrainement* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
+void deselectionnerZonePseudoEntrainement(MenuEntrainement* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte);
 void catSaisiePseudo(Input* in, ZonePseudo* z, int* continuerSaisiePseudo);
 
 #endif

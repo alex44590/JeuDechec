@@ -5,6 +5,7 @@
 
 #define NB_BOUTON_MP 4 // Menu principal
 #define NB_BOUTON_M2J 1 // Menu 2 joueurs
+#define NB_BOUTON_MENT 1 // Menu Entrainement
 
 typedef enum { ENTRAINEMENT, DEUXJOUEURS, OPTION, APROPOS, ACCUEIL/*, QUITTER*/ }idBouton;
 

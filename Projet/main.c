@@ -14,14 +14,9 @@
 
 int main(int argc, char* argv[]){
 
-	//Création ou réinitialisation du fichier de log "log.txt"
-	logInit();
-
-
-	//Création ou réinitialisation du fichier d'historique "Historique.txt"
-	createHistoryFile();
-	logPrint(INFO, "Création du fichier historique");
-
+	/******************************************/
+	/*********     CONTEXTE SDL      **********/
+	/******************************************/
 
 	//Démarrage de la SDL
 	if (SDL_Init(SDL_INIT_VIDEO) == -1) {
@@ -37,10 +32,6 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 	logPrint(INFO, "Initialisation de la SDL_ttf");
-
-
-	//Création de la Liste chaînée des déplacements
-	ListDeplacement* l = initListDeplacement();
 
 
 	//Création de la fenetre
@@ -64,86 +55,154 @@ int main(int argc, char* argv[]){
 	SDL_Renderer* contexte = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	logPrint(INFO, "Création du contexte graphique");
 	if (contexte == NULL)
-		logPrint(ERREUR, "Création du contexte échoué");
+		logPrint(ERREUR, "Création du contexte échouée");
 
 
-	//Création de l'échiquier 
-	Echiquier* echiquier = NULL;
-	logPrint(INFO, "Création de l'échiquier");
-	echiquier = creerEchiquier(l);
-	if (echiquier == NULL)
-		logPrint(ERREUR, "Echec de la création de l'échiquier");
+
+	/******************************************/
+	/*******   OUTILS DE SUIVI DU JEU     *****/
+	/******************************************/
+
+	//Création ou réinitialisation du fichier de log "log.txt"
+	logInit();
+
+	//Création ou réinitialisation du fichier d'historique "Historique.txt"
+	createHistoryFile();
+	logPrint(INFO, "Création du fichier historique");
+
+	//Création de la Liste chaînée des déplacements
+	ListDeplacement* l = initListDeplacement();
+
+	//Création des situation de jeu qui indiquera s'il y a échec, pat ...
+	logPrint(INFO, "Création de la situation de jeu 2 joueurs");
+	SituationEchec situationEchec2J;
+	situationEchec2J = RIEN;
+
+	logPrint(INFO, "Création de la situation de jeu entrainement");
+	SituationEchec situationEchecEntrainement;
+	situationEchecEntrainement = RIEN;
+
+	SituationEchec* situationEchec = &situationEchecEntrainement;
+
+
+
+	/******************************************/
+	/*******   COMPOSANTS DU PLATEAU     ******/
+	/******************************************/
+
+	//Création des échiquiers
+	Echiquier* echiquier2J = NULL;
+	logPrint(INFO, "Création de l'échiquier 2 joueurs");
+	echiquier2J = creerEchiquier(l, TRUE);
+	if (echiquier2J == NULL)
+		logPrint(ERREUR, "Echec de la création de l'échiquier 2 joueurs");
+
+	Echiquier* echiquierEntrainement = NULL;
+	logPrint(INFO, "Création de l'échiquier entrainement");
+	echiquierEntrainement = creerEchiquier(l, FALSE);
+	if (echiquierEntrainement == NULL)
+		logPrint(ERREUR, "Echec de la création de l'échiquier entrainement");
 
 
 	//Création des défausses
-	logPrint(INFO, "Création de la défausse blanche");
-	Defausse* defausseB = creerDefausse(BLANC);
-	if (defausseB == NULL)
+	logPrint(INFO, "Création de la défausse blanche 2 joueurs");
+	Defausse* defausseB2J = creerDefausse(BLANC);
+	if (defausseB2J == NULL)
+		logPrint(ERREUR, "Echec de la création de la défausse blanche 2 joueurs");
+
+	logPrint(INFO, "Création de la défausse blanche entrainement");
+	Defausse* defausseBEntrainement = creerDefausse(BLANC);
+	if (defausseBEntrainement == NULL)
 		logPrint(ERREUR, "Echec de la création de la défausse blanche");
 
+	logPrint(INFO, "Création de la défausse noire 2 joueurs");
+	Defausse* defausseN2J = creerDefausse(NOIR);
+	if (defausseN2J == NULL)
+		logPrint(ERREUR, "Echec de la création de la défausse noire 2 joueurs");
 
-	logPrint(INFO, "Création de la défausse noire");
-	Defausse* defausseN = creerDefausse(NOIR);
-	if (defausseB == NULL)
-		logPrint(ERREUR, "Echec de la création de la défausse noire");
-
-
-	//Création du plateau de jeu
-	logPrint(INFO, "Création du plateau de jeu");
-	PlateauDeJeu* plateau = creerPlateauDeJeu(echiquier, defausseB, defausseN);
-	if (plateau == NULL)
-		logPrint(ERREUR, "Echec de la création du plateau de jeu");
-	afficherPlateauDeJeu(contexte, plateau);
+	logPrint(INFO, "Création de la défausse noire entrainement");
+	Defausse* defausseNEntrainement = creerDefausse(NOIR);
+	if (defausseNEntrainement == NULL)
+		logPrint(ERREUR, "Echec de la création de la défausse noire entrainement");
 
 
-	//Création du menu
+	//Création des plateaux de jeu
+	logPrint(INFO, "Création du plateau de jeu 2 joueurs");
+	PlateauDeJeu* plateau2J = creerPlateauDeJeu(echiquier2J, defausseB2J, defausseN2J);
+	if (plateau2J == NULL)
+		logPrint(ERREUR, "Echec de la création du plateau de jeu 2 joueurs");
+
+	logPrint(INFO, "Création du plateau de jeu entrainement");
+	PlateauDeJeu* plateauEntrainement = creerPlateauDeJeu(echiquierEntrainement, defausseBEntrainement, defausseNEntrainement);
+	if (plateauEntrainement == NULL)
+		logPrint(ERREUR, "Echec de la création du plateau de jeu entrainement");
+
+	PlateauDeJeu* plateau = plateauEntrainement;
+
+
+
+	/******************************************/
+	/*******        MENUS DU JEU         ******/
+	/******************************************/
+
+	//Création du menu principal
 	logPrint(INFO, "Création du menu");
 	Menu* menu = creerMenu();
 	if (menu == NULL)
 		logPrint(ERREUR, "Echec de la création du menu");
 	afficherMenu(menu, contexte);
 
+	//Affichage de l'image d'accueil
+	logPrint(INFO, "Affichage de l'image d'accueil");
+	afficherImageAccueil(menu->imageAccueil, contexte);
 
-	//Création du menu de droite (contenant les défausses)
-	logPrint(INFO, "Création du menu de droite");
-	MenuDroite* menuDroite = creerMenuDroite(defausseB, defausseN);
-	if (menu == NULL)
-		logPrint(ERREUR, "Echec de la création du menuDroite");
-	afficherFondMenuDroite(menuDroite, contexte);
+	//Création du menu 2 joueurs 
+	logPrint(INFO, "Création du menu 2 joueurs");
+	Menu2J* menu2J = creerMenuDeuxJoueurs();
+
+	//Création du menu entrainement
+	logPrint(INFO, "Création du menu entrainement");
+	MenuEntrainement* menuEntrainement = creerMenuEntrainement();
+
+	//Création d'un menu générique prenant soit la valeur menu2J soit menuEntrainement
+	MenuGenerique menuEnCours;
+	menuEnCours.menuAccueil = menu;
+
+	//Création des menus de droite (contenant les défausses)
+	logPrint(INFO, "Création du menu de droite 2 joueurs");
+	MenuDroite* menuDroite2J = creerMenuDroite(defausseB2J, defausseN2J);
+	if (menuDroite2J == NULL)
+		logPrint(ERREUR, "Echec de la création du menuDroite 2 joueurs");
+
+	logPrint(INFO, "Création du menu de droite entrainement");
+	MenuDroite* menuDroiteEntrainement = creerMenuDroite(defausseBEntrainement, defausseNEntrainement);
+	if (menuDroiteEntrainement == NULL)
+		logPrint(ERREUR, "Echec de la création du menuDroite entrainement");
+
+	MenuDroite* menuDroite = menuDroiteEntrainement;
 
 
-	//Affichage des défausses
-	logPrint(INFO, "Affichage de la défausse blanche");
-	afficherDefausse(defausseB, contexte);
-	logPrint(INFO, "Affichage de la défausse noire");
-	afficherDefausse(defausseN, contexte);
-
+	/******************************************/
+	/***  OUTILS DE DEPLACEMENT DES PIECES  ***/
+	/******************************************/
 
 	//Création de l'objet Déplacement Possible
 	logPrint(INFO, "Création de l'objet Déplacement Possible");
 	DeplacementPossible* deplacementPossible = creerDeplacementPossible();
 
-
 	//Création de l'objet Déplacement Possible pour le calcul des positions d'échec
 	logPrint(INFO, "Création de l'objet Déplacement Possible pour les positions d'échec");
 	DeplacementPossible* deplacementPossibleEchec = creerDeplacementPossible();
-
 
 	//Création du vecteur de déplacements
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
 
 
-	//Création de la situation de jeu qui indiquera s'il y a échec, pat ...
-	logPrint(INFO, "Création de la situation de jeu");
-	SituationEchec situationEchec;
-	situationEchec = RIEN;
 
-
-	//Création du menu 2 joueurs 
-	logPrint(INFO, "Création du menu 2 joueurs");
-	Menu2J* menu2J = creerMenuDeuxJoueurs();
-
+	/******************************************/
+	/***  OUTILS DE GESTION DES EVENEMENTS  ***/
+	/******************************************/
 
 	//Création de la structure input permettant la gestion des évènements
 	logPrint(INFO, "Création de la Structure input permettant la gestion des évènements");
@@ -151,14 +210,14 @@ int main(int argc, char* argv[]){
 	memset(&in, 0, sizeof(in)); //Mise à 0 de toute la structure
 
 
-	SDL_RenderPresent(contexte);
 
-
-	//BOUCLE PRINCIPALE 
+	/******************************************/
+	/*******  PARTIE INTERACTIVE DU JEU   *****/
+	/******************************************/
 	logPrint(INFO, "Lancement de la boucle principale du jeu");
 
-	int menuSelectionne = 0; //0=Menu principal, 1=Menu2J
-	int menuEnCours = 0; //0=Menu principal, 1=Menu2J
+	TYPE_MENU typeMenuSelectionne = MENU_ACCUEIL;
+	TYPE_MENU typeMenuEnCours = MENU_ACCUEIL;
 
 	int continuer = 1;
 	int continuerSaisiePseudo = 0;
@@ -188,22 +247,27 @@ int main(int argc, char* argv[]){
 	{
 		mettreAJourEvent(&in);
 
-		if (in.sourisEnfoncee){
-			//Cas du Menu princpal
-			if (menuEnCours == 0){
-				if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
-					//Traitement des boutons du menu
-					for (i = 0; i < NB_BOUTON_MP; i++){
-						if (CLIC_DOWN_SOURIS_BOUTON_MENU_PRINCIPAL)
-						{
-							switch (menu->tabBouton[i]->idBouton){
-							case DEUXJOUEURS:
-								menuSelectionne = 1;
-								break;
-							}
-							enfoncerBouton(menu->tabBouton[i]);
-							afficherMenu(menu, contexte);
+		/******************************************/
+		/*********   GESTION DES MENUS   **********/
+		/******************************************/
+
+		//Cas du Menu princpal
+		if (typeMenuEnCours == MENU_ACCUEIL){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON_MP; i++){
+					if (CLIC_DOWN_SOURIS_BOUTON_MENU_PRINCIPAL)
+					{
+						switch (menu->tabBouton[i]->idBouton){
+						case DEUXJOUEURS:
+							typeMenuSelectionne = MENU_2J;
+							break;
+						case ENTRAINEMENT:
+							typeMenuSelectionne = MENU_ENTRAINEMENT;
+							break;
 						}
+						enfoncerBouton(menu->tabBouton[i]);
+						afficherMenu(menu, contexte);
 					}
 				}
 			}
@@ -211,9 +275,7 @@ int main(int argc, char* argv[]){
 
 
 		//Cas du Menu 2 joueurs
-		if (menuEnCours == 1){
-
-			//Si l'on appuie sur le bouton accueil
+		if (typeMenuEnCours == MENU_2J){
 			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_M2J; i++){
@@ -221,44 +283,185 @@ int main(int argc, char* argv[]){
 					{
 						switch (menu2J->tabBouton[i]->idBouton){
 						case ACCUEIL:
-							menuSelectionne = 0;
+							typeMenuSelectionne = MENU_ACCUEIL;
 							break;
 						}
 						enfoncerBouton(menu2J->tabBouton[i]);
+					}
+				}
+			}
+		}
+
+
+		//Cas du Menu Entrainement
+		if (typeMenuEnCours == MENU_ENTRAINEMENT){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON_MENT; i++){
+					if (CLIC_DOWN_SOURIS_BOUTON_MENU_ENTRAINEMENT)
+					{
+						switch (menuEntrainement->tabBouton[i]->idBouton){
+						case ACCUEIL:
+							typeMenuSelectionne = MENU_ACCUEIL;
+							break;
+						}
+						enfoncerBouton(menuEntrainement->tabBouton[i]);
+						afficherMenuEntrainement(menuEntrainement, contexte);
+					}
+				}
+			}
+		}
+
+		//Relachement des boutons
+		if (in.sourisRelachee){
+			if (typeMenuEnCours == MENU_ACCUEIL){
+				//On vérifie que tous les boutons sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_MP; i++){
+					if (menu->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menu->tabBouton[i]);
 						afficherMenu(menu, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (typeMenuSelectionne != typeMenuEnCours){
+					if (typeMenuSelectionne == MENU_2J){
+						afficherMenu2J(menu2J, contexte);
+						//Changement du plateau de jeu
+						plateau = plateau2J;
+						menuEnCours.menu2J = menu2J;
+						menuDroite = menuDroite2J;
+						situationEchec = &situationEchec2J;
+						afficherPlateauDeJeu(contexte, plateau);
+						afficherMenuDroite(menuDroite, contexte);
+						afficherTexteEchec(menuDroite, *situationEchec, contexte);
+						typeMenuEnCours = MENU_2J;
+					}
+
+					else if (typeMenuSelectionne == MENU_ENTRAINEMENT){
+						afficherMenuEntrainement(menuEntrainement, contexte);
+						//Changement du plateau de jeu
+						plateau = plateauEntrainement;
+						menuEnCours.menuEntrainement = menuEntrainement;
+						menuDroite = menuDroiteEntrainement;
+						situationEchec = &situationEchecEntrainement;
+						afficherPlateauDeJeu(contexte, plateau);
+						afficherMenuDroite(menuDroite, contexte);
+						afficherTexteEchec(menuDroite, *situationEchec, contexte);
+						typeMenuEnCours = MENU_ENTRAINEMENT;
 					}
 				}
 			}
 
+			
+			else if (typeMenuEnCours == MENU_2J){
+				//On vérifie que tous les boutons sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_M2J; i++){
+					if (menu2J->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menu2J->tabBouton[i]);
+						afficherMenu2J(menu2J, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (typeMenuSelectionne != typeMenuEnCours){
+					if (typeMenuSelectionne == MENU_ACCUEIL){
+						afficherMenu(menu, contexte);
+						menuEnCours.menuAccueil = menu;
+						typeMenuEnCours = MENU_ACCUEIL;
+					}
+				}
+			}
+
+			
+			else if (typeMenuEnCours == MENU_ENTRAINEMENT){
+				//On vérifie que tous les boutons sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_MENT; i++){
+					if (menuEntrainement->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menuEntrainement->tabBouton[i]);
+						afficherMenuEntrainement(menuEntrainement, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (typeMenuSelectionne != typeMenuEnCours){
+					if (typeMenuSelectionne == MENU_ACCUEIL){
+						afficherMenu(menu, contexte);
+						menuEnCours.menuAccueil = menu;
+						typeMenuEnCours = MENU_ACCUEIL;
+					}
+				}
+			}
+
+		}
+
+
+
+		/******************************************/
+		/********   GESTION DES PSEUDOS   *********/
+		/******************************************/
+
+		if (typeMenuEnCours == MENU_2J){
 			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
 				continuerSaisiePseudo = 1;
-
+		
 			if (CLIC_SOURIS_INTERIEUR_PSEUDO_1 && continuerSaisiePseudo){
-				deselectionnerZonePseudo(menu2J, menu2J->zone2, FALSE, contexte);
-				selectionnerZonePseudo(menu2J, menu2J->zone1, TRUE, contexte);
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone2, FALSE, contexte);
+				selectionnerZonePseudo2J(menu2J, menu2J->zone1, TRUE, contexte);
 				catSaisiePseudo(&in, menu2J->zone1, &continuerSaisiePseudo);
 				menu2J->zone1->ttfPseudo = creerTexte(menu2J->zone1->pseudo, "calibri.ttf", 16, 240, 240, 240);
 				afficherMenu2J(menu2J, contexte);
 			}
 
 			if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
-				deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
-				selectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone1, FALSE, contexte);
+				selectionnerZonePseudo2J(menu2J, menu2J->zone2, TRUE, contexte);
 				catSaisiePseudo(&in, menu2J->zone2, &continuerSaisiePseudo);
 				menu2J->zone2->ttfPseudo = creerTexte(menu2J->zone2->pseudo, "calibri.ttf", 16, 240, 240, 240);
 				afficherMenu2J(menu2J, contexte);
 			}
 
 			if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
-				deselectionnerZonePseudo(menu2J, menu2J->zone1, FALSE, contexte);
-				deselectionnerZonePseudo(menu2J, menu2J->zone2, TRUE, contexte);
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone1, FALSE, contexte);
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone2, TRUE, contexte);
 			}
-
 		}
 
 
-		//Cas de l'échiquier
-		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee){
+		else if (typeMenuEnCours == MENU_ENTRAINEMENT){
+			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
+				continuerSaisiePseudo = 1;
+
+			if (CLIC_SOURIS_INTERIEUR_PSEUDO_1 && continuerSaisiePseudo){
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, FALSE, contexte);
+				selectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, TRUE, contexte);
+				catSaisiePseudo(&in, menuEntrainement->zone1, &continuerSaisiePseudo);
+				menuEntrainement->zone1->ttfPseudo = creerTexte(menuEntrainement->zone1->pseudo, "calibri.ttf", 16, 240, 240, 240);
+				afficherMenuEntrainement(menuEntrainement, contexte);
+			}
+
+			if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, FALSE, contexte);
+				selectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, TRUE, contexte);
+				catSaisiePseudo(&in, menuEntrainement->zone2, &continuerSaisiePseudo);
+				menuEntrainement->zone2->ttfPseudo = creerTexte(menuEntrainement->zone2->pseudo, "calibri.ttf", 16, 240, 240, 240);
+				afficherMenuEntrainement(menuEntrainement, contexte);
+			}
+
+			if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, FALSE, contexte);
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, TRUE, contexte);
+			}
+		}
+
+
+
+
+		/******************************************/
+		/*******  GESTION DE L'ECHIQUIER   ********/
+		/******************************************/
+
+		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee && (typeMenuEnCours == MENU_ENTRAINEMENT || typeMenuEnCours == MENU_2J)){
 			caseSelectionnee = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 			idCaseSelectionnee = caseSelectionnee->identifiant;
 
@@ -310,17 +513,17 @@ int main(int argc, char* argv[]){
 					}
 
 					//On vérifie une éventuelle position d'échec du côté adverse
-					echec = calculerEchec(!pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
+					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
 						logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
 						if (pieceSelectionnee->couleur == NOIR)
-							situationEchec = ECHEC_BLANC;
+							*situationEchec = ECHEC_BLANC;
 						else
-							situationEchec = ECHEC_NOIR;
+							*situationEchec = ECHEC_NOIR;
 					}
 					else
-						situationEchec = RIEN;
+						*situationEchec = RIEN;
 
 
 					//On déselectionne la pièce
@@ -339,7 +542,7 @@ int main(int argc, char* argv[]){
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
-						echec = calculerEchec(pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
+						echec = calculerEchec(pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 						supprimerSurbillancePiece(pieceSelectionnee, contexte);
 
 						//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
@@ -353,17 +556,17 @@ int main(int argc, char* argv[]){
 						}
 
 						//On vérifie une éventuelle position d'échec du côté adverse
-						Booleen echec = calculerEchec(!pieceSelectionnee->couleur, echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
+						Booleen echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
 							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
 							if (pieceSelectionnee->couleur == NOIR)
-								situationEchec = ECHEC_BLANC;
+								*situationEchec = ECHEC_BLANC;
 							else
-								situationEchec = ECHEC_NOIR;
+								*situationEchec = ECHEC_NOIR;
 						}
 						else
-							situationEchec = RIEN;
+							*situationEchec = RIEN;
 
 						//Ensuite on déselectionne la pièce
 						pieceSelectionnee = NULL;
@@ -379,50 +582,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 			afficherEchiquier(plateau->echiquier, contexte);
-			afficherTexteEchec(menuDroite, situationEchec, contexte);
-		}
-
-
-
-		if (in.sourisRelachee){
-			if (menuEnCours == 0){
-				//On vérifie que tous les boutons sont bien revenus à leur position initiale
-				for (i = 0; i < NB_BOUTON_MP; i++){
-					if (menu->tabBouton[i]->enfonce == TRUE){
-						desenfoncerBouton(menu->tabBouton[i]);
-						afficherMenu(menu, contexte);
-					}
-				}
-
-
-				//Si un changement de menu a été demandé, on l'effectue
-				if (menuSelectionne != menuEnCours){
-					if (menuSelectionne == 1){
-						afficherMenu2J(menu2J, contexte);
-						menuEnCours = 1;
-					}
-				}
-			}
-
-			if (menuEnCours == 1){
-				//On vérifie que tous les boutons sont bien revenus à leur position initiale
-				for (i = 0; i < NB_BOUTON_M2J; i++){
-					if (menu2J->tabBouton[i]->enfonce == TRUE){
-						desenfoncerBouton(menu2J->tabBouton[i]);
-						afficherMenu2J(menu2J, contexte);
-					}
-				}
-
-				//Si un changement de menu a été demandé, on l'effectue
-				if (menuSelectionne != menuEnCours){
-					if (menuSelectionne == 0){
-						afficherMenu(menu, contexte);
-						menuEnCours = 0;
-					}
-				}
-			}
-
-
+			afficherTexteEchec(menuDroite, *situationEchec, contexte);
 		}
 
 		SDL_RenderPresent(contexte);

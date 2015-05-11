@@ -26,6 +26,7 @@ typedef enum SituationEchec{ ECHEC_BLANC, ECHEC_NOIR, ECHEC_ET_MAT_BLANC, ECHEC_
 
 MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN);
 void afficherFondMenuDroite(MenuDroite* m, SDL_Renderer* contexte);
+void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte);
 
 /*Fonction qui affiche un évènement notable en fonction de la situation de jeu (Echec, pat...) dans le menu de droite,
   ou qui supprime l'affichage précédent si la situation a été résolue*/

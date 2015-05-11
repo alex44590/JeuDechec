@@ -22,6 +22,8 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 	return menu;
 }
 
+
+
 void afficherFondMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 	SDL_Texture* textFond = SDL_CreateTextureFromSurface(contexte, m->fondMenu);
 	SDL_Rect positionAffichage;
@@ -32,6 +34,17 @@ void afficherFondMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 	SDL_RenderCopy(contexte, textFond, NULL, &positionAffichage);
 	SDL_DestroyTexture(textFond);
 }
+
+
+
+void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
+	afficherFondMenuDroite(m, contexte);
+	afficherDefausse(m->defausseB, contexte);
+	afficherAllPiecesDefausse(m->defausseB, contexte);
+	afficherDefausse(m->defausseN, contexte);
+	afficherAllPiecesDefausse(m->defausseN, contexte);
+}
+
 
 
 void afficherTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte){

@@ -1,7 +1,7 @@
 #include "echiquier.h"
 #include "piece.h"
 
-Echiquier* creerEchiquier(ListDeplacement* l){
+Echiquier* creerEchiquier(ListDeplacement* l, Booleen ajouterPieces){
 	Echiquier* echiquier;
 	echiquier = malloc(sizeof(Echiquier));
 	if (echiquier == NULL)
@@ -21,17 +21,28 @@ Echiquier* creerEchiquier(ListDeplacement* l){
 		}
 	}
 
-	logPrint(INFO, "Initialisation des pièces de l'échiquier");
-	initAllPiece(echiquier->tabPieces, l);
-	
-	//On tague les cases sur lesquelles on a déposé des pièces comme occupées
-	for (i = 0; i < 8; ++i){
-		echiquier->tabCases[i][0]->occupee = TRUE;
-		echiquier->tabCases[i][1]->occupee = TRUE;
-		echiquier->tabCases[i][6]->occupee = TRUE;
-		echiquier->tabCases[i][7]->occupee = TRUE;
-		for (j = 2; j < 6; ++j){
-			echiquier->tabCases[i][j]->occupee = FALSE;
+
+	if (ajouterPieces == TRUE){
+		logPrint(INFO, "Initialisation des pièces de l'échiquier");
+		initAllPiece(echiquier->tabPieces, l);
+
+		//On tague les cases sur lesquelles on a déposé des pièces comme occupées
+		for (i = 0; i < 8; ++i){
+			echiquier->tabCases[i][0]->occupee = TRUE;
+			echiquier->tabCases[i][1]->occupee = TRUE;
+			echiquier->tabCases[i][6]->occupee = TRUE;
+			echiquier->tabCases[i][7]->occupee = TRUE;
+			for (j = 2; j < 6; ++j){
+				echiquier->tabCases[i][j]->occupee = FALSE;
+			}
+		}
+	}
+	else {
+		//Si on crée un échiquier vide, on initialise tout le tableau de pièce à NULL
+		for (i = 0; i < 8; ++i){
+			for (j = 0; j < 8; ++j){
+				echiquier->tabPieces[i][j] = NULL;
+			}
 		}
 	}
 	return echiquier;

@@ -11,7 +11,7 @@ typedef struct{
 	Dimension dimension;
 }Echiquier;
 
-Echiquier* creerEchiquier(ListDeplacement* l);
+Echiquier* creerEchiquier(ListDeplacement* l, Booleen ajouterPieces);
 void afficherEchiquier(Echiquier* echiquier, SDL_Renderer* contexte);
 
 

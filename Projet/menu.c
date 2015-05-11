@@ -14,6 +14,8 @@ Menu* creerMenu(){
 	menu->tabBouton[2] = creerBouton(OPTION, "Bouton2.png");
 	menu->tabBouton[3] = creerBouton(APROPOS, "Bouton3.png");
 
+	menu->imageAccueil = IMG_Load("imageAccueil.png");
+
 	return menu;
 }
 
@@ -36,6 +38,16 @@ void afficherMenu(Menu* m, SDL_Renderer* contexte){
 	}
 }
 
+void afficherImageAccueil(SDL_Surface* imageAccueil, SDL_Renderer* contexte){
+	SDL_Texture* textImg = SDL_CreateTextureFromSurface(contexte, imageAccueil);
+	SDL_Rect positionAffichage;
+	positionAffichage.x = LARGEUR_MENU;
+	positionAffichage.y = 0;
+	positionAffichage.w = LARGEUR_FENETRE-LARGEUR_MENU;
+	positionAffichage.h = HAUTEUR_MENU;
+	SDL_RenderCopy(contexte, textImg, NULL, &positionAffichage);
+	SDL_DestroyTexture(textImg);
+}
 
 //***************************************
 //********* PARTIE ZONE PSEUDO **********
@@ -101,19 +113,34 @@ void afficherZonePseudo(ZonePseudo* z, SDL_Renderer* contexte){
 }
 
 
-void selectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
+void selectionnerZonePseudo2J(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
 	z->imageActuelle = z->imageZoneSelectionnee;
+
+	if (reafficherMenu == TRUE)
+		afficherMenu2J(m, contexte);
+
+}
+
+void deselectionnerZonePseudo2J(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
+	z->imageActuelle = z->imageZone;
 
 	if (reafficherMenu == TRUE)
 		afficherMenu2J(m, contexte);
 }
 
+void selectionnerZonePseudoEntrainement(MenuEntrainement* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
+	z->imageActuelle = z->imageZoneSelectionnee;
 
-void deselectionnerZonePseudo(Menu2J* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
+	if (reafficherMenu == TRUE)
+		afficherMenuEntrainement(m, contexte);
+
+}
+
+void deselectionnerZonePseudoEntrainement(MenuEntrainement* m, ZonePseudo* z, Booleen reafficherMenu, SDL_Renderer* contexte){
 	z->imageActuelle = z->imageZone;
 
 	if (reafficherMenu == TRUE)
-		afficherMenu2J(m, contexte);
+		afficherMenuEntrainement(m, contexte);
 }
 
 
@@ -214,9 +241,9 @@ Menu2J* creerMenuDeuxJoueurs(){
 	m->dimension.hauteur = HAUTEUR_MENU;
 	m->dimension.largeur = LARGEUR_MENU;
 
-	m->tabBouton[0] = creerBouton(ACCUEIL, "bouton4.png");
-	setPositionBouton(m->tabBouton[0], 25, 430);
-	setTailleBouton(m->tabBouton[0], m->tabBouton[0]->dimension.largeur - 40, m->tabBouton[0]->dimension.hauteur - 10);
+	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
+	setTailleBouton(m->tabBouton[0], 52, 52);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 430);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
@@ -240,3 +267,47 @@ void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte){
 
 }
 
+
+
+//*****************************************
+//******  PARTIE MENU ENTRAINEMENT  *******
+//*****************************************
+
+MenuEntrainement* creerMenuEntrainement(){
+	MenuEntrainement* m = (MenuEntrainement*)malloc(sizeof(MenuEntrainement));
+
+	m->fondMenu = NULL;
+	m->fondMenu = IMG_Load("fondMenu3.png");
+	if (m->fondMenu == NULL)
+		logPrint(ERREUR, "Erreur lors du chargement de l'image du fond de menu entrainement");
+
+	m->position.x = 0;
+	m->position.y = 0;
+	m->dimension.hauteur = HAUTEUR_MENU;
+	m->dimension.largeur = LARGEUR_MENU;
+
+	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
+	setTailleBouton(m->tabBouton[0], 52, 52);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 430);
+
+	m->zone1 = NULL;
+	m->zone2 = NULL;
+	m->zone1 = creerZonePseudo(1);
+	m->zone2 = creerZonePseudo(2);
+	if (m->zone1 == NULL || m->zone2 == NULL)
+		logPrint(ERREUR, "Erreur lors de l'assignation des zones pseudo dans le menu entrainement");
+
+	return m;
+}
+
+
+void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte){
+	afficherFondMenu(m->fondMenu, contexte);
+	afficherAllZonesPseudo(m->zone1, m->zone2, contexte);
+	if (m->zone1->ttfPseudo != NULL)
+		afficherTexte(m->zone1->ttfPseudo, m->zone1->position.x + 15, m->zone1->position.y + 11, contexte);
+	if (m->zone2->ttfPseudo != NULL)
+		afficherTexte(m->zone2->ttfPseudo, m->zone2->position.x + 15, m->zone2->position.y + 11, contexte);
+	afficherBouton(m->tabBouton[0], contexte);
+
+}
