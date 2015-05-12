@@ -2,22 +2,7 @@
 #define ENTRAINEMENT_H
 
 #include "plateauDeJeu.h"
-
-
-#define HAUTEUR_RESERVE 65
-#define LARGEUR_RESERVE 245
-#define TAILLE_RESERVE (Dimension){HAUTEUR_RESERVE, LARGEUR_RESERVE}
-#define POSITION_RESERVE_NOIRE (Position){(LARGEUR_MENU-LARGEUR_RESERVE)/2, 335}
-#define POSITION_RESERVE_BLANCHE (Position){(LARGEUR_MENU-LARGEUR_RESERVE)/2, 425}
-
-
-#define LARGEUR_PIECE_RESERVE 33
-#define HAUTEUR_PIECE_RESERVE 33
-#define OFFSET_GAUCHE_PIECE_RESERVE 17
-#define OFFSET_HAUT_PIECE_RESERVE 13
-#define LARGEUR_ESPACE_PIECE_RESERVE 0
-#define HAUTEUR_ESPACE_PIECE_RESERVE 2
-
+#include "commun.h"
 
 typedef struct{
 	Couleur couleur;
@@ -30,5 +15,12 @@ typedef struct{
 
 Reserve* creerReserve(Couleur couleur);
 void afficherReserve(Reserve* r, SDL_Renderer* contexte);
+void initAllPiecesReserve(Piece* tabPiece[2][8], Couleur c);
+void afficherPieceReserve(Reserve* r, Piece* p, SDL_Renderer* contexte, int x, int y);
+void afficherAllPiecesReserve(Reserve* r, SDL_Renderer* contexte);
+Piece* selectionnerPieceReserve(Reserve* rb, Reserve* rn, int x, int y, SDL_Renderer* contexte);
+void deselectionnerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, Couleur c, SDL_Renderer* contexte);
+void mettreEnSurbillancePieceReserve(Reserve* r, Piece* p, SDL_Renderer* contexte);
+void supprimerSurbillancePieceReserve(Reserve* r, Piece* p, SDL_Renderer* contexte);
 
 #endif

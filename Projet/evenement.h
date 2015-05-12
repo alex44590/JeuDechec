@@ -12,6 +12,8 @@
 #define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE in.sourisEnfoncee && (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)
 #define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER in.sourisEnfoncee && (in.clicSouris.x > OFFSET_PLATEAU_GAUCHE && in.clicSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.clicSouris.y > OFFSET_PLATEAU_HAUT && in.clicSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
+#define CLIC_DOWN_SOURIS_INTERIEUR_RESERVE (in.clicSouris.x >= X_RESERVE && in.clicSouris.x <= (X_RESERVE + LARGEUR_RESERVE) && ((in.clicSouris.y >= Y_RESERVE_NOIRE && in.clicSouris.y <= Y_RESERVE_NOIRE + HAUTEUR_RESERVE) ||  (in.clicSouris.y >= Y_RESERVE_BLANCHE && in.clicSouris.y <= Y_RESERVE_BLANCHE + HAUTEUR_RESERVE)))
+
 #define KEYCODE_REDUIT(x) (x - 1073741753) //Permet de réduire les SDLK_... dont le nombre n'est pas entre 0 et 127 en un nombre entre 128 et 353
 
 /* Les fonctions et structures définies dans ce header vont permettre de simplifier la gestion 

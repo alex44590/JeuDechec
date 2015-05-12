@@ -19,10 +19,14 @@ typedef struct{
 	SDL_Surface* imagePieceNormale;
 	SDL_Surface* imagePieceSurbrillance;
 	SDL_Surface* imagePieceDefausse;
+	SDL_Surface* imagePieceReserve;
+	SDL_Surface* imagePieceReserveNormale;
+	SDL_Surface* imagePieceReserveSurbrillance;
 	IDCase* deplacementPossibles;
 	Booleen active;
 	Booleen pieceSelectionne;
 	Booleen surbrillance;
+	Booleen surbrillanceReserve;
 	int nbDeplacement;
 }Piece;
 

@@ -244,6 +244,9 @@ int main(int argc, char* argv[]){
 	Case* caseSelectionnee = NULL;
 	IDCase idCaseSelectionnee;
 
+	Piece* pieceReserveSelectionnee = NULL;
+	Booleen pieceReserveDejaSelectionnee = FALSE;
+
 	IDCase positionRoi[2];
 	positionRoi[BLANC].colonne = D;
 	positionRoi[BLANC].ligne = 7;
@@ -251,6 +254,7 @@ int main(int argc, char* argv[]){
 	positionRoi[NOIR].ligne = 0;
 
 	Booleen echec;
+
 
 	while (!in.quit)
 	{
@@ -467,7 +471,35 @@ int main(int argc, char* argv[]){
 		/**************************************************************/
 		/*******  DISPOSITION DES PIECES - MODE ENTRAINEMENT   ********/
 		/**************************************************************/
+		if (in.sourisEnfoncee && CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && typeMenuEnCours == MENU_ENTRAINEMENT && !pieceReserveDejaSelectionnee){
+			if (pieceReserveSelectionnee == NULL){
+				pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
+				pieceReserveDejaSelectionnee = TRUE;
+				
+			}
 
+			else if (pieceReserveSelectionnee == selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte)){
+				deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+				pieceReserveSelectionnee = NULL;
+				pieceReserveDejaSelectionnee = TRUE;
+			}
+
+			else{
+				deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+				pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
+				pieceReserveDejaSelectionnee = TRUE;
+			}
+		}
+
+		//Si clic ailleurs dans le menu entrainement, on déselectionne la pièce
+		else if (!CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && typeMenuEnCours == MENU_ENTRAINEMENT && !pieceReserveDejaSelectionnee && pieceReserveSelectionnee != NULL){
+			deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+			pieceReserveSelectionnee = NULL;
+			pieceReserveDejaSelectionnee = TRUE;
+		}
+
+		else if (in.sourisRelachee)
+			pieceReserveDejaSelectionnee = FALSE;
 
 
 		/******************************************/

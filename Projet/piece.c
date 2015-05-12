@@ -10,6 +10,7 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	p->active = FALSE;
 	p->pieceSelectionne = FALSE;
 	p->surbrillance = FALSE;
+	p->surbrillanceReserve = FALSE;
 
 	//Initialisation des autres attributs
 	p->couleur = couleur;
@@ -71,10 +72,22 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	p->imagePieceSurbrillance = IMG_Load(nomImageSurbrillance);
 	if (p->imagePieceSurbrillance == NULL)
 		logPrint(ERREUR, "Echec du chargement de l'image de surbrillance de la pièce");
+
+	//Chargement de défausse l'image (de la forme 'Type''Couleur''D'.png)
 	char nomImageDefausse[15] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, 'D', '.', 'p', 'n', 'g', '\0' };
 	p->imagePieceDefausse = IMG_Load(nomImageDefausse);
 	if (p->imagePieceDefausse == NULL)
 		logPrint(ERREUR, "Echec du chargement de l'image de défausse de la pièce");
+
+	//Chargement de réserve l'image (de la forme 'Type''Couleur''R'.png)
+	char nomImageReserve[15] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, 'R', '.', 'p', 'n', 'g', '\0' };
+	p->imagePieceReserve = p->imagePieceReserveNormale = IMG_Load(nomImageReserve);
+	if (p->imagePieceReserveNormale == NULL)
+		logPrint(ERREUR, "Echec du chargement de l'image de réserve de la pièce");
+	char nomImageReserveSurbrillance[16] = { 'P', 'i', 'e', 'c', 'e', 's', '/', p->idPiece.type, p->idPiece.couleur, 'S', 'R', '.', 'p', 'n', 'g', '\0' };
+	p->imagePieceReserveSurbrillance = IMG_Load(nomImageReserveSurbrillance);
+	if (p->imagePieceReserveSurbrillance == NULL)
+		logPrint(ERREUR, "Echec du chargement de l'image de réserve en surbrillance de la pièce");
 	return p;
 }
 

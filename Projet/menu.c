@@ -298,6 +298,10 @@ MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN){
 	m->reserveB = reserveB;
 	m->reserveN = reserveN;
 
+	//Initialisation des pièces de la réserve
+	initAllPiecesReserve(m->reserveB->tabPiecesReserve, BLANC);
+	initAllPiecesReserve(m->reserveN->tabPiecesReserve, NOIR);
+
 	if (m->zone1 == NULL || m->zone2 == NULL)
 		logPrint(ERREUR, "Erreur lors de l'assignation des zones pseudo dans le menu entrainement");
 
@@ -315,4 +319,6 @@ void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte){
 	afficherBouton(m->tabBouton[0], contexte);
 	afficherReserve(m->reserveB, contexte);
 	afficherReserve(m->reserveN, contexte);
+	afficherAllPiecesReserve(m->reserveB, contexte);
+	afficherAllPiecesReserve(m->reserveN, contexte);
 }
