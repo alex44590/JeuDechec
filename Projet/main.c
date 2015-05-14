@@ -246,12 +246,25 @@ int main(int argc, char* argv[]){
 
 	Piece* pieceReserveSelectionnee = NULL;
 	Booleen pieceReserveDejaSelectionnee = FALSE;
+	Piece* pieceSelectionneeEntrainement = NULL;
+	Case* caseSelectionneeEntrainement = NULL;
+	IDCase idCaseSelectionneeEntrainement;
 
 	IDCase positionRoi[2];
 	positionRoi[BLANC].colonne = D;
 	positionRoi[BLANC].ligne = 7;
 	positionRoi[NOIR].colonne = D;
 	positionRoi[NOIR].ligne = 0;
+
+	IDCase positionRoiEntrainement[2];
+	positionRoiEntrainement[BLANC].colonne = -1;
+	positionRoiEntrainement[BLANC].ligne = -1;
+	positionRoiEntrainement[NOIR].colonne = -1;
+	positionRoiEntrainement[NOIR].ligne = -1;
+
+
+	Booleen jeuLance = FALSE;
+	Booleen jeuEntrainementLance = FALSE;
 
 	Booleen echec;
 
@@ -266,7 +279,7 @@ int main(int argc, char* argv[]){
 
 		//Cas du Menu princpal
 		if (typeMenuEnCours == MENU_ACCUEIL){
-			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_MP; i++){
 					if (CLIC_DOWN_SOURIS_BOUTON_MENU_PRINCIPAL)
@@ -289,7 +302,7 @@ int main(int argc, char* argv[]){
 
 		//Cas du Menu 2 joueurs
 		if (typeMenuEnCours == MENU_2J){
-			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_M2J; i++){
 					if (CLIC_DOWN_SOURIS_BOUTON_MENU_2JOUEURS)
@@ -297,6 +310,16 @@ int main(int argc, char* argv[]){
 						switch (menu2J->tabBouton[i]->idBouton){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
+							break;
+						case JOUER:
+							jeuLance = TRUE;
+							desenfoncerBouton(menu2J->tabBouton[2]); //On désenfonce le bouton pause
+							afficherMenu2J(menu2J, contexte);
+							break;
+						case PAUSE:
+							jeuLance = FALSE;
+							desenfoncerBouton(menu2J->tabBouton[1]); //On désenfonce le bouton jouer
+							afficherMenu2J(menu2J, contexte);
 							break;
 						}
 						enfoncerBouton(menu2J->tabBouton[i]);
@@ -308,7 +331,7 @@ int main(int argc, char* argv[]){
 
 		//Cas du Menu Entrainement
 		if (typeMenuEnCours == MENU_ENTRAINEMENT){
-			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_MENT; i++){
 					if (CLIC_DOWN_SOURIS_BOUTON_MENU_ENTRAINEMENT)
@@ -316,6 +339,16 @@ int main(int argc, char* argv[]){
 						switch (menuEntrainement->tabBouton[i]->idBouton){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
+							break;
+						case JOUER:
+							jeuEntrainementLance = TRUE;
+							desenfoncerBouton(menuEntrainement->tabBouton[2]); //On désenfonce le bouton pause
+							afficherMenuEntrainement(menuEntrainement, contexte);
+							break;
+						case PAUSE:
+							jeuEntrainementLance = FALSE;
+							desenfoncerBouton(menuEntrainement->tabBouton[1]); //On désenfonce le bouton jouer
+							afficherMenuEntrainement(menuEntrainement, contexte);
 							break;
 						}
 						enfoncerBouton(menuEntrainement->tabBouton[i]);
@@ -366,11 +399,11 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			
+
 			else if (typeMenuEnCours == MENU_2J){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_M2J; i++){
-					if (menu2J->tabBouton[i]->enfonce == TRUE){
+					if (menu2J->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton == ACCUEIL){
 						desenfoncerBouton(menu2J->tabBouton[i]);
 						afficherMenu2J(menu2J, contexte);
 					}
@@ -386,11 +419,11 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			
+
 			else if (typeMenuEnCours == MENU_ENTRAINEMENT){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_MENT; i++){
-					if (menuEntrainement->tabBouton[i]->enfonce == TRUE){
+					if (menuEntrainement->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton == ACCUEIL){
 						desenfoncerBouton(menuEntrainement->tabBouton[i]);
 						afficherMenuEntrainement(menuEntrainement, contexte);
 					}
@@ -414,10 +447,11 @@ int main(int argc, char* argv[]){
 		/********   GESTION DES PSEUDOS   *********/
 		/******************************************/
 
+		/****     Dans le menu 2 joueurs     ****/
 		if (typeMenuEnCours == MENU_2J){
 			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
 				continuerSaisiePseudo = 1;
-		
+
 			if (CLIC_SOURIS_INTERIEUR_PSEUDO_1 && continuerSaisiePseudo){
 				deselectionnerZonePseudo2J(menu2J, menu2J->zone2, FALSE, contexte);
 				selectionnerZonePseudo2J(menu2J, menu2J->zone1, TRUE, contexte);
@@ -426,7 +460,7 @@ int main(int argc, char* argv[]){
 				afficherMenu2J(menu2J, contexte);
 			}
 
-			if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
+			else if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
 				deselectionnerZonePseudo2J(menu2J, menu2J->zone1, FALSE, contexte);
 				selectionnerZonePseudo2J(menu2J, menu2J->zone2, TRUE, contexte);
 				catSaisiePseudo(&in, menu2J->zone2, &continuerSaisiePseudo);
@@ -434,13 +468,19 @@ int main(int argc, char* argv[]){
 				afficherMenu2J(menu2J, contexte);
 			}
 
-			if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+			else if (in.sourisEnfoncee && !CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone1, FALSE, contexte);
+				deselectionnerZonePseudo2J(menu2J, menu2J->zone2, TRUE, contexte);
+			}
+			
+			else if (in.sourisEnfoncee && !CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
 				deselectionnerZonePseudo2J(menu2J, menu2J->zone1, FALSE, contexte);
 				deselectionnerZonePseudo2J(menu2J, menu2J->zone2, TRUE, contexte);
 			}
 		}
 
 
+		/****     Dans le menu entrainement     ****/
 		else if (typeMenuEnCours == MENU_ENTRAINEMENT){
 			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
 				continuerSaisiePseudo = 1;
@@ -453,7 +493,7 @@ int main(int argc, char* argv[]){
 				afficherMenuEntrainement(menuEntrainement, contexte);
 			}
 
-			if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
+			else if (CLIC_SOURIS_INTERIEUR_PSEUDO_2 && continuerSaisiePseudo){
 				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, FALSE, contexte);
 				selectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, TRUE, contexte);
 				catSaisiePseudo(&in, menuEntrainement->zone2, &continuerSaisiePseudo);
@@ -461,7 +501,12 @@ int main(int argc, char* argv[]){
 				afficherMenuEntrainement(menuEntrainement, contexte);
 			}
 
-			if (!CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+			else if (in.sourisEnfoncee && !CLIC_SOURIS_INTERIEUR_PSEUDO_1 && !CLIC_SOURIS_INTERIEUR_PSEUDO_2 && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE || !continuerSaisiePseudo){
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, FALSE, contexte);
+				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, TRUE, contexte);
+			}
+			
+			else if (in.sourisEnfoncee && !CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE){
 				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone1, FALSE, contexte);
 				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, TRUE, contexte);
 			}
@@ -471,42 +516,153 @@ int main(int argc, char* argv[]){
 		/**************************************************************/
 		/*******  DISPOSITION DES PIECES - MODE ENTRAINEMENT   ********/
 		/**************************************************************/
-		if (in.sourisEnfoncee && CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && typeMenuEnCours == MENU_ENTRAINEMENT && !pieceReserveDejaSelectionnee){
-			if (pieceReserveSelectionnee == NULL){
-				pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
-				pieceReserveDejaSelectionnee = TRUE;
-				
+		if (typeMenuEnCours == MENU_ENTRAINEMENT){
+
+			/*************************************************************/
+			/***  Entrainement : Selection des pièces dans la réserve  ***/
+			/*************************************************************/
+			if (in.sourisEnfoncee && CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && !pieceReserveDejaSelectionnee && !jeuEntrainementLance){
+				if (pieceReserveSelectionnee == NULL){
+					pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
+					pieceReserveDejaSelectionnee = TRUE;
+
+				}
+
+				else if (pieceReserveSelectionnee == selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte)){
+					deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+					pieceReserveSelectionnee = NULL;
+					pieceReserveDejaSelectionnee = TRUE;
+				}
+
+				else{
+					deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+					pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
+					pieceReserveDejaSelectionnee = TRUE;
+				}
+
+				//Dans tous les cas, si on clique dans la réserve, on déselectionne la pièce sélectionnée dans l'échiquier
+				if (pieceSelectionneeEntrainement != NULL){
+					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+					afficherEchiquier(plateau->echiquier, contexte);
+					pieceSelectionneeEntrainement = NULL;
+				}
 			}
 
-			else if (pieceReserveSelectionnee == selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte)){
+			//Si clic ailleurs dans le menu entrainement, on déselectionne la pièce
+			else if (in.sourisEnfoncee && !CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && !pieceReserveDejaSelectionnee && pieceReserveSelectionnee != NULL){
 				deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
 				pieceReserveSelectionnee = NULL;
 				pieceReserveDejaSelectionnee = TRUE;
 			}
 
-			else{
-				deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
-				pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
-				pieceReserveDejaSelectionnee = TRUE;
+			else if (in.sourisRelachee)
+				pieceReserveDejaSelectionnee = FALSE;
+
+
+			/******************************************************************/
+			/***  Entrainement : Positionnement des pièces sur l'échiquier  ***/
+			/******************************************************************/
+
+			if (!jeuEntrainementLance && CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee){
+				caseSelectionneeEntrainement = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
+				idCaseSelectionneeEntrainement = caseSelectionneeEntrainement->identifiant;
+
+				//Si on clique sur une pièce dans l'échiquier et qu'on avait déjà sélectionné une pièce dans la réserve
+				if (plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] != NULL && pieceReserveSelectionnee != NULL && pieceSelectionneeEntrainement == NULL){
+					//On déselectionne la pièce de la réserve et on sélectionne celle de l'échiquier
+					deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
+					pieceReserveSelectionnee = NULL;
+					pieceSelectionneeEntrainement = plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne];
+					mettreEnSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+				}
+
+				//Si on clique sur une pièce dans l'échiquier et qu'aucune pièce de la réserve n'est sélectionnée ni aucune pièce de l'échiquier
+				else if (plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] != NULL && pieceSelectionneeEntrainement == NULL && pieceReserveSelectionnee == NULL){
+					pieceSelectionneeEntrainement = plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne];
+					mettreEnSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+				}
+
+				//Si on clique sur une pièce dans l'échiquier et qu'une pièce de l'échiquier différente est déjà sélectionnée 
+				else if (plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] != NULL && pieceSelectionneeEntrainement != NULL && pieceReserveSelectionnee == NULL){
+					//On supprime la surbrillance de la pièce précédente
+					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+
+					//S'il ne s'agit pas de la même pièce, on sélectionne la nouvelle pièce
+					if (pieceSelectionneeEntrainement != plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne]){
+						pieceSelectionneeEntrainement = plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne];
+						mettreEnSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+					}
+					else
+						pieceSelectionneeEntrainement = NULL;
+				}
+
+
+				//Si une pièce est sélectionnée dans la réserve et que la case n'en contient pas
+				else if (pieceReserveSelectionnee != NULL && plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] == NULL){
+					//On supprime la pièce de la réserve
+					supprimerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, contexte);
+					afficherMenuEntrainement(menuEntrainement, contexte);
+
+					//On déplace la pièce sur l'échiquier
+					bougerPiece(pieceReserveSelectionnee, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, l);
+					plateau->echiquier->tabCases[pieceReserveSelectionnee->idPosition.colonne][pieceReserveSelectionnee->idPosition.ligne]->occupee = TRUE;
+					supprimerSurbillancePiece(pieceReserveSelectionnee, contexte);
+
+					//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
+					if (pieceReserveSelectionnee->type == ROI && pieceReserveSelectionnee->couleur == BLANC){
+						positionRoiEntrainement[BLANC].colonne = caseSelectionneeEntrainement->identifiant.colonne;
+						positionRoiEntrainement[BLANC].ligne = caseSelectionneeEntrainement->identifiant.ligne;
+					}
+					else if (pieceReserveSelectionnee->type == ROI && pieceReserveSelectionnee->couleur == NOIR){
+						positionRoiEntrainement[NOIR].colonne = caseSelectionneeEntrainement->identifiant.colonne;
+						positionRoiEntrainement[NOIR].ligne = caseSelectionneeEntrainement->identifiant.ligne;
+					}
+
+					//On déselectionne la pièce
+					pieceReserveSelectionnee = NULL;
+				}
+
+
+				//Si une pièce est sélectionnée sur l'échiquier et que la case n'en contient pas
+				else if (pieceSelectionneeEntrainement != NULL && plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] == NULL){
+					//On déplace la pièce sur l'échiquier
+					bougerPiece(pieceSelectionneeEntrainement, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, l);
+					plateau->echiquier->tabCases[pieceSelectionneeEntrainement->idPosition.colonne][pieceSelectionneeEntrainement->idPosition.ligne]->occupee = TRUE;
+					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+
+					//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
+					if (pieceSelectionneeEntrainement->type == ROI && pieceSelectionneeEntrainement->couleur == BLANC){
+						positionRoiEntrainement[BLANC].colonne = caseSelectionneeEntrainement->identifiant.colonne;
+						positionRoiEntrainement[BLANC].ligne = caseSelectionneeEntrainement->identifiant.ligne;
+					}
+					else if (pieceSelectionneeEntrainement->type == ROI && pieceSelectionneeEntrainement->couleur == NOIR){
+						positionRoiEntrainement[NOIR].colonne = caseSelectionneeEntrainement->identifiant.colonne;
+						positionRoiEntrainement[NOIR].ligne = caseSelectionneeEntrainement->identifiant.ligne;
+					}
+					//Ensuite on déselectionne la pièce de la réserve
+					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+					pieceSelectionneeEntrainement = NULL;
+				}
+				afficherEchiquier(plateau->echiquier, contexte);
+			}
+
+
+			//Si on clique en dehors de l'échiquier, on déselectionne la possible pièce sélectionnée
+			else if (!jeuEntrainementLance && in.sourisEnfoncee && !CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER){
+				if (pieceSelectionneeEntrainement != NULL){
+					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+					pieceSelectionneeEntrainement = NULL;
+					afficherEchiquier(plateau->echiquier, contexte);
+				}
 			}
 		}
-
-		//Si clic ailleurs dans le menu entrainement, on déselectionne la pièce
-		else if (!CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && typeMenuEnCours == MENU_ENTRAINEMENT && !pieceReserveDejaSelectionnee && pieceReserveSelectionnee != NULL){
-			deselectionnerPieceReserve(reserveB, reserveN, pieceReserveSelectionnee, pieceReserveSelectionnee->couleur, contexte);
-			pieceReserveSelectionnee = NULL;
-			pieceReserveDejaSelectionnee = TRUE;
-		}
-
-		else if (in.sourisRelachee)
-			pieceReserveDejaSelectionnee = FALSE;
 
 
 		/******************************************/
 		/*******  GESTION DE L'ECHIQUIER   ********/
 		/******************************************/
 
-		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee && (typeMenuEnCours == MENU_ENTRAINEMENT || typeMenuEnCours == MENU_2J)){
+		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee && ((typeMenuEnCours == MENU_ENTRAINEMENT && jeuEntrainementLance) || (typeMenuEnCours == MENU_2J && jeuLance))){
 			caseSelectionnee = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 			idCaseSelectionnee = caseSelectionnee->identifiant;
 

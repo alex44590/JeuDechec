@@ -127,8 +127,10 @@ Piece* selectionnerPieceReserve(Reserve* rb, Reserve* rn, int x, int y, SDL_Rend
 		if (x >= rb->position.x + OFFSET_GAUCHE_PIECE_RESERVE && x <= (rb->position.x + OFFSET_GAUCHE_PIECE_RESERVE + 8 * LARGEUR_PIECE_RESERVE + 7 * LARGEUR_ESPACE_PIECE_RESERVE)){
 			colonne = (x - rb->position.x - OFFSET_GAUCHE_PIECE_RESERVE) / (LARGEUR_ESPACE_PIECE_RESERVE + LARGEUR_PIECE_RESERVE);
 			ligne = (y - rb->position.y - OFFSET_HAUT_PIECE_RESERVE) / (HAUTEUR_ESPACE_PIECE_RESERVE + HAUTEUR_PIECE_RESERVE);
-			mettreEnSurbillancePieceReserve(rb, rb->tabPiecesReserve[ligne][colonne], contexte);
-			return rb->tabPiecesReserve[ligne][colonne];
+			if (rb->tabPiecesReserve[ligne][colonne] != NULL){
+				mettreEnSurbillancePieceReserve(rb, rb->tabPiecesReserve[ligne][colonne], contexte);
+				return rb->tabPiecesReserve[ligne][colonne];
+			}
 		}
 		return NULL;
 	}
@@ -137,8 +139,10 @@ Piece* selectionnerPieceReserve(Reserve* rb, Reserve* rn, int x, int y, SDL_Rend
 		if (x >= rn->position.x + OFFSET_GAUCHE_PIECE_RESERVE && x <= (rn->position.x + OFFSET_GAUCHE_PIECE_RESERVE + 8 * LARGEUR_PIECE_RESERVE + 7 * LARGEUR_ESPACE_PIECE_RESERVE)){
 			colonne = (x - rn->position.x - OFFSET_GAUCHE_PIECE_RESERVE) / (LARGEUR_ESPACE_PIECE_RESERVE + LARGEUR_PIECE_RESERVE);
 			ligne = (y - rn->position.y - OFFSET_HAUT_PIECE_RESERVE) / (HAUTEUR_ESPACE_PIECE_RESERVE + HAUTEUR_PIECE_RESERVE);
-			mettreEnSurbillancePieceReserve(rn, rn->tabPiecesReserve[ligne][colonne], contexte);
-			return rn->tabPiecesReserve[ligne][colonne];
+			if (rn->tabPiecesReserve[ligne][colonne] != NULL){
+				mettreEnSurbillancePieceReserve(rn, rn->tabPiecesReserve[ligne][colonne], contexte);
+				return rn->tabPiecesReserve[ligne][colonne];
+			}
 		}
 		return NULL;
 	}
@@ -169,4 +173,31 @@ void supprimerSurbillancePieceReserve(Reserve* r, Piece* p, SDL_Renderer* contex
 		logPrint(ERREUR, "Impossible de mettre en surbrillance la pièce dans la reserve s'il s'agit de l'élément null");
 	p->imagePieceReserve = p->imagePieceReserveNormale;
 	p->surbrillanceReserve = FALSE;
+}
+
+
+void supprimerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, SDL_Renderer* contexte){
+	int i, j;
+	Booleen continuer = TRUE;
+	if (p->couleur == NOIR){
+		for (i = 0; i < 2 && continuer; i++){
+			for (j = 0; j < 8 && continuer; j++){
+				if (rn->tabPiecesReserve[i][j] == p){
+					rn->tabPiecesReserve[i][j] = NULL;
+					continuer = FALSE;
+				}
+			}
+		}
+	}
+	
+	if (p->couleur == BLANC){
+		for (i = 0; i < 2 && continuer; i++){
+			for (j = 0; j < 8 && continuer; j++){
+				if (rb->tabPiecesReserve[i][j] == p){
+					rb->tabPiecesReserve[i][j] = NULL;
+					continuer = FALSE;
+				}
+			}
+		}
+	}
 }

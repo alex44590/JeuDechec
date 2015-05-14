@@ -9,8 +9,8 @@
 #define CLIC_DOWN_SOURIS_BOUTON_MENU_2JOUEURS in.sourisEnfoncee && (in.clicSouris.x > menu2J->tabBouton[i]->positionInit.x && in.clicSouris.x < menu2J->tabBouton[i]->positionInit.x + menu2J->tabBouton[i]->dimension.largeur && in.clicSouris.y > menu2J->tabBouton[i]->positionInit.y && in.clicSouris.y < menu2J->tabBouton[i]->positionInit.y + menu2J->tabBouton[i]->dimension.hauteur)
 #define CLIC_DOWN_SOURIS_BOUTON_MENU_ENTRAINEMENT in.sourisEnfoncee && (in.clicSouris.x > menuEntrainement->tabBouton[i]->positionInit.x && in.clicSouris.x < menuEntrainement->tabBouton[i]->positionInit.x + menuEntrainement->tabBouton[i]->dimension.largeur && in.clicSouris.y > menuEntrainement->tabBouton[i]->positionInit.y && in.clicSouris.y < menuEntrainement->tabBouton[i]->positionInit.y + menuEntrainement->tabBouton[i]->dimension.hauteur)
 
-#define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE in.sourisEnfoncee && (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)
-#define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER in.sourisEnfoncee && (in.clicSouris.x > OFFSET_PLATEAU_GAUCHE && in.clicSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.clicSouris.y > OFFSET_PLATEAU_HAUT && in.clicSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
+#define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)
+#define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER (in.clicSouris.x > OFFSET_PLATEAU_GAUCHE && in.clicSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.clicSouris.y > OFFSET_PLATEAU_HAUT && in.clicSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
 #define CLIC_DOWN_SOURIS_INTERIEUR_RESERVE (in.clicSouris.x >= X_RESERVE && in.clicSouris.x <= (X_RESERVE + LARGEUR_RESERVE) && ((in.clicSouris.y >= Y_RESERVE_NOIRE && in.clicSouris.y <= Y_RESERVE_NOIRE + HAUTEUR_RESERVE) ||  (in.clicSouris.y >= Y_RESERVE_BLANCHE && in.clicSouris.y <= Y_RESERVE_BLANCHE + HAUTEUR_RESERVE)))
 

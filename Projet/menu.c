@@ -243,7 +243,15 @@ Menu2J* creerMenuDeuxJoueurs(){
 
 	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
 	setTailleBouton(m->tabBouton[0], 45, 45);
-	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 110);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 6 - m->tabBouton[0]->dimension.largeur / 3, 115);
+
+	m->tabBouton[1] = creerBouton(JOUER, "BoutonPlay.png");
+	setTailleBouton(m->tabBouton[1], 45, 45);
+	setPositionBouton(m->tabBouton[1], 5 * LARGEUR_MENU / 6 - m->tabBouton[1]->dimension.largeur / 3, 115);
+
+	m->tabBouton[2] = creerBouton(PAUSE, "BoutonPause.png");
+	setTailleBouton(m->tabBouton[2], 45, 45);
+	setPositionBouton(m->tabBouton[2], 3 * LARGEUR_MENU / 6 - m->tabBouton[1]->dimension.largeur / 3, 117);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
@@ -257,13 +265,16 @@ Menu2J* creerMenuDeuxJoueurs(){
 
 
 void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte){
+	int i;
 	afficherFondMenu(m->fondMenu, contexte);
 	afficherAllZonesPseudo(m->zone1, m->zone2, contexte);
 	if (m->zone1->ttfPseudo != NULL)
 		afficherTexte(m->zone1->ttfPseudo, m->zone1->position.x + 15, m->zone1->position.y + 11, contexte);
 	if (m->zone2->ttfPseudo != NULL)
 		afficherTexte(m->zone2->ttfPseudo, m->zone2->position.x + 15, m->zone2->position.y + 11, contexte);
-	afficherBouton(m->tabBouton[0], contexte);
+	
+	for (i = 0; i < NB_BOUTON_M2J; ++i)
+		afficherBouton(m->tabBouton[i], contexte);
 
 }
 
@@ -288,7 +299,15 @@ MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN){
 
 	m->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
 	setTailleBouton(m->tabBouton[0], 45, 45);
-	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 2 - m->tabBouton[0]->dimension.largeur / 2, 110);
+	setPositionBouton(m->tabBouton[0], LARGEUR_MENU / 6 - m->tabBouton[0]->dimension.largeur / 3, 115);
+
+	m->tabBouton[1] = creerBouton(JOUER, "BoutonPlay.png");
+	setTailleBouton(m->tabBouton[1], 45, 45);
+	setPositionBouton(m->tabBouton[1], 5 * LARGEUR_MENU / 6 - m->tabBouton[1]->dimension.largeur / 3 - 5, 115);
+
+	m->tabBouton[2] = creerBouton(PAUSE, "BoutonPause.png");
+	setTailleBouton(m->tabBouton[2], 45, 45);
+	setPositionBouton(m->tabBouton[2], 3 * LARGEUR_MENU / 6 - m->tabBouton[1]->dimension.largeur / 3, 117);
 
 	m->zone1 = NULL;
 	m->zone2 = NULL;
@@ -310,15 +329,17 @@ MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN){
 
 
 void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte){
+	int i;
 	afficherFondMenu(m->fondMenu, contexte);
 	afficherAllZonesPseudo(m->zone1, m->zone2, contexte);
 	if (m->zone1->ttfPseudo != NULL)
 		afficherTexte(m->zone1->ttfPseudo, m->zone1->position.x + 15, m->zone1->position.y + 11, contexte);
 	if (m->zone2->ttfPseudo != NULL)
 		afficherTexte(m->zone2->ttfPseudo, m->zone2->position.x + 15, m->zone2->position.y + 11, contexte);
-	afficherBouton(m->tabBouton[0], contexte);
 	afficherReserve(m->reserveB, contexte);
 	afficherReserve(m->reserveN, contexte);
 	afficherAllPiecesReserve(m->reserveB, contexte);
 	afficherAllPiecesReserve(m->reserveN, contexte);
+	for (i = 0; i < NB_BOUTON_MENT; ++i)
+		afficherBouton(m->tabBouton[i], contexte);
 }
