@@ -63,6 +63,9 @@
 #define LARGEUR_ESPACE_PIECE_RESERVE (-1)
 #define HAUTEUR_ESPACE_PIECE_RESERVE 1
 
+#define TEMPS_COUP 20000 // 20s
+#define POS_X_CHRONO (LARGEUR_MENU-LARGEUR_RESERVE)/2
+#define POS_Y_CHRONO 360
 
 typedef enum { FALSE, TRUE }Booleen;
 typedef enum{ BLANC, NOIR }Couleur;
@@ -89,5 +92,6 @@ typedef struct {
 	Lettre colonne;
 	Lettre ligne;
 }IDCase;
+
 
 #endif // !COMMUN_H

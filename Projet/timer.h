@@ -11,5 +11,9 @@ typedef struct{
 	uint32_t chrono;
 }Timer;
 
+Timer init_timer();
 
+void update_timer(Timer t);
+
+int chrono();
 #endif
