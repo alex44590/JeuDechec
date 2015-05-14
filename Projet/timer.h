@@ -2,10 +2,13 @@
 #define TIMER_H
 
 #include <time.h>
+#include <stdint.h>
 
-typedef struct Timer{
-	clock_t debut;
-	clock_t chrono;
+//Tous les temps sont en ms 
+typedef struct{
+	uint32_t debut;
+	uint32_t temps_actuel;
+	uint32_t chrono;
 }Timer;
 
 
