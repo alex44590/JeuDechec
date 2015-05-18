@@ -12,7 +12,7 @@ Menu* creerMenu(){
 	menu->tabBouton[0] = creerBouton(ENTRAINEMENT, "Bouton0.png");
 	menu->tabBouton[1] = creerBouton(DEUXJOUEURS, "Bouton1.png");
 	menu->tabBouton[2] = creerBouton(OPTION, "Bouton2.png");
-	menu->tabBouton[3] = creerBouton(APROPOS, "Bouton3.png");
+	menu->tabBouton[3] = creerBouton(REGLES, "Bouton3.png");
 
 	menu->imageAccueil = IMG_Load("imageAccueil.png");
 

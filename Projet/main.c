@@ -11,7 +11,7 @@
 #include "evenement.h"
 #include "entrainement.h"
 #include "timer.h"
-
+#include "regle.h"
 
 
 int main(int argc, char* argv[]){
@@ -208,6 +208,14 @@ int main(int argc, char* argv[]){
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
 
 
+	/******************************************/
+	/*******  REGLES ET OPTIONS DE JEU  *******/
+	/******************************************/
+
+	//Création de la fenetre de règles
+	logPrint(INFO, "Création de la fenêtre contenenant les règles du jeu");
+	FenetreRegle* fenetreRegle = creerFenetreRegle();
+	
 
 	/******************************************/
 	/***  OUTILS DE GESTION DES EVENEMENTS  ***/
@@ -311,6 +319,9 @@ int main(int argc, char* argv[]){
 							break;
 						case ENTRAINEMENT:
 							typeMenuSelectionne = MENU_ENTRAINEMENT;
+							break;
+						case REGLES:
+							typeMenuSelectionne = MENU_REGLES;
 							break;
 						}
 						enfoncerBouton(menu->tabBouton[i]);
@@ -418,6 +429,10 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, contexte);
 						afficherTexteEchec(menuDroite, *situationEchec, contexte);
 						typeMenuEnCours = MENU_ENTRAINEMENT;
+					}
+
+					else if (typeMenuSelectionne == MENU_REGLES){
+						afficherFenetreRegle(fenetreRegle, contexte);
 					}
 				}
 			}
