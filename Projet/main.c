@@ -10,6 +10,7 @@
 #include "listeDeplacement.h"
 #include "evenement.h"
 #include "entrainement.h"
+#include "timer.h"
 
 
 
@@ -84,7 +85,6 @@ int main(int argc, char* argv[]){
 	situationEchecEntrainement = RIEN;
 
 	SituationEchec* situationEchec = &situationEchecEntrainement;
-
 
 
 	/******************************************/
@@ -266,12 +266,33 @@ int main(int argc, char* argv[]){
 	Booleen jeuLance = FALSE;
 	Booleen jeuEntrainementLance = FALSE;
 
-	Booleen echec;
+	Couleur couleurAJouer = BLANC;
 
+	Booleen echec;
 
 	while (!in.quit)
 	{
 		mettreAJourEvent(&in);
+
+		/******************************************/
+		/*********   GESTION DES TIMERS  **********/
+		/******************************************/
+
+		update_timer(menuDroite2J->timer);
+		update_timer(menuDroiteEntrainement->timer);
+
+		//Si les jeux sont en pause, on met les chronos en pause
+		if (!jeuLance)
+			mettreEnPauseChrono(menuDroite2J->timer);
+		if (!jeuEntrainementLance)
+			mettreEnPauseChrono(menuDroiteEntrainement->timer);
+
+		//On rafraichit l'affichage du chrono si besoin est
+		if (typeMenuEnCours == MENU_2J || typeMenuEnCours == MENU_ENTRAINEMENT){
+			if (menuDroite->timer->reaffichageNecessaire)
+				afficherMenuDroite(menuDroite, contexte);
+		}
+
 
 		/******************************************/
 		/*********   GESTION DES MENUS   **********/
@@ -310,6 +331,7 @@ int main(int argc, char* argv[]){
 						switch (menu2J->tabBouton[i]->idBouton){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
+							jeuLance = FALSE;
 							break;
 						case JOUER:
 							jeuLance = TRUE;
@@ -339,6 +361,7 @@ int main(int argc, char* argv[]){
 						switch (menuEntrainement->tabBouton[i]->idBouton){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
+							jeuEntrainementLance = FALSE;
 							break;
 						case JOUER:
 							jeuEntrainementLance = TRUE;
@@ -443,9 +466,9 @@ int main(int argc, char* argv[]){
 
 
 
-		/******************************************/
-		/********   GESTION DES PSEUDOS   *********/
-		/******************************************/
+		/*****************************************/
+		/********   GESTION DES PSEUDOS  *********/
+		/*****************************************/
 
 		/****     Dans le menu 2 joueurs     ****/
 		if (typeMenuEnCours == MENU_2J){
@@ -668,11 +691,14 @@ int main(int argc, char* argv[]){
 
 			//Si aucune pièce sélectionnée et que la case en contient une
 			if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
-				pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
-				mettreEnSurbillancePiece(pieceSelectionnee, contexte);
-				//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
-				calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, TRUE, contexte);
-				enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
+				//S'il s'agit bien de la couleur à jouer
+				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == couleurAJouer){
+					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
+					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
+					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
+					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, TRUE, contexte);
+					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
+				}
 			}
 
 			//Si pièce sélectionnée et que la case en contient une
@@ -730,6 +756,10 @@ int main(int argc, char* argv[]){
 					//On déselectionne la pièce
 					pieceSelectionnee = NULL;
 					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+
+					//Au tour de l'autre couleur de jouer, et on remet à 0 le chrono
+					couleurAJouer = !couleurAJouer;
+					remettreAZeroChrono(menuDroite->timer);
 				}
 			}
 
@@ -772,6 +802,10 @@ int main(int argc, char* argv[]){
 						//Ensuite on déselectionne la pièce
 						pieceSelectionnee = NULL;
 						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
+
+						//Au tour de l'autre couleur de jouer, et on remet à 0 le chrono
+						couleurAJouer = !couleurAJouer;
+						remettreAZeroChrono(menuDroite->timer);
 					}
 
 					//Sinon, on déselectionne la pièce
@@ -786,7 +820,9 @@ int main(int argc, char* argv[]){
 			afficherTexteEchec(menuDroite, *situationEchec, contexte);
 		}
 
+		
 		SDL_RenderPresent(contexte);
+
 
 	}
 

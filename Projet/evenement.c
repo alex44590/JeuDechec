@@ -49,6 +49,6 @@ void mettreAJourEvent(Input* in){
 		default:
 			break;
 		}
-		SDL_Delay(5);
+		SDL_Delay(15);
 	}
 }

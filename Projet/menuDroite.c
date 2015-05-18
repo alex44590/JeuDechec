@@ -19,6 +19,7 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 	menu->texteEchec = malloc(TEXTE_ECHEC_MAX * sizeof(char));
 	*(menu->texteEchec) = '\0';
 
+	menu->timer = init_timer();
 	return menu;
 }
 
@@ -43,6 +44,7 @@ void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 	afficherAllPiecesDefausse(m->defausseB, contexte);
 	afficherDefausse(m->defausseN, contexte);
 	afficherAllPiecesDefausse(m->defausseN, contexte);
+	afficherChrono(m->timer, contexte);
 }
 
 

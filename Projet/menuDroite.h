@@ -11,6 +11,7 @@
 #include "bouton.h"
 #include "option.h"
 #include "defausse.h"
+#include "timer.h"
 
 typedef struct{
 	Dimension dimension;
@@ -20,6 +21,7 @@ typedef struct{
 	Defausse* defausseN;
 	char* texteEchec;
 	SDL_Surface* ttfTexteEchec;
+	Timer* timer;
 }MenuDroite;
 
 typedef enum SituationEchec{ ECHEC_BLANC, ECHEC_NOIR, ECHEC_ET_MAT_BLANC, ECHEC_ET_MAT_NOIR, PAT, RIEN }SituationEchec;

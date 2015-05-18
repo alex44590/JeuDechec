@@ -3,10 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <string.h>
 #include "log.h"
 
 #define LARGEUR_BARRE 40
@@ -62,10 +63,6 @@
 #define OFFSET_HAUT_PIECE_RESERVE 6
 #define LARGEUR_ESPACE_PIECE_RESERVE (-1)
 #define HAUTEUR_ESPACE_PIECE_RESERVE 1
-
-#define TEMPS_COUP 20000 // 20s
-#define POS_X_CHRONO (LARGEUR_MENU-LARGEUR_RESERVE)/2
-#define POS_Y_CHRONO 360
 
 typedef enum { FALSE, TRUE }Booleen;
 typedef enum{ BLANC, NOIR }Couleur;
