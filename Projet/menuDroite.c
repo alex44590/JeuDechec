@@ -18,6 +18,7 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 
 	menu->texteEchec = malloc(TEXTE_ECHEC_MAX * sizeof(char));
 	*(menu->texteEchec) = '\0';
+	menu->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
 
 	menu->timer = init_timer();
 	return menu;
@@ -45,20 +46,19 @@ void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 	afficherDefausse(m->defausseN, contexte);
 	afficherAllPiecesDefausse(m->defausseN, contexte);
 	afficherChrono(m->timer, contexte);
+	afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+
 }
 
 
 
-void afficherTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte){
+void mettreAJourTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte){
 	if (s == RIEN){
 		//Dans le cas où la situation a changé (optimisation)
 		if (*(m->texteEchec) != '\0'){
 			m->texteEchec = "";
-			afficherFondMenuDroite(m, contexte);
-			afficherDefausse(m->defausseB, contexte);
-			afficherAllPiecesDefausse(m->defausseB, contexte);
-			afficherDefausse(m->defausseN, contexte);
-			afficherAllPiecesDefausse(m->defausseN, contexte);
+			m->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
+			afficherMenuDroite(m, contexte);
 		}
 	}
 

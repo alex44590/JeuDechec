@@ -26,35 +26,37 @@ INFO : Création de l'objet Vecteur Deplacement
 INFO : Création de la fenêtre contenenant les règles du jeu
 INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/0.png
-ERREUR : Impossible de charger l'image de la page de règle
 INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/1.png
-ERREUR : Impossible de charger l'image de la page de règle
 INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/2.png
-ERREUR : Impossible de charger l'image de la page de règle
 INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/3.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/4.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/5.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/6.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/7.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/8.png
-ERREUR : Impossible de charger l'image de la page de règle
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/9.png
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+AVERTISSEMENT : Reaffichage timer nécessaire
+AVERTISSEMENT : Reaffichage timer nécessaire
+AVERTISSEMENT : Reaffichage timer nécessaire
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
 INFO : Affichage Page Regle
 INFO : Affichage Page Regle
 INFO : Affichage Page Regle

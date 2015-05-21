@@ -259,9 +259,9 @@ int main(int argc, char* argv[]){
 	IDCase idCaseSelectionneeEntrainement;
 
 	IDCase positionRoi[2];
-	positionRoi[BLANC].colonne = D;
+	positionRoi[BLANC].colonne = E;
 	positionRoi[BLANC].ligne = 7;
-	positionRoi[NOIR].colonne = D;
+	positionRoi[NOIR].colonne = E;
 	positionRoi[NOIR].ligne = 0;
 
 	IDCase positionRoiEntrainement[2];
@@ -392,6 +392,26 @@ int main(int argc, char* argv[]){
 			}
 		}
 
+
+
+		//Cas du Menu Regle
+		if (typeMenuEnCours == MENU_REGLES){
+			if (CLIC_DOWN_SOURIS_BOUTON_REGLE_PRECEDENTE){
+				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0] != NULL){
+					enfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0]);
+					afficherFenetreRegle(fenetreRegle, contexte);
+				}
+			}
+
+			else if (CLIC_DOWN_SOURIS_BOUTON_REGLE_SUIVANTE){
+				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1] != NULL){
+					enfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1]);
+					afficherFenetreRegle(fenetreRegle, contexte);
+				}
+			}
+		}
+
+
 		//Relachement des boutons
 		if (in.sourisRelachee){
 			if (typeMenuEnCours == MENU_ACCUEIL){
@@ -414,7 +434,7 @@ int main(int argc, char* argv[]){
 						situationEchec = &situationEchec2J;
 						afficherPlateauDeJeu(contexte, plateau);
 						afficherMenuDroite(menuDroite, contexte);
-						afficherTexteEchec(menuDroite, *situationEchec, contexte);
+						mettreAJourTexteEchec(menuDroite, *situationEchec, contexte);
 						typeMenuEnCours = MENU_2J;
 					}
 
@@ -427,12 +447,13 @@ int main(int argc, char* argv[]){
 						situationEchec = &situationEchecEntrainement;
 						afficherPlateauDeJeu(contexte, plateau);
 						afficherMenuDroite(menuDroite, contexte);
-						afficherTexteEchec(menuDroite, *situationEchec, contexte);
+						mettreAJourTexteEchec(menuDroite, *situationEchec, contexte);
 						typeMenuEnCours = MENU_ENTRAINEMENT;
 					}
 
 					else if (typeMenuSelectionne == MENU_REGLES){
 						afficherFenetreRegle(fenetreRegle, contexte);
+						typeMenuEnCours = MENU_REGLES;
 					}
 				}
 			}
@@ -464,6 +485,35 @@ int main(int argc, char* argv[]){
 					if (menuEntrainement->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton == ACCUEIL){
 						desenfoncerBouton(menuEntrainement->tabBouton[i]);
 						afficherMenuEntrainement(menuEntrainement, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (typeMenuSelectionne != typeMenuEnCours){
+					if (typeMenuSelectionne == MENU_ACCUEIL){
+						afficherMenu(menu, contexte);
+						menuEnCours.menuAccueil = menu;
+						typeMenuEnCours = MENU_ACCUEIL;
+					}
+				}
+			}
+
+
+			else if (typeMenuEnCours == MENU_REGLES){
+				//On vérifie que les boutons suivant et précédent sont revenus à leur position initiale
+				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0] != NULL){
+					if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0]->enfonce){
+						desenfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0]);
+						pageReglePrecedente(fenetreRegle);
+						afficherFenetreRegle(fenetreRegle, contexte);
+					}
+				}
+
+				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1] != NULL){
+					if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1]->enfonce){
+						desenfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1]);
+						pageRegleSuivante(fenetreRegle);
+						afficherFenetreRegle(fenetreRegle, contexte);
 					}
 				}
 
@@ -832,7 +882,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 			afficherEchiquier(plateau->echiquier, contexte);
-			afficherTexteEchec(menuDroite, *situationEchec, contexte);
+			mettreAJourTexteEchec(menuDroite, *situationEchec, contexte);
 		}
 
 		

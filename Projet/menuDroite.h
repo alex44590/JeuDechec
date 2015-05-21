@@ -32,5 +32,5 @@ void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte);
 
 /*Fonction qui affiche un évènement notable en fonction de la situation de jeu (Echec, pat...) dans le menu de droite,
   ou qui supprime l'affichage précédent si la situation a été résolue*/
-void afficherTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte);
+void mettreAJourTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte);
 #endif // !MENUDROITE_H

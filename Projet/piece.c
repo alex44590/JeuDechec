@@ -138,15 +138,15 @@ void initAllPiece(Piece* tabPiece[8][8], ListDeplacement* l){
 	bougerPiece(tabPiece[2][7], tabPiece, 2, 7, l);
 	bougerPiece(tabPiece[5][7], tabPiece, 5, 7, l);
 	//Rois
-	tabPiece[3][0] = creerPiece(ROI, NOIR, 0);
-	tabPiece[3][7] = creerPiece(ROI, BLANC, 0);
-	bougerPiece(tabPiece[3][0], tabPiece, 3, 0, l);
-	bougerPiece(tabPiece[3][7], tabPiece, 3, 7, l);
-	//Dames
-	tabPiece[4][0] = creerPiece(DAME, NOIR, 0);
-	tabPiece[4][7] = creerPiece(DAME, BLANC, 0);
+	tabPiece[4][0] = creerPiece(ROI, NOIR, 0);
+	tabPiece[4][7] = creerPiece(ROI, BLANC, 0);
 	bougerPiece(tabPiece[4][0], tabPiece, 4, 0, l);
 	bougerPiece(tabPiece[4][7], tabPiece, 4, 7, l);
+	//Dames
+	tabPiece[3][0] = creerPiece(DAME, NOIR, 0);
+	tabPiece[3][7] = creerPiece(DAME, BLANC, 0);
+	bougerPiece(tabPiece[3][0], tabPiece, 3, 0, l);
+	bougerPiece(tabPiece[3][7], tabPiece, 3, 7, l);
 	//Initialisation des autres cases à NULL
 	for (i = 0; i < 8; ++i){
 		for (j = 2; j < 6; ++j){

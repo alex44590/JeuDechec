@@ -5,8 +5,8 @@
 #include "texte.h"
 #include "bouton.h"
 
-#define NB_PAGES_REGLES 10
-#define X_BOUTON_REGLE_PRECEDENT 300
+#define NB_PAGES_REGLES 4
+#define X_BOUTON_REGLE_PRECEDENT 330
 #define Y_BOUTON_REGLE_PRECEDENT 565
 #define X_BOUTON_REGLE_SUIVANT 1180
 #define Y_BOUTON_REGLE_SUIVANT 565
