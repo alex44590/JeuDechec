@@ -4,6 +4,7 @@
 #include "commun.h"
 
 
+
 typedef struct {
 	Dimension dimension;
 	IDCase identifiant;

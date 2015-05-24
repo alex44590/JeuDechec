@@ -2,8 +2,21 @@
 #define LISTEDEPLACEMENT_H
 
 
-#include "deplacement.h"
+//#include "deplacement.h"
 #include "log.h"
+#include "header.h"
+
+
+typedef struct Deplacement{
+	Piece * currentPiece;
+	IDCase depart;
+	IDCase arrivee;
+	int numeroDeplacement;
+	//Timer heure;
+	struct Deplacement* next;
+	struct Deplacement* previous;
+	char mangerPiece; // 1 si une pièce a été mangé, 0 sinon
+}Deplacement;
 
 
 typedef struct {
@@ -17,7 +30,7 @@ typedef struct {
 * \param[in] tous les paramètres du déplacement effectué
 * \return ListDeplacement : Le nouveau noeud créé
 */
-Deplacement * newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous);
+Deplacement * newDeplacement(Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous);
 
 /**IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Timer heure
 * \brief      initialise à NULL ListeDeplacement
@@ -69,11 +82,11 @@ void setOnLast(ListDeplacement * l);
 * \param[in/out] ListeDeplacement + éléments de déplacements
 * \return 0 si le déplacement ne s'est pas bien passé 1 sinon
 */
-int insertFirst(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+int insertFirst(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
 
-int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
-int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
-int createNewDeplacement(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+int insertLast(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+int insertAfterCurrentBL(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
+int createNewDeplacement(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement);
 
 
 /**
@@ -122,5 +135,9 @@ void printPiece(ListDeplacement * l, int *posCurseur);
 void printDepart(ListDeplacement * l, int *posCurseur);
 void printArrivee(ListDeplacement * l, int *posCurseur);
 
+void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8]);
+
+void deleteCurrent(ListDeplacement* l);
+void deleteLast(ListDeplacement* l);
 
 #endif

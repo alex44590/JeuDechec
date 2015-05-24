@@ -788,6 +788,7 @@ int main(int argc, char* argv[]){
 					//On mange la pièce 
 					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
+					l->current->mangerPiece = 1;
 
 					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
 					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);

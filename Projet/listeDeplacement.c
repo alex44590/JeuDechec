@@ -1,8 +1,8 @@
 #include "listeDeplacement.h"
 
-Deplacement* newDeplacement(IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous)
+Deplacement* newDeplacement(Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement, Deplacement* next, Deplacement* previous)
 {
-	Deplacement* new = malloc(sizeof(Deplacement));
+	Deplacement* new = malloc(sizeof(Deplacement)+sizeof(Piece));
 
 	if (new == NULL)
 	{
@@ -57,7 +57,7 @@ void setOnLast(ListDeplacement * l)
 	l->current = l->last;
 }
 
-int insertFirst(ListDeplacement *l, IDPiece piece1, IDCase depart1, IDCase arrivee1, int numeroDeplacement)
+int insertFirst(ListDeplacement *l, Piece *piece1, IDCase depart1, IDCase arrivee1, int numeroDeplacement)
 {
 	Deplacement* new = newDeplacement(piece1, depart1, arrivee1, numeroDeplacement, l->first, NULL);
 	if (new == NULL)
@@ -74,7 +74,7 @@ int insertFirst(ListDeplacement *l, IDPiece piece1, IDCase depart1, IDCase arriv
 	return 1;
 }
 
-int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
+int insertLast(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
 	Deplacement* new = newDeplacement(piece, depart, arrivee, numeroDeplacement, NULL, l->last);
 	if (new == NULL)
@@ -96,7 +96,7 @@ int insertLast(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee,
 	return 1;
 }
 
-int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
+int insertAfterCurrentBL(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
 	if (empty(l))
 	{
@@ -124,7 +124,7 @@ int insertAfterCurrentBL(ListDeplacement *l, IDPiece piece, IDCase depart, IDCas
 	return 1;
 }
 
-int createNewDeplacement(ListDeplacement *l, IDPiece piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
+int createNewDeplacement(ListDeplacement *l, Piece *piece, IDCase depart, IDCase arrivee, int numeroDeplacement)
 {
 	static int posCurseur = 0;
 	if (l->first == l->last)
@@ -179,7 +179,7 @@ void printPiece(ListDeplacement * l, int *posCurseur)
 	}
 	fseek(fichierhistorique, *posCurseur, SEEK_SET);
 
-	fprintf(fichierhistorique, "%.2d:%c%c%d ",l->current->numeroDeplacement, l->current->currentPiece.type, l->current->currentPiece.couleur, l->current->currentPiece.numero);
+	fprintf(fichierhistorique, "%.2d:%c%c%d ",l->current->numeroDeplacement, l->current->currentPiece->idPiece.type, l->current->currentPiece->idPiece.couleur, l->current->currentPiece->idPiece.numero);
 	
 	*posCurseur += 7;
 
@@ -213,6 +213,57 @@ void printArrivee(ListDeplacement * l, int *posCurseur)
 	*posCurseur += 4;
 	fclose(fichierhistorique);
 }
+
+void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8])
+{
+	int flagPionManger = 0;
+	int flagPionTransformé = 0;
+	if (l->current != l->first)
+	{
+		if (l->current->mangerPiece == 1)
+		{
+			flagPionManger = 1;
+		}
+		bougerPiece(l->current->currentPiece, tabPiece, l->current->depart.colonne, l->current->depart.ligne, l);
+		deleteCurrent(l);
+		deleteCurrent(l);
+		if (flagPionManger == 1)
+		{
+			// On remet le dernier pion mangé à la place où il devait être
+		}
+		if (flagPionTransformé == 1)
+		{
+			//On remet le pion transformé dans l'état Pion
+		}
+	}
+}
+
 	
 
+//int deleteFirst(ListDeplacement * l)
+//{
+//	ListDeplacement* temp = l->current;
+//	int value = 0;
+//	setOnFirst(l);
+//	value = getCurrent(l);
+//	l->current = l->first = temp->next;
+//	free(temp);
+//	return value;
+//}
 
+void deleteLast(ListDeplacement* l)
+{
+	setOnFirst(l);
+	while (l->current->next != l->last)
+	{
+		next(l);
+	}
+	free(l->current->next);
+	l->current->next = NULL;
+	l->last = l->current;
+}
+
+void deleteCurrent(ListDeplacement* l)
+{
+		 deleteLast(l);
+}

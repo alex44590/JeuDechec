@@ -10,6 +10,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "log.h"
 
+
 #define LARGEUR_BARRE 40
 #define LONGUEUR_BARRE 640
 #define HAUTEUR_CASE 70 

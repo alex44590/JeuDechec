@@ -167,6 +167,7 @@ void afficherPiece(Piece* p, SDL_Renderer* contexte){
 }
 
 
+
 void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de bouger la pièce car il s'agit de l'élément NULL");
@@ -180,7 +181,7 @@ void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre 
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
 	p->nbDeplacement++;
-	createNewDeplacement(l, p->idPiece, caseDepart, p->idPosition, numeroDeplacement);
+	createNewDeplacement(l, p , caseDepart, p->idPosition, numeroDeplacement);
 	numeroDeplacement++;
 }
 

@@ -2,33 +2,34 @@
 #define PIECE_H
 
 #include "case.h"
-#include "commun.h"
+//#include "commun.h"
 #include "listeDeplacement.h"
+#include "header.h"
 #define NB_PION_DEPART 8
 
 
-typedef enum{ ROI, DAME, FOU, CAVALIER, TOUR, PION }TypePiece;
+//typedef enum{ ROI, DAME, FOU, CAVALIER, TOUR, PION }TypePiece;
 
-typedef struct{
-	IDCase idPosition;
-	IDPiece idPiece;
-	Dimension dimension;
-	Couleur couleur;
-	TypePiece type;
-	SDL_Surface* imagePiece;
-	SDL_Surface* imagePieceNormale;
-	SDL_Surface* imagePieceSurbrillance;
-	SDL_Surface* imagePieceDefausse;
-	SDL_Surface* imagePieceReserve;
-	SDL_Surface* imagePieceReserveNormale;
-	SDL_Surface* imagePieceReserveSurbrillance;
-	IDCase* deplacementPossibles;
-	Booleen active;
-	Booleen pieceSelectionne;
-	Booleen surbrillance;
-	Booleen surbrillanceReserve;
-	int nbDeplacement;
-}Piece;
+//typedef struct{
+//	IDCase idPosition;
+//	IDPiece idPiece;
+//	Dimension dimension;
+//	Couleur couleur;
+//	TypePiece type;
+//	SDL_Surface* imagePiece;
+//	SDL_Surface* imagePieceNormale;
+//	SDL_Surface* imagePieceSurbrillance;
+//	SDL_Surface* imagePieceDefausse;
+//	SDL_Surface* imagePieceReserve;
+//	SDL_Surface* imagePieceReserveNormale;
+//	SDL_Surface* imagePieceReserveSurbrillance;
+//	IDCase* deplacementPossibles;
+//	Booleen active;
+//	Booleen pieceSelectionne;
+//	Booleen surbrillance;
+//	Booleen surbrillanceReserve;
+//	int nbDeplacement;
+//}Piece;
 
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);
 void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l);
