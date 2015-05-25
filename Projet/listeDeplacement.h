@@ -135,7 +135,6 @@ void printPiece(ListDeplacement * l, int *posCurseur);
 void printDepart(ListDeplacement * l, int *posCurseur);
 void printArrivee(ListDeplacement * l, int *posCurseur);
 
-void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8]);
 
 void deleteCurrent(ListDeplacement* l);
 void deleteLast(ListDeplacement* l);
