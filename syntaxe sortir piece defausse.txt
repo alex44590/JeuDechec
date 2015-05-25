@@ -1,0 +1,8 @@
+/***********REMETTRE UNE PIECE DE LA DEFAUSSE SUR LE PLATEAU***********/
+IDPiece idPieceASortir = .....; //Tu trouves ton ID avec ta liste...
+Lettre colonneArrivee = .....; //Idem (Lettre est juste un enum de int qui va de 0 à 7)
+Lettre ligneArrivee = .....; //ReIdem 
+Piece* p = sortirPieceDefausse(plateau->defausseBlanc, plateau->defausseNoir, idPieceASortir);
+bougerPiece(p, plateau->echiquier->tabPieces, colonneArrivee, ligneArrivee, l);
+afficherMenuDroite(menuDroite, contexte); //On réaffiche le menu de droite pour mettre à jour les défausses
+/******FIN*******/

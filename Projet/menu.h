@@ -16,9 +16,13 @@
 #define ESPACEMENT_NUMJ_ZONE -3 //Espacement vertical entre l'écriture "Joueur 1 (ou 2)" et la zone dans laquelle on écrit le pseudo correspondant
 
 #define PSEUDO_LONGUEUR_MAX 20 //Caractère de fin de chaine compris
+#define PSEUDO_MENU_ENTRAINEMENT_CORRECT (menuEntrainement->zone1->pseudo[0] != ' ' && menuEntrainement->zone1->pseudo[0] != '\0' && menuEntrainement->zone2->pseudo[0] != ' ' && menuEntrainement->zone2->pseudo[0] != '\0' && menuEntrainement->zone1->ttfPseudo != NULL && menuEntrainement->zone2 ->ttfPseudo != NULL)
+#define PSEUDO_MENU_2J_CORRECT (menu2J->zone1->pseudo[0] != ' ' && menu2J->zone1->pseudo[0] != '\0' && menu2J->zone2->pseudo[0] != ' ' && menu2J->zone2->pseudo[0] != '\0' && menu2J->zone1->ttfPseudo != NULL && menu2J->zone2 ->ttfPseudo != NULL)
+
 
 #define CLIC_SOURIS_INTERIEUR_PSEUDO_1 (in.clicSouris.x > X_ZONE_PSEUDO_1 && in.clicSouris.x < X_ZONE_PSEUDO_1 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_1 && in.clicSouris.y < Y_ZONE_PSEUDO_1 + HAUTEUR_ZONE_PSEUDO)
 #define CLIC_SOURIS_INTERIEUR_PSEUDO_2 (in.clicSouris.x > X_ZONE_PSEUDO_2 && in.clicSouris.x < X_ZONE_PSEUDO_2 + LARGEUR_ZONE_PSEUDO && in.clicSouris.y > Y_ZONE_PSEUDO_2 && in.clicSouris.y < Y_ZONE_PSEUDO_2 + HAUTEUR_ZONE_PSEUDO)
+
 
 typedef enum TYPE_MENU{ MENU_ACCUEIL, MENU_2J, MENU_ENTRAINEMENT, MENU_OPTION, MENU_REGLES }TYPE_MENU;
 
@@ -62,6 +66,13 @@ typedef struct{
 	Reserve* reserveN;
 }MenuEntrainement;
 
+typedef struct{
+	Dimension dimension;
+	Position position;
+	SDL_Surface* fondMenu;
+	Bouton* tabBouton[NB_BOUTON_MREG];
+}MenuRegles;
+
 typedef union{
 	Menu2J* menu2J;
 	MenuEntrainement* menuEntrainement;
@@ -81,6 +92,10 @@ void afficherMenu2J(Menu2J* m, SDL_Renderer* contexte);
 //PARTIE MENU ENTRAINEMENT
 MenuEntrainement* creerMenuEntrainement(Reserve* reserveB, Reserve* reserveN);
 void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte);
+
+//PARTIE MENU REGLES
+MenuRegles* creerMenuRegles();
+void afficherMenuRegles(MenuRegles* m, SDL_Renderer* contexte);
 
 //PARTIE ZONE PSEUDO
 ZonePseudo* creerZonePseudo(int numZone);

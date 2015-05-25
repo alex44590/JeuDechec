@@ -25,5 +25,5 @@ void afficherDefausse(Defausse* d, SDL_Renderer* contexte);
 void afficherPieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte, int x, int y);
 void afficherAllPiecesDefausse(Defausse* d, SDL_Renderer* contexte);
 void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte);
-
+Piece* sortirPieceDefausse(Defausse* dBlanc, Defausse* dNoir, IDPiece id);
 #endif

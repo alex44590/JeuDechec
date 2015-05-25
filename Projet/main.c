@@ -173,6 +173,10 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création du menu entrainement");
 	MenuEntrainement* menuEntrainement = creerMenuEntrainement(reserveB, reserveN);
 
+	//Création du menu règles
+	logPrint(INFO, "Création du menu règles");
+	MenuRegles* menuRegles = creerMenuRegles();
+
 	//Création d'un menu générique prenant soit la valeur menu2J soit menuEntrainement
 	MenuGenerique menuEnCours;
 	menuEnCours.menuAccueil = menu;
@@ -274,7 +278,9 @@ int main(int argc, char* argv[]){
 	Booleen jeuLance = FALSE;
 	Booleen jeuEntrainementLance = FALSE;
 
-	Couleur couleurAJouer = BLANC;
+	Couleur couleurAJouerEntrainement = BLANC;
+	Couleur couleurAJouer2J = BLANC;
+	Couleur* couleurAJouer = NULL;
 
 	Booleen echec;
 
@@ -343,19 +349,35 @@ int main(int argc, char* argv[]){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
 							jeuLance = FALSE;
+							desenfoncerBouton(menu2J->tabBouton[1]); //On désenfonce le bouton jouer
+							enfoncerBouton(menu2J->tabBouton[2]); //On enfonce le bouton pause
+							enfoncerBouton(menu2J->tabBouton[i]); // //On enfonce le bouton pressé
 							break;
 						case JOUER:
-							jeuLance = TRUE;
-							desenfoncerBouton(menu2J->tabBouton[2]); //On désenfonce le bouton pause
-							afficherMenu2J(menu2J, contexte);
+							if (PSEUDO_MENU_2J_CORRECT){
+								jeuLance = TRUE;
+								enfoncerBouton(menu2J->tabBouton[i]); //On enfonce le bouton pressé
+								desenfoncerBouton(menu2J->tabBouton[2]); //On désenfonce le bouton pause
+								afficherMenu2J(menu2J, contexte);
+								//On affiche le joueur qui doit jouer
+								if (couleurAJouer2J == BLANC)
+									menuDroite2J->zoneJoueurEnCours->ttfJoueur = menu2J->zone1->ttfPseudo;
+								else
+									menuDroite2J->zoneJoueurEnCours->ttfJoueur = menu2J->zone2->ttfPseudo;
+								afficherMenuDroite(menuDroite2J, contexte);
+							}
+							else{
+								menuDroite2J->zoneJoueurEnCours->ttfJoueur = creerTexte("Entrez le nom des joueurs !", "calibri.ttf", 16, 255, 100, 100);
+								afficherMenuDroite(menuDroite2J, contexte);
+							}
 							break;
 						case PAUSE:
 							jeuLance = FALSE;
+							enfoncerBouton(menu2J->tabBouton[i]); // //On enfonce le bouton pressé
 							desenfoncerBouton(menu2J->tabBouton[1]); //On désenfonce le bouton jouer
 							afficherMenu2J(menu2J, contexte);
 							break;
 						}
-						enfoncerBouton(menu2J->tabBouton[i]);
 					}
 				}
 			}
@@ -373,19 +395,36 @@ int main(int argc, char* argv[]){
 						case ACCUEIL:
 							typeMenuSelectionne = MENU_ACCUEIL;
 							jeuEntrainementLance = FALSE;
+							desenfoncerBouton(menuEntrainement->tabBouton[1]); //On désenfonce le bouton jouer
+							enfoncerBouton(menuEntrainement->tabBouton[2]); //On enfonce le bouton pause
+							enfoncerBouton(menuEntrainement->tabBouton[i]); //On enfonce le bouton pressé
 							break;
 						case JOUER:
-							jeuEntrainementLance = TRUE;
-							desenfoncerBouton(menuEntrainement->tabBouton[2]); //On désenfonce le bouton pause
-							afficherMenuEntrainement(menuEntrainement, contexte);
+							if (PSEUDO_MENU_ENTRAINEMENT_CORRECT){
+								jeuEntrainementLance = TRUE;
+								enfoncerBouton(menuEntrainement->tabBouton[i]); //On enfonce le bouton pressé
+								desenfoncerBouton(menuEntrainement->tabBouton[2]); //On désenfonce le bouton pause
+								afficherMenuEntrainement(menuEntrainement, contexte);
+								//On affiche le joueur qui doit jouer
+								if (couleurAJouerEntrainement == BLANC)
+									menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+								
+								else
+									menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+								afficherMenuDroite(menuDroiteEntrainement, contexte);
+							}
+							else{
+								menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = creerTexte("Entrez le nom des joueurs !", "calibri.ttf", 16, 255, 100, 100);
+								afficherMenuDroite(menuDroiteEntrainement, contexte);
+							}
 							break;
 						case PAUSE:
 							jeuEntrainementLance = FALSE;
+							enfoncerBouton(menuEntrainement->tabBouton[i]); //On enfonce le bouton pressé
 							desenfoncerBouton(menuEntrainement->tabBouton[1]); //On désenfonce le bouton jouer
 							afficherMenuEntrainement(menuEntrainement, contexte);
 							break;
 						}
-						enfoncerBouton(menuEntrainement->tabBouton[i]);
 						afficherMenuEntrainement(menuEntrainement, contexte);
 					}
 				}
@@ -394,9 +433,25 @@ int main(int argc, char* argv[]){
 
 
 
-		//Cas du Menu Regle
+		//Cas du menu règle
 		if (typeMenuEnCours == MENU_REGLES){
-			if (CLIC_DOWN_SOURIS_BOUTON_REGLE_PRECEDENTE){
+			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON_MREG; i++){
+					if (CLIC_DOWN_SOURIS_BOUTON_MENU_REGLES)
+					{
+						switch (menuRegles->tabBouton[i]->idBouton){
+						case ACCUEIL:
+							typeMenuSelectionne = MENU_ACCUEIL;
+							break;
+						}
+						enfoncerBouton(menuRegles->tabBouton[i]);
+						afficherMenuRegles(menuRegles, contexte);
+					}
+				}
+			}
+
+			else if (CLIC_DOWN_SOURIS_BOUTON_REGLE_PRECEDENTE){
 				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0] != NULL){
 					enfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0]);
 					afficherFenetreRegle(fenetreRegle, contexte);
@@ -412,8 +467,10 @@ int main(int argc, char* argv[]){
 		}
 
 
+
 		//Relachement des boutons
 		if (in.sourisRelachee){
+			//Si on était dans le menu accueil
 			if (typeMenuEnCours == MENU_ACCUEIL){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_MP; i++){
@@ -431,6 +488,7 @@ int main(int argc, char* argv[]){
 						plateau = plateau2J;
 						menuEnCours.menu2J = menu2J;
 						menuDroite = menuDroite2J;
+						couleurAJouer = &couleurAJouer2J;
 						situationEchec = &situationEchec2J;
 						afficherPlateauDeJeu(contexte, plateau);
 						afficherMenuDroite(menuDroite, contexte);
@@ -444,6 +502,7 @@ int main(int argc, char* argv[]){
 						plateau = plateauEntrainement;
 						menuEnCours.menuEntrainement = menuEntrainement;
 						menuDroite = menuDroiteEntrainement;
+						couleurAJouer = &couleurAJouerEntrainement;
 						situationEchec = &situationEchecEntrainement;
 						afficherPlateauDeJeu(contexte, plateau);
 						afficherMenuDroite(menuDroite, contexte);
@@ -452,6 +511,7 @@ int main(int argc, char* argv[]){
 					}
 
 					else if (typeMenuSelectionne == MENU_REGLES){
+						afficherMenuRegles(menuRegles, contexte);
 						afficherFenetreRegle(fenetreRegle, contexte);
 						typeMenuEnCours = MENU_REGLES;
 					}
@@ -459,10 +519,11 @@ int main(int argc, char* argv[]){
 			}
 
 
+			//Si on était dans le menu 2 joueurs
 			else if (typeMenuEnCours == MENU_2J){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_M2J; i++){
-					if (menu2J->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton == ACCUEIL){
+					if (menu2J->tabBouton[i]->enfonce == TRUE && menu2J->tabBouton[i]->idBouton != PAUSE && menu2J->tabBouton[i]->idBouton != JOUER){
 						desenfoncerBouton(menu2J->tabBouton[i]);
 						afficherMenu2J(menu2J, contexte);
 					}
@@ -479,12 +540,14 @@ int main(int argc, char* argv[]){
 			}
 
 
+			//Si on était dans le menu entrainement
 			else if (typeMenuEnCours == MENU_ENTRAINEMENT){
 				//On vérifie que tous les boutons sont bien revenus à leur position initiale
 				for (i = 0; i < NB_BOUTON_MENT; i++){
-					if (menuEntrainement->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton == ACCUEIL){
+					if (menuEntrainement->tabBouton[i]->enfonce == TRUE && menuEntrainement->tabBouton[i]->idBouton != PAUSE && menuEntrainement->tabBouton[i]->idBouton != JOUER){
 						desenfoncerBouton(menuEntrainement->tabBouton[i]);
 						afficherMenuEntrainement(menuEntrainement, contexte);
+						afficherMenuDroite(menuDroiteEntrainement, contexte);
 					}
 				}
 
@@ -499,7 +562,16 @@ int main(int argc, char* argv[]){
 			}
 
 
+			//Si on était dans le menu règles
 			else if (typeMenuEnCours == MENU_REGLES){
+				//On vérifie que tous les boutons du menu sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_MREG; i++){
+					if (menuRegles->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menuRegles->tabBouton[i]);
+						afficherMenuRegles(menuRegles, contexte);
+					}
+				}
+
 				//On vérifie que les boutons suivant et précédent sont revenus à leur position initiale
 				if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0] != NULL){
 					if (fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[0]->enfonce){
@@ -526,7 +598,6 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
-
 		}
 
 
@@ -757,7 +828,7 @@ int main(int argc, char* argv[]){
 			//Si aucune pièce sélectionnée et que la case en contient une
 			if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee == NULL){
 				//S'il s'agit bien de la couleur à jouer
-				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == couleurAJouer){
+				if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == (*couleurAJouer)){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
@@ -780,6 +851,7 @@ int main(int argc, char* argv[]){
 
 
 					//On met la pièce en défausse
+					IDPiece idPieceASortir = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->idPiece;
 					if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
 						mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
 					else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
@@ -789,6 +861,12 @@ int main(int argc, char* argv[]){
 					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 					l->current->mangerPiece = 1;
+
+					/***********REMETTRE UNE PIECE DE LA DEFAUSSE SUR LE PLATEAU***********/
+					Piece* p = sortirPieceDefausse(plateau->defausseBlanc, plateau->defausseNoir, idPieceASortir);
+					bougerPiece(p, plateau->echiquier->tabPieces, 4, 4, l);
+					afficherMenuDroite(menuDroite, contexte);
+					/******FIN*******/
 
 					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
 					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
@@ -824,7 +902,18 @@ int main(int argc, char* argv[]){
 					supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 
 					//Au tour de l'autre couleur de jouer, et on remet à 0 le chrono
-					couleurAJouer = !couleurAJouer;
+					*couleurAJouer = !(*couleurAJouer);
+					if (*couleurAJouer == BLANC){
+						if (typeMenuEnCours == MENU_ENTRAINEMENT)
+							menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+						else
+							menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone1->ttfPseudo;}
+					else{
+						if (typeMenuEnCours == MENU_ENTRAINEMENT)
+							menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+						else
+							menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone2->ttfPseudo;}
+					afficherMenuDroite(menuDroite, contexte);
 					remettreAZeroChrono(menuDroite->timer);
 				}
 			}
@@ -870,7 +959,20 @@ int main(int argc, char* argv[]){
 						supprimerSurbrillanceDeplacementPossibles(deplacementPossible, plateau->echiquier, contexte);
 
 						//Au tour de l'autre couleur de jouer, et on remet à 0 le chrono
-						couleurAJouer = !couleurAJouer;
+						*couleurAJouer = !(*couleurAJouer);
+						if (*couleurAJouer == BLANC){
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone1->ttfPseudo;
+						}
+						else{
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone2->ttfPseudo;
+						}
+						afficherMenuDroite(menuDroite, contexte);
 						remettreAZeroChrono(menuDroite->timer);
 					}
 

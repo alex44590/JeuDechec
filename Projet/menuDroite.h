@@ -3,8 +3,12 @@
 
 #define TEXTE_ECHEC_MAX 30
 #define TEXTE_ECHEC_X 970
-#define TEXTE_ECHEC_Y 290
+#define TEXTE_ECHEC_Y 310
 
+#define ZONE_JOUEUR_X 970
+#define ZONE_JOUEUR_Y 230
+#define ZONE_JOUEUR_LARGEUR 260
+#define ZONE_JOUEUR_HAUTEUR 25
 
 #include "commun.h"
 #include "texte.h"
@@ -13,12 +17,21 @@
 #include "defausse.h"
 #include "timer.h"
 
+
+typedef struct{
+	Dimension dimension;
+	Position position;
+	SDL_Surface* imageZoneJoueur;
+	SDL_Surface* ttfJoueur;
+}ZoneJoueurEnCours;
+
 typedef struct{
 	Dimension dimension;
 	Position position;
 	SDL_Surface* fondMenu;
 	Defausse* defausseB;
 	Defausse* defausseN;
+	ZoneJoueurEnCours* zoneJoueurEnCours;
 	char* texteEchec;
 	SDL_Surface* ttfTexteEchec;
 	Timer* timer;
@@ -33,4 +46,7 @@ void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte);
 /*Fonction qui affiche un évènement notable en fonction de la situation de jeu (Echec, pat...) dans le menu de droite,
   ou qui supprime l'affichage précédent si la situation a été résolue*/
 void mettreAJourTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte);
+
+ZoneJoueurEnCours* creerZoneJoueurEnCours();
+void afficherZoneJoueurEnCours(ZoneJoueurEnCours* z, SDL_Renderer* contexte);
 #endif // !MENUDROITE_H

@@ -18,6 +18,7 @@ INFO : Création du menu
 INFO : Affichage de l'image d'accueil
 INFO : Création du menu 2 joueurs
 INFO : Création du menu entrainement
+INFO : Création du menu règles
 INFO : Création du menu de droite 2 joueurs
 INFO : Création du menu de droite entrainement
 INFO : Création de l'objet Déplacement Possible
@@ -32,33 +33,102 @@ INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/2.png
 INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/3.png
+INFO : Nom de l'image de page regle chargée ci dessous :
+INFO : Regles/4.png
+INFO : Nom de l'image de page regle chargée ci dessous :
+INFO : Regles/5.png
+INFO : Nom de l'image de page regle chargée ci dessous :
+INFO : Regles/6.png
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
 AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
 AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 2
 AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 3
 AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
-INFO : Affichage Page Regle
+INFO : Temps : 4
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 2
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 3
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 4
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 5
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 6
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 7
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 8
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 9
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 10
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 11
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 12
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 13
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 2
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 3
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 4
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 2
+INFO : ********** POSITION D'ECHEC DETECTEE ! **********
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 0
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 1
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 2
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 3
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 4
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 5
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 6
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 7
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 8
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 9
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 10
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 11
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 12
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 13
+AVERTISSEMENT : Reaffichage timer nécessaire
+INFO : Temps : 14

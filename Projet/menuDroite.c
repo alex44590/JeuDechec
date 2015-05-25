@@ -20,6 +20,8 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 	*(menu->texteEchec) = '\0';
 	menu->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
 
+	menu->zoneJoueurEnCours = creerZoneJoueurEnCours();
+
 	menu->timer = init_timer();
 	return menu;
 }
@@ -45,6 +47,7 @@ void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 	afficherAllPiecesDefausse(m->defausseB, contexte);
 	afficherDefausse(m->defausseN, contexte);
 	afficherAllPiecesDefausse(m->defausseN, contexte);
+	afficherZoneJoueurEnCours(m->zoneJoueurEnCours, contexte);
 	afficherChrono(m->timer, contexte);
 	afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
 
@@ -95,4 +98,22 @@ void mettreAJourTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contex
 	else{
 		logPrint(AVERTISSEMENT, "Erreur de situation de jeu (fct afficher texte Echec). Aucun des cas recensés n'est validé");
 	}
+}
+
+
+ZoneJoueurEnCours* creerZoneJoueurEnCours(){
+	ZoneJoueurEnCours* z = (ZoneJoueurEnCours*)malloc(sizeof(ZoneJoueurEnCours));
+	z->imageZoneJoueur = IMG_Load("joueur.png");
+	if (z->imageZoneJoueur == NULL)
+		logPrint(ERREUR, "Impossible de charger l'image de la zoneJoueurEnCours du menuDroite");
+	z->ttfJoueur = creerTexte(" ", "calibri.ttf", 16, 220, 220, 220);
+	z->dimension = (Dimension){ ZONE_JOUEUR_HAUTEUR, ZONE_JOUEUR_LARGEUR };
+	z->position = (Position){ ZONE_JOUEUR_X, ZONE_JOUEUR_Y };	
+	return z;
+}
+
+
+void afficherZoneJoueurEnCours(ZoneJoueurEnCours* z, SDL_Renderer* contexte){
+	afficherImage(z->imageZoneJoueur, z->position, z->dimension, contexte);
+	afficherTexte(z->ttfJoueur, z->position.x + 30, z->position.y + 5, contexte);
 }

@@ -36,6 +36,7 @@ void afficherMenu(Menu* m, SDL_Renderer* contexte){
 	for (i = 0; i < NB_BOUTON_MP; ++i){
 		afficherBouton(m->tabBouton[i], contexte);
 	}
+	afficherImageAccueil(m->imageAccueil, contexte);
 }
 
 void afficherImageAccueil(SDL_Surface* imageAccueil, SDL_Renderer* contexte){
@@ -342,4 +343,28 @@ void afficherMenuEntrainement(MenuEntrainement* m, SDL_Renderer* contexte){
 	afficherAllPiecesReserve(m->reserveN, contexte);
 	for (i = 0; i < NB_BOUTON_MENT; ++i)
 		afficherBouton(m->tabBouton[i], contexte);
+}
+
+
+//*****************************************
+//*********  PARTIE MENU REGLES  **********
+//*****************************************
+
+MenuRegles* creerMenuRegles(){
+	MenuRegles* menu = (MenuRegles*)malloc(sizeof(MenuRegles));
+
+	menu->fondMenu = IMG_Load("fondMenu3.png");
+	menu->tabBouton[0] = creerBouton(ACCUEIL, "BoutonHome.png");
+	setTailleBouton(menu->tabBouton[0], 45, 45);
+	setPositionBouton(menu->tabBouton[0], LARGEUR_MENU / 2 - menu->tabBouton[0]->dimension.largeur / 2, 150);
+	return menu;
+}
+
+
+void afficherMenuRegles(MenuRegles* m, SDL_Renderer* contexte){
+	afficherFondMenu(m->fondMenu, contexte);
+	int i;
+	for (i = 0; i < NB_BOUTON_MREG; ++i){
+		afficherBouton(m->tabBouton[i], contexte);
+	}
 }

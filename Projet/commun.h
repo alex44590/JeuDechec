@@ -92,4 +92,8 @@ typedef struct {
 }IDCase;
 
 
+//Méthode générique d'affichage d'image
+void afficherImage(SDL_Surface* image, Position p, Dimension d, SDL_Renderer* contexte);
+
+
 #endif // !COMMUN_H
