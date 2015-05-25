@@ -401,18 +401,27 @@ int main(int argc, char* argv[]){
 							break;
 						case JOUER:
 							if (PSEUDO_MENU_ENTRAINEMENT_CORRECT){
-								jeuEntrainementLance = TRUE;
-								enfoncerBouton(menuEntrainement->tabBouton[i]); //On enfonce le bouton pressé
-								desenfoncerBouton(menuEntrainement->tabBouton[2]); //On désenfonce le bouton pause
-								afficherMenuEntrainement(menuEntrainement, contexte);
-								//On affiche le joueur qui doit jouer
-								if (couleurAJouerEntrainement == BLANC)
-									menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
-								
-								else
-									menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
-								afficherMenuDroite(menuDroiteEntrainement, contexte);
+								//Si les rois ont bien été positionnées sur l'échiquier
+								if (positionRoiEntrainement[BLANC].colonne != -1 && positionRoiEntrainement[NOIR].colonne != -1){
+									jeuEntrainementLance = TRUE;
+									enfoncerBouton(menuEntrainement->tabBouton[i]); //On enfonce le bouton pressé
+									desenfoncerBouton(menuEntrainement->tabBouton[2]); //On désenfonce le bouton pause
+									afficherMenuEntrainement(menuEntrainement, contexte);
+									//On affiche le joueur qui doit jouer
+									if (couleurAJouerEntrainement == BLANC)
+										menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+
+									else
+										menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+									afficherMenuDroite(menuDroiteEntrainement, contexte);
+								}
+								//Si ce n'est pas le cas, on affiche un message d'erreur
+								else{
+									menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = creerTexte("Positionnez les rois sur l'échiquier!", "calibri.ttf", 16, 255, 100, 100);
+									afficherMenuDroite(menuDroiteEntrainement, contexte);
+								}
 							}
+
 							else{
 								menuDroiteEntrainement->zoneJoueurEnCours->ttfJoueur = creerTexte("Entrez le nom des joueurs !", "calibri.ttf", 16, 255, 100, 100);
 								afficherMenuDroite(menuDroiteEntrainement, contexte);
@@ -861,12 +870,6 @@ int main(int argc, char* argv[]){
 					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 					l->current->mangerPiece = 1;
-
-					/***********REMETTRE UNE PIECE DE LA DEFAUSSE SUR LE PLATEAU***********/
-					Piece* p = sortirPieceDefausse(plateau->defausseBlanc, plateau->defausseNoir, idPieceASortir);
-					bougerPiece(p, plateau->echiquier->tabPieces, 4, 4, l);
-					afficherMenuDroite(menuDroite, contexte);
-					/******FIN*******/
 
 					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
 					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);

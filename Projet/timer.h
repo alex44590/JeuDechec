@@ -3,6 +3,8 @@
 
 #include "commun.h"
 #include "texte.h"
+#include <time.h>
+
 
 
 #define CHRONO_TEXTE_MAX 20
