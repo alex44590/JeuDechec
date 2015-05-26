@@ -861,6 +861,7 @@ int main(int argc, char* argv[]){
 
 					//On met la pièce en défausse
 					IDPiece idPieceASortir = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->idPiece;
+					l->current->IDPieceManger = idPieceASortir;
 					if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
 						mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
 					else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
@@ -869,7 +870,7 @@ int main(int argc, char* argv[]){
 					//On mange la pièce 
 					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-					l->current->mangerPiece = 1;
+					
 
 					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
 					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
@@ -933,6 +934,7 @@ int main(int argc, char* argv[]){
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 						echec = calculerEchec(pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 						supprimerSurbillancePiece(pieceSelectionnee, contexte);
+						l->current->IDPieceManger = pieceSelectionnee->idPiece; //Piece mangé = pièce sélectionner pour fonction retour arrière
 
 						//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
 						if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == BLANC){

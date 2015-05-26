@@ -15,7 +15,7 @@ typedef struct Deplacement{
 	//Timer heure;
 	struct Deplacement* next;
 	struct Deplacement* previous;
-	char mangerPiece; // 1 si une pièce a été mangé, 0 sinon
+	IDPiece IDPieceManger; // IDPieceManger si une pièce a été mangé, IDPieceCurrent sinon
 }Deplacement;
 
 
