@@ -3,7 +3,8 @@
 
 #include "menuDroite.h"
 #include "listeDeplacement.h"
+#include "plateauDeJeu.h"
 
-void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8], Defausse* dBlanc, Defausse* dNoir, MenuDroite * m, SDL_Renderer* contexte);
+void retourArriere(ListDeplacement *l, PlateauDeJeu *p, MenuDroite * m, SDL_Renderer* contexte, Couleur couleurAJouer);
 
 #endif

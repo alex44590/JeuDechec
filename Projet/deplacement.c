@@ -1,6 +1,6 @@
 #include "deplacement.h"
 
-void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8], Defausse* dBlanc, Defausse* dNoir, MenuDroite * m, SDL_Renderer* contexte)
+void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Renderer* contexte, Couleur couleurAJouer)
 {
 	int flagPionManger = 0;
 	int flagPionTransformé = 0;
@@ -15,22 +15,23 @@ void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8], Defausse* dBlanc, 
 	Piece *p = NULL;
 
 
-	if (l->current != l->first)
+	if (l->current->numeroDeplacement > 31)
 	{
 		if (l->current->IDPieceManger.couleur != l->current->currentPiece->idPiece.couleur)
 		{
 			flagPionManger = 1;
 		}
-		bougerPiece(l->current->currentPiece, tabPiece, l->current->depart.colonne, l->current->depart.ligne, l);
+		bougerPiece(l->current->currentPiece, pl->echiquier->tabPieces, l->current->depart.colonne, l->current->depart.ligne, l);
 		deleteCurrent(l);
 		deleteCurrent(l);
 		if (flagPionManger == 1)
 		{
 			// On remet le dernier pion mangé à la place où il devait être
-			p = sortirPieceDefausse(dBlanc, dNoir, idPieceASortir);
-			bougerPiece(p, tabPiece, colonneArrivee, ligneArrivee, l);
+			p = sortirPieceDefausse(pl->defausseBlanc, pl->defausseNoir, idPieceASortir);
+			bougerPiece(p, pl->echiquier->tabPieces, colonneArrivee, ligneArrivee, l);
 			deleteCurrent(l);
-			afficherMenuDroite(m, contexte);
+			afficherMenuDroite(m, couleurAJouer,contexte);
+			afficherPlateauDeJeu(contexte, pl);
 
 		}
 		if (flagPionTransformé == 1)

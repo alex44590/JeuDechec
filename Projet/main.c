@@ -11,6 +11,7 @@
 #include "entrainement.h"
 #include "timer.h"
 #include "regle.h"
+#include "deplacement.h"
 
 
 int main(int argc, char* argv[]){
@@ -581,11 +582,13 @@ int main(int argc, char* argv[]){
 					}
 				}
 
-				//On vérifie que tous les boutons du menu droite sont bien revenus à leur position initiale
+				//On vérifie qu'on a cliqué sur le bouton retour
 				for (i = 0; i < NB_BOUTON_MD; i++){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
+						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer);
+						
 					}
 				}
 
