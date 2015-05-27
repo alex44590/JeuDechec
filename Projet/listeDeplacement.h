@@ -15,7 +15,7 @@ typedef struct Deplacement{
 	//Timer heure;
 	struct Deplacement* next;
 	struct Deplacement* previous;
-	char mangerPiece; // 1 si une pièce a été mangé, 0 sinon
+	IDPiece IDPieceManger; // IDPieceManger si une pièce a été mangé, IDPieceCurrent sinon
 }Deplacement;
 
 
@@ -135,7 +135,6 @@ void printPiece(ListDeplacement * l, int *posCurseur);
 void printDepart(ListDeplacement * l, int *posCurseur);
 void printArrivee(ListDeplacement * l, int *posCurseur);
 
-void retourArriere(ListDeplacement *l, Piece* tabPiece[8][8]);
 
 void deleteCurrent(ListDeplacement* l);
 void deleteLast(ListDeplacement* l);

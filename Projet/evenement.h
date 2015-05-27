@@ -9,12 +9,15 @@
 #define CLIC_DOWN_SOURIS_BOUTON_MENU_2JOUEURS in.sourisEnfoncee && (in.clicSouris.x > menu2J->tabBouton[i]->positionInit.x && in.clicSouris.x < menu2J->tabBouton[i]->positionInit.x + menu2J->tabBouton[i]->dimension.largeur && in.clicSouris.y > menu2J->tabBouton[i]->positionInit.y && in.clicSouris.y < menu2J->tabBouton[i]->positionInit.y + menu2J->tabBouton[i]->dimension.hauteur)
 #define CLIC_DOWN_SOURIS_BOUTON_MENU_ENTRAINEMENT in.sourisEnfoncee && (in.clicSouris.x > menuEntrainement->tabBouton[i]->positionInit.x && in.clicSouris.x < menuEntrainement->tabBouton[i]->positionInit.x + menuEntrainement->tabBouton[i]->dimension.largeur && in.clicSouris.y > menuEntrainement->tabBouton[i]->positionInit.y && in.clicSouris.y < menuEntrainement->tabBouton[i]->positionInit.y + menuEntrainement->tabBouton[i]->dimension.hauteur)
 #define CLIC_DOWN_SOURIS_BOUTON_MENU_REGLES in.sourisEnfoncee && (in.clicSouris.x > menuRegles->tabBouton[i]->positionInit.x && in.clicSouris.x < menuRegles->tabBouton[i]->positionInit.x + menuRegles->tabBouton[i]->dimension.largeur && in.clicSouris.y > menuRegles->tabBouton[i]->positionInit.y && in.clicSouris.y < menuRegles->tabBouton[i]->positionInit.y + menuRegles->tabBouton[i]->dimension.hauteur)
+#define CLIC_DOWN_SOURIS_BOUTON_MENU_DROITE in.sourisEnfoncee && (in.clicSouris.x > menuDroite->tabBouton[i]->positionInit.x && in.clicSouris.x < menuDroite->tabBouton[i]->positionInit.x + menuDroite->tabBouton[i]->dimension.largeur && in.clicSouris.y > menuDroite->tabBouton[i]->positionInit.y && in.clicSouris.y < menuDroite->tabBouton[i]->positionInit.y + menuDroite->tabBouton[i]->dimension.hauteur)
+
 
 #define CLIC_DOWN_SOURIS_BOUTON_REGLE_SUIVANTE in.sourisEnfoncee && (in.clicSouris.x > X_BOUTON_REGLE_SUIVANT && in.clicSouris.x < (X_BOUTON_REGLE_SUIVANT + LARGEUR_BOUTON_REGLE) && in.clicSouris.y > Y_BOUTON_REGLE_SUIVANT && in.clicSouris.y < (Y_BOUTON_REGLE_SUIVANT + HAUTEUR_BOUTON_REGLE))
 #define CLIC_DOWN_SOURIS_BOUTON_REGLE_PRECEDENTE in.sourisEnfoncee && (in.clicSouris.x > X_BOUTON_REGLE_PRECEDENT && in.clicSouris.x < (X_BOUTON_REGLE_PRECEDENT + LARGEUR_BOUTON_REGLE) && in.clicSouris.y > Y_BOUTON_REGLE_PRECEDENT && in.clicSouris.y < (Y_BOUTON_REGLE_PRECEDENT + HAUTEUR_BOUTON_REGLE))
 
 
 #define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)
+#define CLIC_DOWN_SOURIS_INTERIEUR_MENU_DROITE (in.clicSouris.x > OFFSET_PLATEAU_DROITE && in.clicSouris.x < LARGEUR_FENETRE)
 #define CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER (in.clicSouris.x > OFFSET_PLATEAU_GAUCHE && in.clicSouris.x < LARGEUR_FENETRE - OFFSET_PLATEAU_DROITE && in.clicSouris.y > OFFSET_PLATEAU_HAUT && in.clicSouris.y < HAUTEUR_FENETRE - OFFSET_PLATEAU_BAS)
 
 #define CLIC_DOWN_SOURIS_INTERIEUR_RESERVE (in.clicSouris.x >= X_RESERVE && in.clicSouris.x <= (X_RESERVE + LARGEUR_RESERVE) && ((in.clicSouris.y >= Y_RESERVE_NOIRE && in.clicSouris.y <= Y_RESERVE_NOIRE + HAUTEUR_RESERVE) ||  (in.clicSouris.y >= Y_RESERVE_BLANCHE && in.clicSouris.y <= Y_RESERVE_BLANCHE + HAUTEUR_RESERVE)))
