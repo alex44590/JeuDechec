@@ -228,11 +228,12 @@ void printArrivee(ListDeplacement * l, int *posCurseur)
 
 void deleteLast(ListDeplacement* l)
 {
-	setOnFirst(l);
-	while (l->current->next != l->last)
-	{
-		next(l);
-	}
+	//setOnFirst(l);
+	//while (l->current->next != l->last)
+	//{
+	//	next(l);
+	//}
+	previous(l);
 	free(l->current->next);
 	l->current->next = NULL;
 	l->last = l->current;

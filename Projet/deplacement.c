@@ -31,12 +31,11 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 			bougerPiece(p, pl->echiquier->tabPieces, colonneArrivee, ligneArrivee, l);
 			deleteCurrent(l);
 			afficherMenuDroite(m, couleurAJouer,contexte);
-			afficherPlateauDeJeu(contexte, pl);
-
 		}
 		if (flagPionTransformé == 1)
 		{
 			//On remet le pion transformé dans l'état Pion
 		}
+		afficherPlateauDeJeu(contexte, pl);
 	}
 }
