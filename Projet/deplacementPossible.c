@@ -508,3 +508,94 @@ VecteurDeplacement* creerVecteurDeplacement(){
 
 	return v;
 }
+
+
+ContexteRoque* creerContexteRoque(){
+	ContexteRoque* c = (ContexteRoque*)malloc(sizeof(ContexteRoque));
+	c->roiDejaBouge[BLANC] = FALSE;
+	c->roiDejaBouge[NOIR] = FALSE;
+	c->tourDejaBouge[BLANC][0] = FALSE;
+	c->tourDejaBouge[NOIR][0] = FALSE;
+	c->tourDejaBouge[BLANC][1] = FALSE;
+	c->tourDejaBouge[NOIR][1] = FALSE;
+	return c;
+}
+
+
+Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* c, ListDeplacement* l){
+	if (p1->type == ROI && p2->type == TOUR){
+		//S'il sont de la même couleur
+		if (p1->couleur == p2->couleur){
+			//Si le roi et la tour n'ont jamais bougé.
+			if (c->roiDejaBouge[p1->couleur] == FALSE && c->tourDejaBouge[p2->couleur][p2->idPiece.numero] == FALSE){
+				//Si les deux cases séparant le roi de la tour sont libres
+				//Cas où la tour est à gauche
+				if (p2->idPiece.numero == 0){
+					if (e->tabPieces[p2->idPosition.colonne + 1][p2->idPosition.ligne] == NULL && e->tabPieces[p2->idPosition.colonne + 2][p2->idPosition.ligne] == NULL && e->tabPieces[p2->idPosition.colonne + 3][p2->idPosition.ligne] == NULL){
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = FALSE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = FALSE;
+						bougerPiece(p1, e->tabPieces, p1->idPosition.colonne - 2, p1->idPosition.ligne, l);
+						bougerPiece(p2, e->tabPieces, p2->idPosition.colonne + 3, p2->idPosition.ligne, l);
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = TRUE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
+						c->roiDejaBouge[p1->couleur] = TRUE;
+						c->tourDejaBouge[p2->couleur][p2->idPiece.numero] = TRUE;
+						return TRUE;
+					}
+				}
+				else if (p2->idPiece.numero == 1){
+					if (e->tabPieces[p2->idPosition.colonne - 1][p2->idPosition.ligne] == NULL && e->tabPieces[p2->idPosition.colonne - 2][p2->idPosition.ligne] == NULL){
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = FALSE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = FALSE;
+						bougerPiece(p1, e->tabPieces, p1->idPosition.colonne + 2, p1->idPosition.ligne, l);
+						bougerPiece(p2, e->tabPieces, p2->idPosition.colonne - 2, p2->idPosition.ligne, l);
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = TRUE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
+						c->roiDejaBouge[p1->couleur] = TRUE;
+						c->tourDejaBouge[p2->couleur][p2->idPiece.numero] = TRUE;
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+	else if (p1->type == TOUR && p2->type == ROI){
+		//S'il sont de la même couleur
+		if (p1->couleur == p2->couleur){
+			//Si le roi et la tour n'ont jamais bougé.
+			if (c->roiDejaBouge[p2->couleur] == FALSE && c->tourDejaBouge[p1->couleur][p1->idPiece.numero] == FALSE){
+				//Si les deux cases séparant le roi de la tour sont libres
+				//Cas où la tour est à gauche
+				if (p1->idPiece.numero == 0){
+					if (e->tabPieces[p1->idPosition.colonne + 1][p1->idPosition.ligne] == NULL && e->tabPieces[p1->idPosition.colonne + 2][p1->idPosition.ligne] == NULL){
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = FALSE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = FALSE;
+						bougerPiece(p2, e->tabPieces, p2->idPosition.colonne - 2, p2->idPosition.ligne, l);
+						bougerPiece(p1, e->tabPieces, p1->idPosition.colonne + 3, p1->idPosition.ligne, l);
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = TRUE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
+						c->roiDejaBouge[p2->couleur] = TRUE;
+						c->tourDejaBouge[p1->couleur][p1->idPiece.numero] = TRUE;
+						return TRUE;
+					}
+				}
+				else if (p1->idPiece.numero == 1){
+					if (e->tabPieces[p1->idPosition.colonne - 1][p1->idPosition.ligne] == NULL && e->tabPieces[p1->idPosition.colonne - 2][p1->idPosition.ligne] == NULL){
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = FALSE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = FALSE;
+						bougerPiece(p2, e->tabPieces, p2->idPosition.colonne + 2, p2->idPosition.ligne, l);
+						bougerPiece(p1, e->tabPieces, p1->idPosition.colonne - 2, p1->idPosition.ligne, l);
+						e->tabCases[p1->idPosition.colonne][p1->idPosition.ligne]->occupee = TRUE;
+						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
+						c->roiDejaBouge[p2->couleur] = TRUE;
+						c->tourDejaBouge[p1->couleur][p1->idPiece.numero] = TRUE;
+						return TRUE;
+					}	
+				}
+			}
+		}
+	}
+
+	return FALSE;
+}

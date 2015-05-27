@@ -21,8 +21,16 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 	menu->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
 
 	menu->zoneJoueurEnCours = creerZoneJoueurEnCours();
+	menu->zoneChrono = creerZoneChrono();
 
-	menu->timer = init_timer();
+	menu->couleurEnCours = BLANC;
+
+	menu->tabBouton[0] = creerBouton(RETOUR, "retour.png");
+	setPositionBouton(menu->tabBouton[0], LARGEUR_FENETRE - LARGEUR_MENU_DROITE + (LARGEUR_MENU_DROITE / 2 - 35 / 2), BOUTON_RETOUR_Y);
+	setTailleBouton(menu->tabBouton[0], 35, 35);
+
+	menu->timer[0] = init_timer();
+	menu->timer[1] = init_timer();
 	return menu;
 }
 
@@ -41,27 +49,29 @@ void afficherFondMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
 
 
 
-void afficherMenuDroite(MenuDroite* m, SDL_Renderer* contexte){
+void afficherMenuDroite(MenuDroite* m, Couleur couleurAJouer, SDL_Renderer* contexte){
 	afficherFondMenuDroite(m, contexte);
 	afficherDefausse(m->defausseB, contexte);
 	afficherAllPiecesDefausse(m->defausseB, contexte);
 	afficherDefausse(m->defausseN, contexte);
 	afficherAllPiecesDefausse(m->defausseN, contexte);
 	afficherZoneJoueurEnCours(m->zoneJoueurEnCours, contexte);
-	afficherChrono(m->timer, contexte);
+	afficherZoneChrono(m->zoneChrono, contexte);
+	afficherBouton(m->tabBouton[0], contexte);
+	afficherChrono(m->timer[couleurAJouer], contexte);
 	afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
 
 }
 
 
 
-void mettreAJourTexteEchec(MenuDroite* m, SituationEchec s, SDL_Renderer* contexte){
+void mettreAJourTexteEchec(MenuDroite* m, Couleur couleurAJouer, SituationEchec s, SDL_Renderer* contexte){
 	if (s == RIEN){
 		//Dans le cas où la situation a changé (optimisation)
 		if (*(m->texteEchec) != '\0'){
 			m->texteEchec = "";
 			m->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
-			afficherMenuDroite(m, contexte);
+			afficherMenuDroite(m, couleurAJouer, contexte);
 		}
 	}
 
@@ -116,4 +126,20 @@ ZoneJoueurEnCours* creerZoneJoueurEnCours(){
 void afficherZoneJoueurEnCours(ZoneJoueurEnCours* z, SDL_Renderer* contexte){
 	afficherImage(z->imageZoneJoueur, z->position, z->dimension, contexte);
 	afficherTexte(z->ttfJoueur, z->position.x + 30, z->position.y + 5, contexte);
+}
+
+
+ZoneChrono* creerZoneChrono(){
+	ZoneChrono* z = (ZoneChrono*)malloc(sizeof(ZoneChrono));
+	z->imageZoneChrono = IMG_Load("zoneChrono.png");
+	if (z->imageZoneChrono == NULL)
+		logPrint(ERREUR, "Impossible de charger l'image de la zone Chrono");
+	z->dimension = (Dimension){ ZONE_CHRONO_HAUTEUR, ZONE_CHRONO_LARGEUR };
+	z->position = (Position){ ZONE_CHRONO_X, ZONE_CHRONO_Y };
+	return z;
+}
+
+
+void afficherZoneChrono(ZoneChrono* z, SDL_Renderer* contexte){
+	afficherImage(z->imageZoneChrono, z->position, z->dimension, contexte);
 }

@@ -30,9 +30,15 @@ typedef struct{
 	int deltaPionBlancPrise[2][2]; //2 colonnes et 2 lignes contenant en colonne 0 les deltaX possibles du pion pour manger et les deltaY associés en c1
 }VecteurDeplacement;
 
+typedef struct{
+	Booleen roiDejaBouge[2];
+	Booleen tourDejaBouge[2][2];
+}ContexteRoque;
 
 DeplacementPossible* creerDeplacementPossible();
 VecteurDeplacement* creerVecteurDeplacement();
+ContexteRoque* creerContexteRoque();
+Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* c, ListDeplacement* l);
 int calculerDeplacementPossibleCaseParCase(Echiquier* e, DeplacementPossible* d, SDL_Renderer* contexte, int x, int y, int newx, int newy, Booleen surbrillance);
 void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, Booleen surbrillance, SDL_Renderer* contexte);
 Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte);

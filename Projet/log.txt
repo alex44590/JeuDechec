@@ -2,6 +2,7 @@
 INFO : Création du fichier historique
 INFO : Création de la situation de jeu 2 joueurs
 INFO : Création de la situation de jeu entrainement
+INFO : Création de la structure ContexteRoque recensant les différents éléments permettant de valider ou non les conditions du roque
 INFO : Création de l'échiquier 2 joueurs
 INFO : Initialisation des cases de l'échiquier
 INFO : Initialisation des pièces de l'échiquier
@@ -41,116 +42,4 @@ INFO : Nom de l'image de page regle chargée ci dessous :
 INFO : Regles/6.png
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 4
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 5
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 6
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 4
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 5
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 6
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 4
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 4
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 5
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 6
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 7
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-INFO : ********** POSITION D'ECHEC DETECTEE ! **********
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 0
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 1
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 2
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 3
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 4
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 5
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 6
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 7
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 8
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 9
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 10
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 11
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 12
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 13
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 14
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 15
-AVERTISSEMENT : Reaffichage timer nécessaire
-INFO : Temps : 16
+INFO : Lancement de la boucle principale du jeu

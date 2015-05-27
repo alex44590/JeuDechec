@@ -6,10 +6,11 @@
 #define NB_BOUTON_MP 4 // Menu principal
 #define NB_BOUTON_M2J 3 // Menu 2 joueurs
 #define NB_BOUTON_MENT 3 // Menu Entrainement
+#define NB_BOUTON_MD 1 // Menu Droite
 #define NB_BOUTON_MREG 1 // Menu règles
 #define NB_BOUTON_REGLES 2 //Fenetre règles
 
-typedef enum { ENTRAINEMENT, DEUXJOUEURS, OPTION, REGLES, ACCUEIL, JOUER, PAUSE, REGLESUIVANTE, REGLEPRECEDENTE }idBouton;
+typedef enum { ENTRAINEMENT, DEUXJOUEURS, OPTION, REGLES, ACCUEIL, JOUER, PAUSE, REGLESUIVANTE, REGLEPRECEDENTE, RETOUR }idBouton;
 
 typedef struct{
 	idBouton idBouton;
