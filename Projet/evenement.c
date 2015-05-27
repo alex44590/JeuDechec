@@ -31,10 +31,11 @@ void mettreAJourEvent(Input* in){
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			in->sourisEnfoncee = TRUE;
-			in->sourisRelachee = FALSE;
-			in->clicSouris.x = event.button.x;
-			in->clicSouris.y = event.button.y;
+
+				in->sourisEnfoncee = TRUE;
+				in->sourisRelachee = FALSE;
+				in->clicSouris.x = event.button.x;
+				in->clicSouris.y = event.button.y;
 			break;
 
 		case SDL_MOUSEBUTTONUP:

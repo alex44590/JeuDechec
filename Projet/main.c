@@ -301,10 +301,10 @@ int main(int argc, char* argv[]){
 		/******************************************/
 		/*********   GESTION DES TIMERS  **********/
 		/******************************************/
-		//update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
-		//update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
-		//update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
-		//update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
+		update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
+		update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
+		update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
+		update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
 
 
 		//On rafraichit l'affichage du chrono si besoin est
@@ -704,8 +704,9 @@ int main(int argc, char* argv[]){
 
 		/****     Dans le menu entrainement     ****/
 		else if (typeMenuEnCours == MENU_ENTRAINEMENT){
-			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2))
+			if (in.sourisEnfoncee && (CLIC_SOURIS_INTERIEUR_PSEUDO_1 || CLIC_SOURIS_INTERIEUR_PSEUDO_2)){
 				continuerSaisiePseudo = 1;
+			}
 
 			if (CLIC_SOURIS_INTERIEUR_PSEUDO_1 && continuerSaisiePseudo){
 				deselectionnerZonePseudoEntrainement(menuEntrainement, menuEntrainement->zone2, FALSE, contexte);
@@ -744,6 +745,7 @@ int main(int argc, char* argv[]){
 			/***  Entrainement : Selection des pièces dans la réserve  ***/
 			/*************************************************************/
 			if (in.sourisEnfoncee && CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && !pieceReserveDejaSelectionnee && !jeuEntrainementLance){
+
 				if (pieceReserveSelectionnee == NULL){
 					pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
 					pieceReserveDejaSelectionnee = TRUE;
@@ -786,6 +788,9 @@ int main(int argc, char* argv[]){
 			/******************************************************************/
 
 			if (!jeuEntrainementLance && CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee){
+				//Pour éviter la répétition du code si l'on garde le clic enfoncé 
+				in.sourisEnfoncee = FALSE;
+
 				caseSelectionneeEntrainement = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 				idCaseSelectionneeEntrainement = caseSelectionneeEntrainement->identifiant;
 
@@ -885,6 +890,10 @@ int main(int argc, char* argv[]){
 		/******************************************/
 
 		if (CLIC_DOWN_SOURIS_INTERIEUR_ECHIQUIER && in.sourisEnfoncee && ((typeMenuEnCours == MENU_ENTRAINEMENT && jeuEntrainementLance) || (typeMenuEnCours == MENU_2J && jeuLance))){
+			//Pour éviter la répétition du code si l'on garde le clic enfoncé 
+			in.sourisEnfoncee = FALSE;
+
+			//On calcule la case correspondant à la position du clic souris effectué
 			caseSelectionnee = plateau->echiquier->tabCases[(in.clicSouris.x - OFFSET_PLATEAU_GAUCHE) / LARGEUR_CASE][(in.clicSouris.y - OFFSET_PLATEAU_HAUT) / HAUTEUR_CASE];
 			idCaseSelectionnee = caseSelectionnee->identifiant;
 
