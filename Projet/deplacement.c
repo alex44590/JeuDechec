@@ -9,7 +9,8 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 	///////////Définition de variable qui ne seront ///////////
 	//////////utilisé que si uune pièce à été mangé////////////
 	///////////////////////////////////////////////////////////
-	IDPiece idPieceASortir = l->current->IDPieceManger;
+	
+
 	Lettre colonneArrivee = l->current->arrivee.colonne;
 	Lettre ligneArrivee = l->current->arrivee.ligne;
 	Piece *p = NULL;
@@ -21,14 +22,31 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 		{
 			flagPionManger = 1;
 		}
+
+
+		//On indique que l'ancienne case n'est plus occupee (la fct bougerPiece ne peut le faire...)
+		pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = FALSE;
+
 		bougerPiece(l->current->currentPiece, pl->echiquier->tabPieces, l->current->depart.colonne, l->current->depart.ligne, l);
+
+		//On indique que la case sur laquelle est revenue la piece est occupee (idem...)
+		pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = TRUE;
+
 		deleteCurrent(l);
 		deleteCurrent(l);
+
+		//C'est ici qu'il fallait calculer l'id, pas avant !
+		IDPiece* idPieceASortir = &(l->current->IDPieceManger);
+
 		if (flagPionManger == 1)
 		{
 			// On remet le dernier pion mangé à la place où il devait être
-			p = sortirPieceDefausse(pl->defausseBlanc, pl->defausseNoir, idPieceASortir);
+			p = sortirPieceDefausse(pl->defausseBlanc, pl->defausseNoir, *idPieceASortir);
+
+			pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 			bougerPiece(p, pl->echiquier->tabPieces, colonneArrivee, ligneArrivee, l);
+			pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
+			
 			deleteCurrent(l);
 			afficherMenuDroite(m, couleurAJouer,contexte);
 		}

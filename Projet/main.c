@@ -600,6 +600,7 @@ int main(int argc, char* argv[]){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer);
+						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						
 					}
 				}
@@ -632,6 +633,17 @@ int main(int argc, char* argv[]){
 						afficherMenu(menu, contexte);
 						menuEnCours.menuAccueil = menu;
 						typeMenuEnCours = MENU_ACCUEIL;
+					}
+				}
+
+				//On vérifie qu'on a cliqué sur le bouton retour
+				for (i = 0; i < NB_BOUTON_MD; i++){
+					if (menuDroite->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menuDroite->tabBouton[i]);
+						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
+						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer);
+						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
+
 					}
 				}
 			}
