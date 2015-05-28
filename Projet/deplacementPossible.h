@@ -45,4 +45,5 @@ Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, Vect
 Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Lettre ligneArrivee, DeplacementPossible* d, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
 void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
+void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, DeplacementPossible* d, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte);
 #endif

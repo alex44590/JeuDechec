@@ -911,6 +911,12 @@ int main(int argc, char* argv[]){
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
 					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, TRUE, contexte);
+					
+					/**********************TEST ECHEC ANTICIPE*********************/
+					//On supprime de la matrice des déplacements possibles les cases où la pièce mettrait le roi en échec si elle s'y rendait
+					supprimerDeplacementPossibleEchecAnticipe(plateau->echiquier, pieceSelectionnee, deplacementPossible, deplacementPossibleEchecAnticipe, vecteurDeplacement, positionRoi, contexte);
+					/******************** FIN TEST ECHEC ANTICIPE*********************/
+
 					enregisterMatriceDeplacementPossible(deplacementPossible, "matDepPoss.txt");
 				}
 			}

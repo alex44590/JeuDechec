@@ -44,7 +44,13 @@ INFO : Regles/6.png
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
 INFO : Lancement de la boucle principale du jeu
-INFO : ** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********
+INFO : 45:00
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
 INFO : ********** POSITION D'ECHEC DETECTEE ! **********
-INFO : ** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********
-INFO : ********** POSITION D'ECHEC DETECTEE ! **********
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****
+AVERTISSEMENT : **** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****

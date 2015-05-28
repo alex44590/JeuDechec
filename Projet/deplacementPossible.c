@@ -37,7 +37,6 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			newx = x + v->deltaCavalier[0][i];
 			newy = y + v->deltaCavalier[1][i];
 			calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance);
-			if (calculerEchecAnticipe(e, p, ))
 		}
 		break;
 
@@ -631,4 +630,20 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 	}
 
 	return FALSE;
+}
+
+
+void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, DeplacementPossible* d, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte){
+	int i, j;
+	for (i = 0; i < 8; i++){
+		for (j = 0; j < 8; j++){
+			if (d->deplacementPossible[i][j] == 1 || d->deplacementPossible[i][j] == 2){
+				if (calculerEchecAnticipe(e, p, (Lettre)i, (Lettre)j, dEchecAnticipe, v, posRoi, contexte)){
+					d->deplacementPossible[i][j] = 0;
+					supprimerSurbrillance(e->tabCases[i][j], contexte);
+					logPrint(AVERTISSEMENT, "**** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****");
+				}
+			}
+		}
+	}
 }
