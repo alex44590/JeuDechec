@@ -601,7 +601,18 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
-						
+						//On vérifie une éventuelle position d'échec du côté adverse
+						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
+						if (echec){
+							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+							if (*couleurAJouer == NOIR)
+								*situationEchec = ECHEC_BLANC;
+							else
+								*situationEchec = ECHEC_NOIR;
+						}
+						else
+							*situationEchec = RIEN;						
 					}
 				}
 
@@ -643,7 +654,18 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
-
+						//On vérifie une éventuelle position d'échec du côté adverse
+						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
+						if (echec){
+							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+							if (*couleurAJouer == NOIR)
+								*situationEchec = ECHEC_BLANC;
+							else
+								*situationEchec = ECHEC_NOIR;
+						}
+						else
+							*situationEchec = RIEN;
 					}
 				}
 			}
@@ -946,12 +968,6 @@ int main(int argc, char* argv[]){
 				
 				//S'il y a possibilité de roque
 				if (gererRoqueSiPossible(pieceSelectionnee, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, contexteRoque, l)){
-					
-					/********** TEST ECHEC ANTICIPE ! **************/
-					Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
-					if (echecAnticipe)
-						logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
-					/********** FIN TEST ECHEC ANTICIPE ! **************/
 
 
 					//On vérifie une éventuelle position d'échec du côté adverse
@@ -1001,13 +1017,6 @@ int main(int argc, char* argv[]){
 
 				//S'il y a possibilité de manger une pièce
 				else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
-
-
-					/********** TEST ECHEC ANTICIPE ! **************/
-					Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
-					if (echecAnticipe)
-						logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
-					/********** FIN TEST ECHEC ANTICIPE ! **************/
 
 					//On met la pièce en défausse
 
@@ -1079,12 +1088,6 @@ int main(int argc, char* argv[]){
 				if (pieceSelectionnee != NULL){
 					//Si déplacement autorisé, on l'effectue
 					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
-
-						/********** TEST ECHEC ANTICIPE ! **************/
-						Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
-						if (echecAnticipe)
-							logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
-						/********** FIN TEST ECHEC ANTICIPE ! **************/
 
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);

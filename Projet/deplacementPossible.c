@@ -250,6 +250,12 @@ Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Let
 	e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 	e->tabCases[colonneArrivee][ligneArrivee]->occupee = TRUE;
 
+	//S'il s'agit d'un roi, on modifie le tableau posRoi (empêche le roi de se mettre lui même en échec)
+	if (p->type == ROI){
+		posRoi[p->couleur].colonne = colonneArrivee;
+		posRoi[p->couleur].ligne = ligneArrivee;
+	}
+
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
@@ -279,6 +285,12 @@ Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Let
 		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 	else
 		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
+
+	//On remet le roi à sa position initiale
+	if (p->type == ROI){
+		posRoi[p->couleur].colonne = colonneDepart;
+		posRoi[p->couleur].ligne = ligneDepart;
+	}
 
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneDepart;
@@ -632,7 +644,7 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 	return FALSE;
 }
 
-
+//Supprime la surbrillance des cases sur lesquelles une pièce ne peut pas se déplacer sans mettre son propre roi en échec
 void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, DeplacementPossible* d, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte){
 	int i, j;
 	for (i = 0; i < 8; i++){
@@ -641,7 +653,6 @@ void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, Deplaceme
 				if (calculerEchecAnticipe(e, p, (Lettre)i, (Lettre)j, dEchecAnticipe, v, posRoi, contexte)){
 					d->deplacementPossible[i][j] = 0;
 					supprimerSurbrillance(e->tabCases[i][j], contexte);
-					logPrint(AVERTISSEMENT, "**** Case supprimée de la matrice des déplacement autorisé car échec si la pièce s'y rendait ! ****");
 				}
 			}
 		}

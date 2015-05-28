@@ -16,12 +16,9 @@ MenuDroite* creerMenuDroite(Defausse* defausseB, Defausse* defausseN){
 	menu->dimension = TAILLE_MENU_DROITE;
 	menu->position = POSITION_MENU_DROITE;
 
-	menu->texteEchec = malloc(TEXTE_ECHEC_MAX * sizeof(char));
-	*(menu->texteEchec) = '\0';
-	menu->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
-
 	menu->zoneJoueurEnCours = creerZoneJoueurEnCours();
 	menu->zoneChrono = creerZoneChrono();
+	menu->zoneEchec = creerZoneEchec();
 
 	menu->couleurEnCours = BLANC;
 
@@ -59,8 +56,7 @@ void afficherMenuDroite(MenuDroite* m, Couleur couleurAJouer, SDL_Renderer* cont
 	afficherZoneChrono(m->zoneChrono, contexte);
 	afficherBouton(m->tabBouton[0], contexte);
 	afficherChrono(m->timer[couleurAJouer], contexte);
-	afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
-
+	afficherZonEchec(m->zoneEchec, contexte);
 }
 
 
@@ -68,46 +64,41 @@ void afficherMenuDroite(MenuDroite* m, Couleur couleurAJouer, SDL_Renderer* cont
 void mettreAJourTexteEchec(MenuDroite* m, Couleur couleurAJouer, SituationEchec s, SDL_Renderer* contexte){
 	if (s == RIEN){
 		//Dans le cas où la situation a changé (optimisation)
-		if (*(m->texteEchec) != '\0'){
-			m->texteEchec = "";
-			m->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 20, 240, 240, 240);
-			afficherMenuDroite(m, couleurAJouer, contexte);
+		if (*(m->zoneEchec->texteEchec) != '\0'){
+			m->zoneEchec->texteEchec = "";
 		}
 	}
 
 	else if (s == ECHEC_BLANC){
-		m->texteEchec = "Roi blanc en échec !";
-		m->ttfTexteEchec = creerTexte(m->texteEchec, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+		m->zoneEchec->texteEchec = "Roi blanc en échec !";
+		m->zoneEchec->ttfTexteEchec = creerTexte(m->zoneEchec->texteEchec, "calibri.ttf", 16, 255, 150, 150);
 	}
 
 	else if (s == ECHEC_NOIR){
-		m->texteEchec = "Roi noir en échec !";
-		m->ttfTexteEchec = creerTexte(m->texteEchec, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+		m->zoneEchec->texteEchec = "Roi noir en échec !";
+		m->zoneEchec->ttfTexteEchec = creerTexte(m->zoneEchec->texteEchec, "calibri.ttf", 16, 255, 150, 150);
 	}
 
 	else if (s == ECHEC_ET_MAT_BLANC){
-		m->texteEchec = "Roi blanc en échec et mat !";
-		m->ttfTexteEchec = creerTexte(m->texteEchec, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+		m->zoneEchec->texteEchec = "Echec et Mat : les noirs gagnent !";
+		m->zoneEchec->ttfTexteEchec = creerTexte(m->zoneEchec->texteEchec, "calibri.ttf", 16, 255, 150, 150);
 	}
 
 	else if (s == ECHEC_ET_MAT_NOIR){
-		m->texteEchec = "Roi noir en échec et mat !";
-		m->ttfTexteEchec = creerTexte(m->texteEchec, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+		m->zoneEchec->texteEchec = "Echec et mat : les blancs gagnent !";
+		m->zoneEchec->ttfTexteEchec = creerTexte(m->zoneEchec->texteEchec, "calibri.ttf", 16, 255, 150, 150);
 	}
 
 	else if (s == PAT){
-		m->texteEchec = "Egalité : Pat !";
-		m->ttfTexteEchec = creerTexte(m->texteEchec, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(m->ttfTexteEchec, TEXTE_ECHEC_X, TEXTE_ECHEC_Y, contexte);
+		m->zoneEchec->texteEchec = "Egalité : Pat ! Partie terminée...";
+		m->zoneEchec->ttfTexteEchec = creerTexte(m->zoneEchec->texteEchec, "calibri.ttf", 16, 255, 150, 150);
 	}
 
 	else{
 		logPrint(AVERTISSEMENT, "Erreur de situation de jeu (fct afficher texte Echec). Aucun des cas recensés n'est validé");
 	}
+
+	afficherMenuDroite(m, couleurAJouer, contexte);
 }
 
 
@@ -142,4 +133,23 @@ ZoneChrono* creerZoneChrono(){
 
 void afficherZoneChrono(ZoneChrono* z, SDL_Renderer* contexte){
 	afficherImage(z->imageZoneChrono, z->position, z->dimension, contexte);
+}
+
+ZoneEchec* creerZoneEchec(){
+	ZoneEchec* z = (ZoneEchec*)malloc(sizeof(ZoneEchec));
+	z->texteEchec = malloc(TEXTE_ECHEC_MAX * sizeof(char));
+	z->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 16, 220, 220, 220);
+	z->imageZoneEchec = IMG_Load("zoneEchec.png");
+	if (z->imageZoneEchec == NULL)
+		logPrint(ERREUR, "Impossible de charger l'image de la Zone Echec");
+	z->dimension = (Dimension){ ZONE_ECHEC_HAUTEUR, ZONE_ECHEC_LARGEUR };
+	z->position = (Position){ ZONE_ECHEC_X, ZONE_ECHEC_Y };
+	return z;
+}
+
+
+void afficherZonEchec(ZoneEchec* z, SDL_Renderer* contexte){
+	afficherImage(z->imageZoneEchec, z->position, z->dimension, contexte);
+	if (z->texteEchec[0] != '\0');
+	afficherTexte(z->ttfTexteEchec, z->position.x + 30, z->position.y + 7, contexte);
 }

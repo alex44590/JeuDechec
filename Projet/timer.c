@@ -67,11 +67,9 @@ return time_over = 1;
 //Affiche le chrono dans le menu de droite si le raffraichissement est nécessaire
 //Remet à Faux le booléen du timer reaffichageNecessaire si tel est le cas...
 void afficherChrono(Timer* t, SDL_Renderer* contexte){
-	if (t->reaffichageNecessaire){
-		sprintf(t->bufferTexte, "%2.2d:%2.2d", t->chronoLisible.min, t->chronoLisible.sec);
-		t->ttfchrono = creerTexte(t->bufferTexte, "calibri.ttf", 20, 240, 240, 240);
-		afficherTexte(t->ttfchrono, POS_X_CHRONO, POS_Y_CHRONO, contexte);
-		t->reaffichageNecessaire = FALSE;
-		logPrint(INFO, t->bufferTexte);
-	}
+	sprintf(t->bufferTexte, "%2.2d:%2.2d", t->chronoLisible.min, t->chronoLisible.sec);
+	t->ttfchrono = creerTexte(t->bufferTexte, "calibri.ttf", 20, 240, 240, 240);
+	afficherTexte(t->ttfchrono, POS_X_CHRONO, POS_Y_CHRONO, contexte);
+	t->reaffichageNecessaire = FALSE;
+	logPrint(INFO, t->bufferTexte);
 }
