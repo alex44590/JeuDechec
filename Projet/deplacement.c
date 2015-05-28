@@ -1,6 +1,6 @@
 #include "deplacement.h"
 
-void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Renderer* contexte, Couleur couleurAJouer, ContexteRoque* c)
+void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Renderer* contexte, Couleur* couleurAJouer, ContexteRoque* c)
 {
 	int flagPionManger = 0;
 	int flagPionTransformé = 0;
@@ -15,6 +15,8 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 	Lettre ligneArrivee = l->current->arrivee.ligne;
 	Piece *p = NULL;
 
+	//La couleur à jouer est inversée...
+	*couleurAJouer = !(*couleurAJouer);
 
 	if (l->current->numeroDeplacement > 31)
 	{
@@ -32,7 +34,7 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 		//On indique que la case sur laquelle est revenue la piece est occupee (idem...)
 		pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = TRUE;
 
-		//On vérifie si la pièce revenu en arrière est un Roi pour pouvoir remettre le Roque en place si jamais il est revenu à sa position iniitale
+		//On vérifie si la pièce revenue en arrière est un Roi pour pouvoir remettre le Roque en place si jamais il est revenu à sa position iniitale
 		if (l->current->currentPiece->idPiece.type == 'R')
 		{
 			if (l->current->currentPiece->idPiece.couleur == 'N')
@@ -98,7 +100,7 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 			
 			deleteCurrent(l);
 			numeroDeplacement--;
-			afficherMenuDroite(m, couleurAJouer,contexte);
+			afficherMenuDroite(m, *couleurAJouer, contexte);
 		}
 		if (flagPionTransformé == 1)
 		{

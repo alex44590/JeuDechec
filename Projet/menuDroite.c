@@ -66,6 +66,7 @@ void mettreAJourTexteEchec(MenuDroite* m, Couleur couleurAJouer, SituationEchec 
 		//Dans le cas où la situation a changé (optimisation)
 		if (*(m->zoneEchec->texteEchec) != '\0'){
 			m->zoneEchec->texteEchec = "";
+			m->zoneEchec->ttfTexteEchec = creerTexte(" ", "calibri.ttf", 16, 255, 150, 150);
 		}
 	}
 

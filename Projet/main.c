@@ -217,6 +217,10 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création de l'objet Déplacement Possible pour les positions d'échec anticipée");
 	DeplacementPossible* deplacementPossibleEchecAnticipe = creerDeplacementPossible();
 
+	//Création de l'objet Déplacement Possible pour le calcul de l'échec et mat
+	logPrint(INFO, "Création de l'objet Déplacement Possible pour l'échec et mat");
+	DeplacementPossible* deplacementPossibleEchecEtMat = creerDeplacementPossible();
+
 	//Création du vecteur de déplacements
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
@@ -296,6 +300,8 @@ int main(int argc, char* argv[]){
 	Couleur* couleurAJouer = &couleurAJouer2J;
 
 	Booleen echec;
+	Booleen echecEtMat;
+	Booleen pat;
 
 
 	/*******************************************************/
@@ -599,7 +605,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
+						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
@@ -652,7 +658,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
+						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
@@ -974,11 +980,22 @@ int main(int argc, char* argv[]){
 					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
-						logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-						if (pieceSelectionnee->couleur == NOIR)
-							*situationEchec = ECHEC_BLANC;
-						else
-							*situationEchec = ECHEC_NOIR;
+						//On vérifie qu'il n'y a pas plutôt échec et mat !
+						echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+						if (echecEtMat){
+							logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
+							if (pieceSelectionnee->couleur == NOIR)
+								*situationEchec = ECHEC_ET_MAT_BLANC;
+							else
+								*situationEchec = ECHEC_ET_MAT_NOIR;
+						}
+						else{
+							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+							if (pieceSelectionnee->couleur == NOIR)
+								*situationEchec = ECHEC_BLANC;
+							else
+								*situationEchec = ECHEC_NOIR;
+						}
 					}
 					else
 						*situationEchec = RIEN;
@@ -1052,11 +1069,22 @@ int main(int argc, char* argv[]){
 					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
-						logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-						if (pieceSelectionnee->couleur == NOIR)
-							*situationEchec = ECHEC_BLANC;
-						else
-							*situationEchec = ECHEC_NOIR;
+						//On vérifie qu'il n'y a pas plutôt échec et mat !
+						echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+						if (echecEtMat){
+							logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
+							if (pieceSelectionnee->couleur == NOIR)
+								*situationEchec = ECHEC_ET_MAT_BLANC;
+							else
+								*situationEchec = ECHEC_ET_MAT_NOIR;
+						}
+						else{
+							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+							if (pieceSelectionnee->couleur == NOIR)
+								*situationEchec = ECHEC_BLANC;
+							else
+								*situationEchec = ECHEC_NOIR;
+						}
 					}
 					else
 						*situationEchec = RIEN;
@@ -1108,14 +1136,25 @@ int main(int argc, char* argv[]){
 						}
 
 						//On vérifie une éventuelle position d'échec du côté adverse
-						Booleen echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
-							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-							if (pieceSelectionnee->couleur == NOIR)
-								*situationEchec = ECHEC_BLANC;
-							else
-								*situationEchec = ECHEC_NOIR;
+							//On vérifie qu'il n'y a pas plutôt échec et mat !
+							echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+							if (echecEtMat){
+								logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
+								if (pieceSelectionnee->couleur == NOIR)
+									*situationEchec = ECHEC_ET_MAT_BLANC;
+								else
+									*situationEchec = ECHEC_ET_MAT_NOIR;
+							}
+							else{
+								logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+								if (pieceSelectionnee->couleur == NOIR)
+									*situationEchec = ECHEC_BLANC;
+								else
+									*situationEchec = ECHEC_NOIR;
+							}
 						}
 						else
 							*situationEchec = RIEN;

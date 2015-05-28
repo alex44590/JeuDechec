@@ -25,6 +25,7 @@ INFO : Création du menu de droite entrainement
 INFO : Création de l'objet Déplacement Possible
 INFO : Création de l'objet Déplacement Possible pour les positions d'échec
 INFO : Création de l'objet Déplacement Possible pour les positions d'échec anticipée
+INFO : Création de l'objet Déplacement Possible pour l'échec et mat
 INFO : Création de l'objet Vecteur Deplacement
 INFO : Création de la fenêtre contenenant les règles du jeu
 INFO : Nom de l'image de page regle chargée ci dessous :
@@ -46,62 +47,6 @@ INFO : Lancement de la boucle principale du jeu
 INFO : Lancement de la boucle principale du jeu
 INFO : 45:00
 INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : ********** POSITION D'ECHEC DETECTEE ! **********
 INFO : 45:00
 INFO : 45:00
 INFO : 45:00

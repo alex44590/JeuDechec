@@ -660,3 +660,27 @@ void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, Deplaceme
 }
 
 
+
+Booleen calculerEchecEtMat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte){
+	int i, j, k, l;
+	Booleen continuer = TRUE;
+
+	for (j = 0; j < 8; j++){
+		for (i = 0; i < 8; i++){
+			if (e->tabPieces[i][j] != NULL){
+				if (e->tabPieces[i][j]->couleur == c){
+					calculerDeplacementPossible(e->tabPieces[i][j], e, dEchecEtMat, v, FALSE, contexte);
+					supprimerDeplacementPossibleEchecAnticipe(e, e->tabPieces[i][j], dEchecEtMat, dEchecAnticipe, v, posRoi, contexte);
+					for (l = 0; l < 8; l++){
+						for (k = 0; k < 8; k++){
+							if (dEchecEtMat->deplacementPossible[k][l] != 0)
+								return FALSE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return TRUE;
+}
