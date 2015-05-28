@@ -1,5 +1,7 @@
 #include "piece.h"
 
+int numeroDeplacement = 0;
+
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	Piece* p = malloc(sizeof(Piece));
 	if (p == NULL){
@@ -171,7 +173,7 @@ void afficherPiece(Piece* p, SDL_Renderer* contexte){
 void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l){
 	if (p == NULL)
 		logPrint(ERREUR, "Impossible de bouger la pièce car il s'agit de l'élément NULL");
-	static int numeroDeplacement = 0;
+	//static int numeroDeplacement = 0;
 	//On bouge la pièce dans le tableau de pièce de l'échiquier
 	if ((p->idPosition.colonne != 8) && (p->idPosition.ligne != 8))//On évite le cas ou il s'agit de l'initialisation de la position de la pièce.
 		tabPiece[p->idPosition.colonne][p->idPosition.ligne] = NULL;

@@ -31,6 +31,9 @@
 //	int nbDeplacement;
 //}Piece;
 
+
+extern int numeroDeplacement;
+
 Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece);
 void bougerPiece(Piece* p, Piece* tabPiece[8][8], Lettre colonneArrivee, Lettre ligneArrivee, ListDeplacement* l);
 void afficherPiece(Piece* p, SDL_Renderer* contexte);

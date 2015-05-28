@@ -599,7 +599,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer);
+						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						
 					}
@@ -641,7 +641,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer);
+						retourArriere(l, plateau, menuDroite, contexte, *couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 
 					}

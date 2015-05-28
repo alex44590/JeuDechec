@@ -1,6 +1,6 @@
 #include "deplacement.h"
 
-void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Renderer* contexte, Couleur couleurAJouer)
+void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Renderer* contexte, Couleur couleurAJouer, ContexteRoque* c)
 {
 	int flagPionManger = 0;
 	int flagPionTransformé = 0;
@@ -32,8 +32,57 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 		//On indique que la case sur laquelle est revenue la piece est occupee (idem...)
 		pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = TRUE;
 
+		//On vérifie si la pièce revenu en arrière est un Roi pour pouvoir remettre le Roque en place si jamais il est revenu à sa position iniitale
+		if (l->current->currentPiece->idPiece.type == 'R')
+		{
+			if (l->current->currentPiece->idPiece.couleur == 'N')
+			{
+				if ((l->current->arrivee.colonne == 4) && (l->current->arrivee.ligne == 0))
+					c->roiDejaBouge[NOIR] = FALSE;
+			}
+			else if (l->current->currentPiece->idPiece.couleur == 'B')
+			{
+				if ((l->current->arrivee.colonne == 4) && (l->current->arrivee.ligne == 7))
+					c->roiDejaBouge[BLANC] = FALSE;
+			}
+		}
+		//On fait la même chose avec les tours maintenant 
+		else if (l->current->currentPiece->idPiece.type == 'T')
+		{
+			if (l->current->currentPiece->idPiece.couleur == 'N')
+			{
+				if (l->current->currentPiece->idPiece.numero == 0)
+				{
+					if ((l->current->arrivee.colonne == 0) && (l->current->arrivee.ligne == 0))
+						c->tourDejaBouge[NOIR][0] = FALSE;
+				}
+				else if (l->current->currentPiece->idPiece.numero == 1)
+				{
+					if ((l->current->arrivee.colonne == 7) && (l->current->arrivee.ligne == 0))
+						c->tourDejaBouge[NOIR][1] = FALSE;
+				}					
+			}			
+			else if (l->current->currentPiece->idPiece.couleur == 'B')
+			{
+				if (l->current->currentPiece->idPiece.numero == 0)
+				{
+					if ((l->current->arrivee.colonne == 0) && (l->current->arrivee.ligne == 7))
+						c->tourDejaBouge[BLANC][0] = FALSE;
+				}
+				else if (l->current->currentPiece->idPiece.numero == 1)
+				{
+					if ((l->current->arrivee.colonne == 7) && (l->current->arrivee.ligne == 7))
+						c->tourDejaBouge[BLANC][1] = FALSE;
+				}
+			}
+		}
+
+		//La suppression de 2 déplacement correspond : au déplacemenr effectué pour remettre la pièce à son endroit initiale et le 2e au déplacement voulant être supprimé initialement
 		deleteCurrent(l);
+		numeroDeplacement--;
+
 		deleteCurrent(l);
+		numeroDeplacement--;
 
 		//C'est ici qu'il fallait calculer l'id, pas avant !
 		IDPiece* idPieceASortir = &(l->current->IDPieceManger);
@@ -48,6 +97,7 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 			pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
 			
 			deleteCurrent(l);
+			numeroDeplacement--;
 			afficherMenuDroite(m, couleurAJouer,contexte);
 		}
 		if (flagPionTransformé == 1)
