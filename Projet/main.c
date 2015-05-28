@@ -981,7 +981,7 @@ int main(int argc, char* argv[]){
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
 						//On vérifie qu'il n'y a pas plutôt échec et mat !
-						echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+						echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						if (echecEtMat){
 							logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
 							if (pieceSelectionnee->couleur == NOIR)
@@ -997,6 +997,8 @@ int main(int argc, char* argv[]){
 								*situationEchec = ECHEC_NOIR;
 						}
 					}
+					else if (pat)
+						*situationEchec = PAT;
 					else
 						*situationEchec = RIEN;
 
@@ -1070,7 +1072,7 @@ int main(int argc, char* argv[]){
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
 						//On vérifie qu'il n'y a pas plutôt échec et mat !
-						echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+						echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						if (echecEtMat){
 							logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
 							if (pieceSelectionnee->couleur == NOIR)
@@ -1086,6 +1088,8 @@ int main(int argc, char* argv[]){
 								*situationEchec = ECHEC_NOIR;
 						}
 					}
+					else if (pat)
+						*situationEchec = PAT;
 					else
 						*situationEchec = RIEN;
 
@@ -1140,7 +1144,7 @@ int main(int argc, char* argv[]){
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
 							//On vérifie qu'il n'y a pas plutôt échec et mat !
-							echecEtMat = calculerEchecEtMat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, contexte);
+							echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 							if (echecEtMat){
 								logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
 								if (pieceSelectionnee->couleur == NOIR)
@@ -1156,6 +1160,8 @@ int main(int argc, char* argv[]){
 									*situationEchec = ECHEC_NOIR;
 							}
 						}
+						else if (pat)
+							*situationEchec = PAT;
 						else
 							*situationEchec = RIEN;
 

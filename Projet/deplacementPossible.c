@@ -661,7 +661,7 @@ void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, Deplaceme
 
 
 
-Booleen calculerEchecEtMat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte){
+Booleen calculerEchecEtMatEtPat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, Booleen* pat, SDL_Renderer* contexte){
 	int i, j, k, l;
 	Booleen continuer = TRUE;
 
@@ -680,6 +680,12 @@ Booleen calculerEchecEtMat(Couleur c, Echiquier* e, DeplacementPossible* dEchecE
 				}
 			}
 		}
+	}
+
+	//Cas où il y a en fait PAT ! ==> la couleur n'est pas en échec, mais ne peut plus se déplacer nulle part sans s'y mettre...
+	if (!calculerEchec(c, e, dEchecEtMat, v, posRoi, contexte)){
+		*pat = TRUE;
+		return FALSE;
 	}
 
 	return TRUE;
