@@ -59,3 +59,35 @@ void afficherEchiquier(Echiquier* echiquier, SDL_Renderer* contexte){
 	afficherAllPiece(echiquier->tabPieces, contexte);
 }
 	
+//Fonction utile pendant le développement du logiciel nous permettant de visualiser la matrice deplacementPossible dans un fichier texte
+void enregisterEchiquier(Echiquier* e, char* nomFichierSortie){
+	FILE* fichier = NULL;
+	int i, j;
+
+	fichier = fopen(nomFichierSortie, "w");
+
+	if (fichier == NULL)
+		logPrint(ERREUR, "Erreur lors de l'ouverture du fichier pour l'enregistrement de la matrice déplacement possible");
+	if (e == NULL)
+		logPrint(ERREUR, "Impossible d'enregistrer la matrice des deplacements possible dans un fichier s'il s'agit de l'élément NULL");
+
+	fprintf(fichier, "Pieces :\n\n");
+	for (j = 0; j < 8; ++j){
+		for (i = 0; i < 8; ++i){
+			if (e->tabPieces[i][j] != NULL)
+				fprintf(fichier, "%c%c%d|", e->tabPieces[i][j]->idPiece.type, e->tabPieces[i][j]->idPiece.couleur, e->tabPieces[i][j]->idPiece.numero);
+			else
+				fprintf(fichier, " * |");
+		}
+		fprintf(fichier, "\n--------------------------------\n");
+	}
+
+	fprintf(fichier, "\n\nCases :\n\n");
+	for (j = 0; j < 8; ++j){
+		for (i = 0; i < 8; ++i){
+			fprintf(fichier, " %d |", e->tabCases[i][j]->occupee);
+		}
+		fprintf(fichier, "\n--------------------------------\n");
+	}
+	fclose(fichier);
+}

@@ -278,7 +278,7 @@ Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Let
 	if (pieceCaseArrivee == NULL)
 		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 	else
-		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
 
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneDepart;
@@ -647,3 +647,5 @@ void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, Deplaceme
 		}
 	}
 }
+
+

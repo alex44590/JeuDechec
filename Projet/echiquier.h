@@ -13,6 +13,6 @@ typedef struct{
 
 Echiquier* creerEchiquier(ListDeplacement* l, Booleen ajouterPieces);
 void afficherEchiquier(Echiquier* echiquier, SDL_Renderer* contexte);
-
+void enregisterEchiquier(Echiquier* e, char* nomFichierSortie);
 
 #endif
