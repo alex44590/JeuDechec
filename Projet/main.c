@@ -213,6 +213,10 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création de l'objet Déplacement Possible pour les positions d'échec");
 	DeplacementPossible* deplacementPossibleEchec = creerDeplacementPossible();
 
+	//Création de l'objet Déplacement Possible pour le calcul des positions d'échec anticipé (avant de jouer une pièce)
+	logPrint(INFO, "Création de l'objet Déplacement Possible pour les positions d'échec anticipée");
+	DeplacementPossible* deplacementPossibleEchecAnticipe = creerDeplacementPossible();
+
 	//Création du vecteur de déplacements
 	logPrint(INFO, "Création de l'objet Vecteur Deplacement");
 	VecteurDeplacement* vecteurDeplacement = creerVecteurDeplacement();
@@ -301,10 +305,10 @@ int main(int argc, char* argv[]){
 		/******************************************/
 		/*********   GESTION DES TIMERS  **********/
 		/******************************************/
-		update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
-		update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
-		update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
-		update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
+		//update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
+		//update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
+		//update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
+		//update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
 
 
 		//On rafraichit l'affichage du chrono si besoin est
@@ -770,6 +774,8 @@ int main(int argc, char* argv[]){
 					afficherEchiquier(plateau->echiquier, contexte);
 					pieceSelectionneeEntrainement = NULL;
 				}
+
+				afficherMenuEntrainement(menuEntrainement, contexte);
 			}
 
 			//Si clic ailleurs dans le menu entrainement, on déselectionne la pièce
@@ -915,6 +921,13 @@ int main(int argc, char* argv[]){
 				//S'il y a possibilité de roque
 				if (gererRoqueSiPossible(pieceSelectionnee, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, contexteRoque, l)){
 					
+					/********** TEST ECHEC ANTICIPE ! **************/
+					Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, positionRoi, contexte);
+					if (echecAnticipe)
+						logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
+					/********** FIN TEST ECHEC ANTICIPE ! **************/
+
+
 					//On vérifie une éventuelle position d'échec du côté adverse
 					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, positionRoi, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
@@ -963,6 +976,13 @@ int main(int argc, char* argv[]){
 				//S'il y a possibilité de manger une pièce
 				else if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 2){
 
+
+					/********** TEST ECHEC ANTICIPE ! **************/
+					Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, positionRoi, contexte);
+					if (echecAnticipe)
+						logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
+					/********** FIN TEST ECHEC ANTICIPE ! **************/
+
 					//On met la pièce en défausse
 
 					IDPiece idPieceASortir = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->idPiece;
@@ -983,13 +1003,14 @@ int main(int argc, char* argv[]){
 					supprimerSurbillancePiece(pieceSelectionnee, contexte);
 
 					//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
-					if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == BLANC){
-						positionRoi[BLANC].colonne = caseSelectionnee->identifiant.colonne;
-						positionRoi[BLANC].ligne = caseSelectionnee->identifiant.ligne;
+					if (pieceSelectionnee->type == ROI){
+						positionRoi[pieceSelectionnee->couleur].colonne = caseSelectionnee->identifiant.colonne;
+						positionRoi[pieceSelectionnee->couleur].ligne = caseSelectionnee->identifiant.ligne;
+						contexteRoque->roiDejaBouge[pieceSelectionnee->couleur] = TRUE;
 					}
-					else if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == NOIR){
-						positionRoi[NOIR].colonne = caseSelectionnee->identifiant.colonne;
-						positionRoi[NOIR].ligne = caseSelectionnee->identifiant.ligne;
+					//Si on vient de bouger une tour, on l'indique pour le roque
+					if (pieceSelectionnee->type == TOUR){
+						contexteRoque->tourDejaBouge[pieceSelectionnee->couleur][pieceSelectionnee->idPiece.numero] = TRUE;
 					}
 
 					//On vérifie une éventuelle position d'échec du côté adverse
@@ -1033,6 +1054,12 @@ int main(int argc, char* argv[]){
 					//Si déplacement autorisé, on l'effectue
 					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
 
+						/********** TEST ECHEC ANTICIPE ! **************/
+						Booleen echecAnticipe = calculerEchecAnticipe(plateau->echiquier, pieceSelectionnee, idCaseSelectionnee.colonne, idCaseSelectionnee.ligne, deplacementPossibleEchecAnticipe, vecteurDeplacement, positionRoi, contexte);
+						if (echecAnticipe)
+							logPrint(INFO, "** ATTENTION ! ******** POSITION D'ECHEC ANTICIPEE DETECTEE ! **********");
+						/********** FIN TEST ECHEC ANTICIPE ! **************/
+
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
@@ -1044,10 +1071,11 @@ int main(int argc, char* argv[]){
 						if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == BLANC){
 							positionRoi[BLANC].colonne = caseSelectionnee->identifiant.colonne;
 							positionRoi[BLANC].ligne = caseSelectionnee->identifiant.ligne;
+							contexteRoque->roiDejaBouge[pieceSelectionnee->couleur] = TRUE;
 						}
-						else if (pieceSelectionnee->type == ROI && pieceSelectionnee->couleur == NOIR){
-							positionRoi[NOIR].colonne = caseSelectionnee->identifiant.colonne;
-							positionRoi[NOIR].ligne = caseSelectionnee->identifiant.ligne;
+						//Si on vient de bouger une tour, on l'indique pour le roque
+						if (pieceSelectionnee->type == TOUR){
+							contexteRoque->tourDejaBouge[pieceSelectionnee->couleur][pieceSelectionnee->idPiece.numero] = TRUE;
 						}
 
 						//On vérifie une éventuelle position d'échec du côté adverse

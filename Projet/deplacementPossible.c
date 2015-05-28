@@ -37,6 +37,7 @@ void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d,
 			newx = x + v->deltaCavalier[0][i];
 			newy = y + v->deltaCavalier[1][i];
 			calculerDeplacementPossibleCaseParCase(e, d, contexte, x, y, newx, newy, surbrillance);
+			if (calculerEchecAnticipe(e, p, ))
 		}
 		break;
 
@@ -230,31 +231,63 @@ Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, Vect
 }
 
 
-Booleen seMetEnEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte){
+//Fonction qui rend vrai si le roi de la couleur c est en échec
+//La pièce p correspond à la pièce qui va être jouée ou vient d'être jouée
+Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Lettre ligneArrivee, DeplacementPossible* d, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte){
 	int i, j;
+	Lettre ligneDepart = p->idPosition.ligne;
+	Lettre colonneDepart = p->idPosition.colonne;
+	Piece* pieceCaseArrivee = NULL;
+	Booleen echecAnticipe = FALSE;
+	Booleen continuer = TRUE;
+
+	if (e->tabPieces[colonneArrivee][ligneArrivee] != NULL){
+		pieceCaseArrivee = e->tabPieces[colonneArrivee][ligneArrivee];
+	}
+
+	//On bouge la pièce
+	e->tabPieces[p->idPosition.colonne][p->idPosition.ligne] = NULL;
+	e->tabPieces[colonneArrivee][ligneArrivee] = p;
+	e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+	e->tabCases[colonneArrivee][ligneArrivee]->occupee = TRUE;
+
+	//On modifie la position enregistrée de manière interne à la pièce
+	p->idPosition.colonne = colonneArrivee;
+	p->idPosition.ligne = ligneArrivee;
 
 	//Pour toutes les pièces de l'échiquier
-	for (i = 0; i < 8; i++){
-		for (j = 0; j < 8; j++){
+	for (i = 0; i < 8 && continuer; i++){
+		for (j = 0; j < 8 && continuer; j++){
 			if (e->tabPieces[j][i] != NULL){
-
 				//Si la pièce testée est de la couleur adverse
-				if (e->tabPieces[j][i]->couleur != c){
-
+				if (e->tabPieces[j][i]->couleur != p->couleur){
 					//On calcule tous ses déplacements possibles
-					calculerDeplacementPossible(e->tabPieces[j][i], e, dEchec, v, FALSE, contexte);
+					calculerDeplacementPossible(e->tabPieces[j][i], e, d, v, FALSE, contexte);
 					//Si la case contenant le roi possiblement en danger coincide avec un deplacement autorisé de la pièce testée
-					if (dEchec->deplacementPossible[posRoi[c].colonne][posRoi[c].ligne] == 2){
-						return TRUE;
+					if (d->deplacementPossible[posRoi[p->couleur].colonne][posRoi[p->couleur].ligne] == 2){
+						echecAnticipe = TRUE;
 					}
 				}
 			}
 		}
 	}
 
-	//Si on n'a pas détecté de position d'échec
-	return FALSE;
+	//On bouge la pièce
+	e->tabPieces[p->idPosition.colonne][p->idPosition.ligne] = pieceCaseArrivee;
+	e->tabPieces[colonneDepart][ligneDepart] = p;
+	e->tabCases[colonneDepart][ligneDepart]->occupee = TRUE;
+	if (pieceCaseArrivee == NULL)
+		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+	else
+		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+
+	//On modifie la position enregistrée de manière interne à la pièce
+	p->idPosition.colonne = colonneDepart;
+	p->idPosition.ligne = ligneDepart;
+
+	return echecAnticipe;
 }
+
 
 
 //Fonction permettant de mettre en surbrillance les cases où la pièce peut soit se déplacer, soit manger une pièce adverse
