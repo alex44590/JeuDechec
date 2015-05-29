@@ -16,6 +16,7 @@ typedef struct Deplacement{
 	struct Deplacement* next;
 	struct Deplacement* previous;
 	IDPiece IDPieceManger; // IDPieceManger si une pièce a été mangé, IDPieceCurrent sinon
+	int deplacementRoque;
 }Deplacement;
 
 
