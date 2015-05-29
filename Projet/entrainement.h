@@ -23,5 +23,5 @@ void deselectionnerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, Couleur c, S
 void mettreEnSurbillancePieceReserve(Reserve* r, Piece* p, SDL_Renderer* contexte);
 void supprimerSurbillancePieceReserve(Reserve* r, Piece* p, SDL_Renderer* contexte);
 void supprimerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, SDL_Renderer* contexte);
-
+void remettrePieceReserve(Piece* p, PlateauDeJeu* pl, Reserve* rb, Reserve* rn, int x, int y, SDL_Renderer* contexte);
 #endif

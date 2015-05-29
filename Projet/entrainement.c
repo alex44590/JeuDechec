@@ -148,7 +148,7 @@ Piece* selectionnerPieceReserve(Reserve* rb, Reserve* rn, int x, int y, SDL_Rend
 	}
 
 	else
-		return NULL;	
+		return NULL;
 }
 
 
@@ -189,7 +189,7 @@ void supprimerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, SDL_Renderer* con
 			}
 		}
 	}
-	
+
 	if (p->couleur == BLANC){
 		for (i = 0; i < 2 && continuer; i++){
 			for (j = 0; j < 8 && continuer; j++){
@@ -197,6 +197,47 @@ void supprimerPieceReserve(Reserve* rb, Reserve* rn, Piece* p, SDL_Renderer* con
 					rb->tabPiecesReserve[i][j] = NULL;
 					continuer = FALSE;
 				}
+			}
+		}
+	}
+}
+
+
+void remettrePieceReserve(Piece* p, PlateauDeJeu* pl, Reserve* rb, Reserve* rn, int x, int y, SDL_Renderer* contexte){
+	//Colonne et ligne dans la réserve
+	int colonne;
+	int ligne;
+
+	//Si on a cliqué sur un emplacement vide de la réserve blanche
+	if (y >= rb->position.y + OFFSET_HAUT_PIECE_RESERVE && y <= (rb->position.y + OFFSET_HAUT_PIECE_RESERVE + 2 * HAUTEUR_PIECE_RESERVE + HAUTEUR_ESPACE_PIECE_RESERVE)){
+		if (x >= rb->position.x + OFFSET_GAUCHE_PIECE_RESERVE && x <= (rb->position.x + OFFSET_GAUCHE_PIECE_RESERVE + 8 * LARGEUR_PIECE_RESERVE + 7 * LARGEUR_ESPACE_PIECE_RESERVE)){
+			colonne = (x - rb->position.x - OFFSET_GAUCHE_PIECE_RESERVE) / (LARGEUR_ESPACE_PIECE_RESERVE + LARGEUR_PIECE_RESERVE);
+			ligne = (y - rb->position.y - OFFSET_HAUT_PIECE_RESERVE) / (HAUTEUR_ESPACE_PIECE_RESERVE + HAUTEUR_PIECE_RESERVE);
+			if (rb->tabPiecesReserve[ligne][colonne] == NULL && p->couleur == BLANC){
+				rb->tabPiecesReserve[ligne][colonne] = p;
+				pl->echiquier->tabPieces[p->idPosition.colonne][p->idPosition.ligne] = NULL;
+				pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+				p->idPosition = (IDCase){ 8, 8 };
+			}
+			else{
+				supprimerSurbillancePiece(p, contexte);
+			}
+		}
+	}
+
+	//Si on a cliqué sur un emplacement vide de la réserve noire
+	else if (y >= rn->position.y + OFFSET_HAUT_PIECE_RESERVE && y <= (rn->position.y + OFFSET_HAUT_PIECE_RESERVE + 2 * HAUTEUR_PIECE_RESERVE + HAUTEUR_ESPACE_PIECE_RESERVE)){
+		if (x >= rn->position.x + OFFSET_GAUCHE_PIECE_RESERVE && x <= (rn->position.x + OFFSET_GAUCHE_PIECE_RESERVE + 8 * LARGEUR_PIECE_RESERVE + 7 * LARGEUR_ESPACE_PIECE_RESERVE)){
+			colonne = (x - rn->position.x - OFFSET_GAUCHE_PIECE_RESERVE) / (LARGEUR_ESPACE_PIECE_RESERVE + LARGEUR_PIECE_RESERVE);
+			ligne = (y - rn->position.y - OFFSET_HAUT_PIECE_RESERVE) / (HAUTEUR_ESPACE_PIECE_RESERVE + HAUTEUR_PIECE_RESERVE);
+			if (rn->tabPiecesReserve[ligne][colonne] == NULL && p->couleur == NOIR){
+				rn->tabPiecesReserve[ligne][colonne] = p;
+				pl->echiquier->tabPieces[p->idPosition.colonne][p->idPosition.ligne] = NULL;
+				pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
+				p->idPosition = (IDCase){ 8, 8 };
+			}
+			else{
+				supprimerSurbillancePiece(p, contexte);
 			}
 		}
 	}

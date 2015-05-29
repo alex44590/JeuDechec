@@ -13,10 +13,6 @@ PageRegle* creerPageRegle(char numPage, Booleen boutonPrecedent, Booleen boutonS
 	if (p->imageRegle == NULL)
 		logPrint(ERREUR, "Impossible de charger l'image de la page de règle");
 
-	logPrint(INFO, "Nom de l'image de page regle chargée ci dessous :");
-	logPrint(INFO, nomFichier);
-
-
 	p->boutons[0] = NULL;
 	p->boutons[1] = NULL;
 

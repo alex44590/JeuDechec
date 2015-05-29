@@ -28,20 +28,6 @@ INFO : Création de l'objet Déplacement Possible pour les positions d'échec antic
 INFO : Création de l'objet Déplacement Possible pour l'échec et mat
 INFO : Création de l'objet Vecteur Deplacement
 INFO : Création de la fenêtre contenenant les règles du jeu
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/0.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/1.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/2.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/3.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/4.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/5.png
-INFO : Nom de l'image de page regle chargée ci dessous :
-INFO : Regles/6.png
 INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
 INFO : Lancement de la boucle principale du jeu
@@ -50,7 +36,25 @@ INFO : 45:00
 INFO : 45:00
 INFO : 45:00
 INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
-INFO : 45:00
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle
+INFO : Affichage Page Regle

@@ -797,7 +797,7 @@ int main(int argc, char* argv[]){
 			/***  Entrainement : Selection des pièces dans la réserve  ***/
 			/*************************************************************/
 			if (in.sourisEnfoncee && CLIC_DOWN_SOURIS_INTERIEUR_RESERVE && !pieceReserveDejaSelectionnee && !jeuEntrainementLance){
-
+				//Si on avait pas encore sélectionné de pièce dans la réserve
 				if (pieceReserveSelectionnee == NULL){
 					pieceReserveSelectionnee = selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
 					pieceReserveDejaSelectionnee = TRUE;
@@ -818,9 +818,19 @@ int main(int argc, char* argv[]){
 
 				//Dans tous les cas, si on clique dans la réserve, on déselectionne la pièce sélectionnée dans l'échiquier
 				if (pieceSelectionneeEntrainement != NULL){
-					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
-					afficherEchiquier(plateau->echiquier, contexte);
-					pieceSelectionneeEntrainement = NULL;
+					if (selectionnerPieceReserve(reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte) == NULL){
+						remettrePieceReserve(pieceSelectionneeEntrainement, plateau, reserveB, reserveN, in.clicSouris.x, in.clicSouris.y, contexte);
+						//supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+						deselectionnerPieceReserve(reserveB, reserveN, pieceSelectionneeEntrainement, pieceSelectionneeEntrainement->couleur, contexte);
+						afficherMenuEntrainement(menuEntrainement, contexte);
+						afficherEchiquier(plateau->echiquier, contexte);
+						pieceSelectionneeEntrainement = NULL;
+					}
+					else{
+						supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
+						afficherEchiquier(plateau->echiquier, contexte);
+						pieceSelectionneeEntrainement = NULL;
+					}
 				}
 
 				afficherMenuEntrainement(menuEntrainement, contexte);
