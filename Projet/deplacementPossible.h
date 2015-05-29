@@ -43,6 +43,7 @@ int calculerDeplacementPossibleCaseParCase(Echiquier* e, DeplacementPossible* d,
 void calculerDeplacementPossible(Piece* p, Echiquier* e, DeplacementPossible* d, VecteurDeplacement* v, Booleen surbrillance, SDL_Renderer* contexte);
 Booleen calculerEchec(Couleur c, Echiquier* e, DeplacementPossible* dEchec, VecteurDeplacement* v, IDCase* posRoi, SDL_Renderer* contexte);
 Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Lettre ligneArrivee, DeplacementPossible* d, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte);
+Booleen calculerEchecEtMatEtPat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, Booleen* pat, SDL_Renderer* contexte);
 void enregisterMatriceDeplacementPossible(DeplacementPossible* d, char* nomFichierSortie);
 void supprimerSurbrillanceDeplacementPossibles(DeplacementPossible* d, Echiquier* e, SDL_Renderer* contexte);
 void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, DeplacementPossible* d, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase posRoi[], SDL_Renderer* contexte);

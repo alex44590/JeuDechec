@@ -10,6 +10,11 @@
 #define ZONE_JOUEUR_LARGEUR 260
 #define ZONE_JOUEUR_HAUTEUR 25
 
+#define ZONE_ECHEC_X 970
+#define ZONE_ECHEC_Y 415
+#define ZONE_ECHEC_LARGEUR 260
+#define ZONE_ECHEC_HAUTEUR 30
+
 #define BOUTON_RETOUR_X 1020 
 #define BOUTON_RETOUR_Y 160
 
@@ -35,6 +40,14 @@ typedef struct{
 }ZoneChrono;
 
 typedef struct{
+	char* texteEchec;
+	Dimension dimension;
+	Position position;
+	SDL_Surface* imageZoneEchec;
+	SDL_Surface* ttfTexteEchec;
+}ZoneEchec;
+
+typedef struct{
 	Dimension dimension;
 	Position position;
 	SDL_Surface* fondMenu;
@@ -43,8 +56,7 @@ typedef struct{
 	Bouton* tabBouton[NB_BOUTON_MD];
 	ZoneJoueurEnCours* zoneJoueurEnCours;
 	ZoneChrono* zoneChrono;
-	char* texteEchec;
-	SDL_Surface* ttfTexteEchec;
+	ZoneEchec* zoneEchec;
 	Timer* timer[2];
 	Couleur couleurEnCours;
 }MenuDroite;
@@ -64,5 +76,8 @@ void afficherZoneJoueurEnCours(ZoneJoueurEnCours* z, SDL_Renderer* contexte);
 
 ZoneChrono* creerZoneChrono();
 void afficherZoneChrono(ZoneChrono* z, SDL_Renderer* contexte);
+
+ZoneEchec* creerZoneEchec();
+void afficherZonEchec(ZoneEchec* z, SDL_Renderer* contexte);
 
 #endif // !MENUDROITE_H
