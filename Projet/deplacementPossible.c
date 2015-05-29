@@ -250,6 +250,12 @@ Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Let
 	e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 	e->tabCases[colonneArrivee][ligneArrivee]->occupee = TRUE;
 
+	//S'il s'agit d'un roi, on modifie le tableau posRoi (empeche le roi de se mettre lui meme en echec)
+	if (p->type == ROI){
+		posRoi[p->couleur].colonne = colonneArrivee;
+		posRoi[p->couleur].ligne = ligneArrivee;
+	}
+
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneArrivee;
 	p->idPosition.ligne = ligneArrivee;
@@ -279,6 +285,12 @@ Booleen calculerEchecAnticipe(Echiquier* e, Piece* p, Lettre colonneArrivee, Let
 		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 	else
 		e->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
+
+	//On remet le roi dans sa position initiale
+	if (p->type == ROI){
+		posRoi[p->couleur].colonne = colonneDepart;
+		posRoi[p->couleur].ligne = ligneDepart;
+	}
 
 	//On modifie la position enregistrée de manière interne à la pièce
 	p->idPosition.colonne = colonneDepart;
@@ -655,3 +667,36 @@ void supprimerDeplacementPossibleEchecAnticipe(Echiquier* e, Piece* p, Deplaceme
 }
 
 
+Booleen calculerEchecEtMatEtPat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, Booleen* pat, SDL_Renderer* contexte){
+	int i, j, k, l;
+	Booleen continuer = TRUE;
+
+	for (j = 0; j < 8; j++){
+		for (i = 0; i < 8; i++){
+			if (e->tabPieces[i][j] != NULL){
+				if (e->tabPieces[i][j]->couleur == c){
+					calculerDeplacementPossible(e->tabPieces[i][j], e, dEchecEtMat, v, FALSE, contexte);
+					supprimerDeplacementPossibleEchecAnticipe(e, e->tabPieces[i][j], dEchecEtMat, dEchecAnticipe, v, posRoi, contexte);
+					for (l = 0; l < 8; l++){
+						for (k = 0; k < 8; k++){
+							if (dEchecEtMat->deplacementPossible[k][l] != 0)
+								return FALSE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//Cas ou il y a en fait PAT ! ==> la couleur n'est pas en echec, mais ne peut plus se deplacer nulle part sans s'y mettre
+	if (!calculerEchec(c, e, dEchecEtMat, v, posRoi, contexte)){
+		*pat = TRUE;
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/*Booleen calculerPat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, Booleen* pat, SDL_Renderer* contexte){
+
+}*/

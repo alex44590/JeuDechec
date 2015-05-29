@@ -44,25 +44,6 @@ void update_timer(Timer* t, Booleen pause){
 	}
 }
 
-/*
-//retourne 1 quand le temps est dépassé
-//*************NOTE DE Alex : Sauf que la avec le while tu empêches le programme de tourner pendant 20 s à chaque fois...******************
-int chrono(SDL_Renderer* contexte){
-Timer* chr = init_timer();
-int time_over = 0;
-char* bufferTexte = malloc (sizeof (chr->chrono));
-SDL_Surface* ttfchrono;
-
-while (chr->chrono != TEMPS_COUP){
-update_timer(chr);
-sprintf(bufferTexte,"Temps : ", chr->chrono/1000);
-ttfchrono=creerTexte(bufferTexte,"calibri.ttf", 20, 240, 240, 240);
-afficherTexte(ttfchrono, POS_X_CHRONO, POS_Y_CHRONO, contexte);
-}
-return time_over = 1;
-}
-*/
-
 
 //Affiche le chrono dans le menu de droite si le raffraichissement est nécessaire
 //Remet à Faux le booléen du timer reaffichageNecessaire si tel est le cas...

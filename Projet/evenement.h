@@ -14,6 +14,8 @@
 
 #define CLIC_DOWN_SOURIS_BOUTON_REGLE_SUIVANTE in.sourisEnfoncee && (in.clicSouris.x > X_BOUTON_REGLE_SUIVANT && in.clicSouris.x < (X_BOUTON_REGLE_SUIVANT + LARGEUR_BOUTON_REGLE) && in.clicSouris.y > Y_BOUTON_REGLE_SUIVANT && in.clicSouris.y < (Y_BOUTON_REGLE_SUIVANT + HAUTEUR_BOUTON_REGLE))
 #define CLIC_DOWN_SOURIS_BOUTON_REGLE_PRECEDENTE in.sourisEnfoncee && (in.clicSouris.x > X_BOUTON_REGLE_PRECEDENT && in.clicSouris.x < (X_BOUTON_REGLE_PRECEDENT + LARGEUR_BOUTON_REGLE) && in.clicSouris.y > Y_BOUTON_REGLE_PRECEDENT && in.clicSouris.y < (Y_BOUTON_REGLE_PRECEDENT + HAUTEUR_BOUTON_REGLE))
+#define CLIC_DOWN_SOURIS_OPTION_TEMPS_PAGE_OPTIONS in.sourisEnfoncee && (in.clicSouris.x > pageOptions->tabOptionTemps[j][i]->position.x && in.clicSouris.x < pageOptions->tabOptionTemps[j][i]->position.x + pageOptions->tabOptionTemps[j][i]->dimension.largeur && in.clicSouris.y > pageOptions->tabOptionTemps[j][i]->position.y && in.clicSouris.y < pageOptions->tabOptionTemps[j][i]->position.y + pageOptions->tabOptionTemps[j][i]->dimension.hauteur)
+#define CLIC_DOWN_SOURIS_OPTION_SURBRILLANCE_PAGE_OPTIONS in.sourisEnfoncee && (in.clicSouris.x > pageOptions->tabOptionSurbrillance[j][i]->position.x && in.clicSouris.x < pageOptions->tabOptionSurbrillance[j][i]->position.x + pageOptions->tabOptionSurbrillance[j][i]->dimension.largeur && in.clicSouris.y > pageOptions->tabOptionSurbrillance[j][i]->position.y && in.clicSouris.y < pageOptions->tabOptionSurbrillance[j][i]->position.y + pageOptions->tabOptionSurbrillance[j][i]->dimension.hauteur)
 
 
 #define CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE (in.clicSouris.x > 0 && in.clicSouris.x < OFFSET_PLATEAU_GAUCHE)

@@ -12,6 +12,7 @@
 #include "timer.h"
 #include "regle.h"
 #include "deplacement.h"
+#include "option.h"
 
 
 int main(int argc, char* argv[]){
@@ -234,6 +235,10 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création de la fenêtre contenenant les règles du jeu");
 	FenetreRegle* fenetreRegle = creerFenetreRegle();
 	
+	//Création de la page d'options
+	logPrint(INFO, "Création de la page contenenant les options du jeu");
+	PageOptions* pageOptions = creerPageOptions();
+
 
 	/******************************************/
 	/***  OUTILS DE GESTION DES EVENEMENTS  ***/
@@ -295,13 +300,17 @@ int main(int argc, char* argv[]){
 	Booleen jeuLance = FALSE;
 	Booleen jeuEntrainementLance = FALSE;
 
+	Booleen surbrillance2J = TRUE;
+	Booleen surbrillanceEntrainement = TRUE;
+	Booleen* surbrillance = &surbrillance2J;
+
 	Couleur couleurAJouerEntrainement = BLANC;
 	Couleur couleurAJouer2J = BLANC;
 	Couleur* couleurAJouer = &couleurAJouer2J;
 
 	Booleen echec;
 	Booleen echecEtMat;
-	Booleen pat;
+	Booleen pat = FALSE;
 
 
 	/*******************************************************/
@@ -315,10 +324,10 @@ int main(int argc, char* argv[]){
 		/******************************************/
 		/*********   GESTION DES TIMERS  **********/
 		/******************************************/
-		//update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
-		//update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
-		//update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
-		//update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
+		update_timer(menuDroiteEntrainement->timer[0], !jeuEntrainementLance || *couleurAJouer);
+		update_timer(menuDroiteEntrainement->timer[1], !jeuEntrainementLance || !*couleurAJouer);
+		update_timer(menuDroite2J->timer[0], !jeuLance || *couleurAJouer);
+		update_timer(menuDroite2J->timer[1], !jeuLance || !*couleurAJouer);
 
 
 		//On rafraichit l'affichage du chrono si besoin est
@@ -353,6 +362,9 @@ int main(int argc, char* argv[]){
 							break;
 						case REGLES:
 							typeMenuSelectionne = MENU_REGLES;
+							break;
+						case OPTION:
+							typeMenuSelectionne = MENU_OPTION;
 							break;
 						}
 						enfoncerBouton(menu->tabBouton[i]);
@@ -533,6 +545,50 @@ int main(int argc, char* argv[]){
 
 
 
+		//Cas du menu options
+		if (typeMenuEnCours == MENU_OPTION){
+			if (!CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
+				//Traitement des boutons du menu
+				//GESTION OPTIONS TEMPS
+				for (i = 0; i < 2; i++){
+					for (j = 0; j < NB_OPTIONS_TEMPS; j++){
+						if (CLIC_DOWN_SOURIS_OPTION_TEMPS_PAGE_OPTIONS)
+						{
+							gererOptionTemps(pageOptions, menuDroiteEntrainement, menuDroite2J, i, j, contexte);
+						}
+					}
+				}
+
+				//GESTION OPTIONS SURBRILLANCE
+				for (i = 0; i < 2; i++){
+					for (j = 0; j < 2; j++){
+						if (CLIC_DOWN_SOURIS_OPTION_SURBRILLANCE_PAGE_OPTIONS)
+						{
+							gererOptionSurbrillance(pageOptions, &surbrillance2J, &surbrillanceEntrainement, i, j, contexte);
+						}
+					}
+				}
+			}
+
+
+			else if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
+				//Traitement des boutons du menu
+				for (i = 0; i < NB_BOUTON_MREG; i++){
+					if (CLIC_DOWN_SOURIS_BOUTON_MENU_REGLES)
+					{
+						switch (menuRegles->tabBouton[i]->idBouton){
+						case ACCUEIL:
+							typeMenuSelectionne = MENU_ACCUEIL;
+							break;
+						}
+						enfoncerBouton(menuRegles->tabBouton[i]);
+						afficherMenuRegles(menuRegles, contexte);
+					}
+				}
+			}
+		}
+
+
 		//Relachement des boutons
 		if (in.sourisRelachee){
 			//Si on était dans le menu accueil
@@ -556,6 +612,7 @@ int main(int argc, char* argv[]){
 						couleurAJouer = &couleurAJouer2J;
 						situationEchec = &situationEchec2J;
 						contexteRoque = contexteRoque2J;
+						surbrillance = &surbrillance2J;
 						positionRoi[0] = &positionRoi2J[0];
 						positionRoi[1] = &positionRoi2J[1];
 						afficherPlateauDeJeu(contexte, plateau);
@@ -573,6 +630,7 @@ int main(int argc, char* argv[]){
 						couleurAJouer = &couleurAJouerEntrainement;
 						situationEchec = &situationEchecEntrainement;
 						contexteRoque = contexteRoqueEntrainement;
+						surbrillance = &surbrillanceEntrainement;
 						positionRoi[0] = &positionRoiEntrainement[0];
 						positionRoi[1] = &positionRoiEntrainement[1];
 						afficherPlateauDeJeu(contexte, plateau);
@@ -585,6 +643,13 @@ int main(int argc, char* argv[]){
 						afficherMenuRegles(menuRegles, contexte);
 						afficherFenetreRegle(fenetreRegle, contexte);
 						typeMenuEnCours = MENU_REGLES;
+					}
+
+					else if (typeMenuSelectionne == MENU_OPTION){
+						//Menu regles = même menu que celui des options ...
+						afficherMenuRegles(menuRegles, contexte);
+						afficherPageOptions(pageOptions, contexte);
+						typeMenuEnCours = MENU_OPTION;
 					}
 				}
 			}
@@ -608,17 +673,30 @@ int main(int argc, char* argv[]){
 						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						//On vérifie une éventuelle position d'échec du côté adverse
-						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
-							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-							if (*couleurAJouer == NOIR)
-								*situationEchec = ECHEC_BLANC;
-							else
-								*situationEchec = ECHEC_NOIR;
+							//On vérifie qu'il n'y a pas plutôt échec et mat !
+							echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
+							if (echecEtMat){
+								logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
+								if (pieceSelectionnee->couleur == NOIR)
+									*situationEchec = ECHEC_ET_MAT_BLANC;
+								else
+									*situationEchec = ECHEC_ET_MAT_NOIR;
+							}
+							else{
+								logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+								if (pieceSelectionnee->couleur == NOIR)
+									*situationEchec = ECHEC_BLANC;
+								else
+									*situationEchec = ECHEC_NOIR;
+							}
 						}
+						else if (pat)
+							*situationEchec = PAT;
 						else
-							*situationEchec = RIEN;						
+							*situationEchec = RIEN;
 					}
 				}
 
@@ -660,6 +738,7 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
+
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
@@ -701,6 +780,27 @@ int main(int argc, char* argv[]){
 						desenfoncerBouton(fenetreRegle->pagesRegles[fenetreRegle->numPageEnCours]->boutons[1]);
 						pageRegleSuivante(fenetreRegle);
 						afficherFenetreRegle(fenetreRegle, contexte);
+					}
+				}
+
+				//Si un changement de menu a été demandé, on l'effectue
+				if (typeMenuSelectionne != typeMenuEnCours){
+					if (typeMenuSelectionne == MENU_ACCUEIL){
+						afficherMenu(menu, contexte);
+						menuEnCours.menuAccueil = menu;
+						typeMenuEnCours = MENU_ACCUEIL;
+					}
+				}
+			}
+
+
+			//Si on était dans le menu options
+			else if (typeMenuEnCours == MENU_OPTION){
+				//On vérifie que tous les boutons du menu sont bien revenus à leur position initiale
+				for (i = 0; i < NB_BOUTON_MREG; i++){
+					if (menuRegles->tabBouton[i]->enfonce == TRUE){
+						desenfoncerBouton(menuRegles->tabBouton[i]);
+						afficherMenuRegles(menuRegles, contexte);
 					}
 				}
 
@@ -968,7 +1068,7 @@ int main(int argc, char* argv[]){
 					pieceSelectionnee = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne];
 					mettreEnSurbillancePiece(pieceSelectionnee, contexte);
 					//Calcul des déplacements autorisés pour la pièce nouvellement sélectionnée
-					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, TRUE, contexte);
+					calculerDeplacementPossible(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, deplacementPossible, vecteurDeplacement, *surbrillance, contexte);
 					
 					/**********************TEST ECHEC ANTICIPE*********************/
 					//On supprime de la matrice des déplacements possibles les cases où la pièce mettrait le roi en échec si elle s'y rendait
@@ -988,6 +1088,7 @@ int main(int argc, char* argv[]){
 
 					//On vérifie une éventuelle position d'échec du côté adverse
 					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+					echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
 						//On vérifie qu'il n'y a pas plutôt échec et mat !
@@ -1079,6 +1180,7 @@ int main(int argc, char* argv[]){
 
 					//On vérifie une éventuelle position d'échec du côté adverse
 					echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+					echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 					enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 					if (echec){
 						//On vérifie qu'il n'y a pas plutôt échec et mat !
@@ -1102,6 +1204,7 @@ int main(int argc, char* argv[]){
 						*situationEchec = PAT;
 					else
 						*situationEchec = RIEN;
+
 
 
 					//On déselectionne la pièce
@@ -1151,6 +1254,7 @@ int main(int argc, char* argv[]){
 
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
 							//On vérifie qu'il n'y a pas plutôt échec et mat !
@@ -1174,6 +1278,7 @@ int main(int argc, char* argv[]){
 							*situationEchec = PAT;
 						else
 							*situationEchec = RIEN;
+
 
 						//Ensuite on déselectionne la pièce
 						pieceSelectionnee = NULL;

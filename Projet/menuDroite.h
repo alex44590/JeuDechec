@@ -21,7 +21,6 @@
 #include "commun.h"
 #include "texte.h"
 #include "bouton.h"
-#include "option.h"
 #include "defausse.h"
 #include "timer.h"
 
