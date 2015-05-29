@@ -572,6 +572,7 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
 						c->roiDejaBouge[p1->couleur] = TRUE;
 						c->tourDejaBouge[p2->couleur][p2->idPiece.numero] = TRUE;
+						l->current->deplacementRoque = 1;
 						return TRUE;
 					}
 				}
@@ -585,9 +586,12 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
 						c->roiDejaBouge[p1->couleur] = TRUE;
 						c->tourDejaBouge[p2->couleur][p2->idPiece.numero] = TRUE;
+						l->current->deplacementRoque = 1;
 						return TRUE;
 					}
 				}
+
+
 			}
 		}
 	}
@@ -609,6 +613,7 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
 						c->roiDejaBouge[p2->couleur] = TRUE;
 						c->tourDejaBouge[p1->couleur][p1->idPiece.numero] = TRUE;
+						l->current->deplacementRoque = 1;
 						return TRUE;
 					}
 				}
@@ -622,6 +627,7 @@ Booleen gererRoqueSiPossible(Piece* p1, Piece* p2, Echiquier* e, ContexteRoque* 
 						e->tabCases[p2->idPosition.colonne][p2->idPosition.ligne]->occupee = TRUE;
 						c->roiDejaBouge[p2->couleur] = TRUE;
 						c->tourDejaBouge[p1->couleur][p1->idPiece.numero] = TRUE;
+						l->current->deplacementRoque = 1;
 						return TRUE;
 					}	
 				}
