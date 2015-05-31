@@ -9,18 +9,18 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 	///////////Définition de variable qui ne seront ///////////
 	//////////utilisé que si uune pièce à été mangé////////////
 	///////////////////////////////////////////////////////////
-	
+
 
 	Lettre colonneArrivee = l->current->arrivee.colonne;
 	Lettre ligneArrivee = l->current->arrivee.ligne;
 	Piece *p = NULL;
 
-	//La couleur � jouer est invers�e...
-	*couleurAJouer = !(*couleurAJouer);
-
 
 	if (l->current->numeroDeplacement > 31)
 	{
+		//La couleur � jouer est invers�e...
+		*couleurAJouer = !(*couleurAJouer);
+
 		if (l->current->IDPieceManger.couleur != l->current->currentPiece->idPiece.couleur)
 		{
 			flagPionManger = 1;
@@ -44,7 +44,7 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 				if (l->current->currentPiece->idPiece.couleur == 'N')
 					c->roiDejaBouge[NOIR] = FALSE;
 				else if (l->current->currentPiece->idPiece.couleur == 'B')
-					c->roiDejaBouge[BLANC] = FALSE;				
+					c->roiDejaBouge[BLANC] = FALSE;
 			}
 			else if (l->current->currentPiece->idPiece.type == 'T')
 			{
@@ -183,7 +183,7 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 			{
 				//On remet le pion transformé dans l'état Pion
 			}
-			
+
 		}
 
 		afficherPlateauDeJeu(contexte, pl);

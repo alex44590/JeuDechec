@@ -672,22 +672,24 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
+						
 						//On vérifie une éventuelle position d'échec du côté adverse
-						echec = calculerEchec(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
 							//On vérifie qu'il n'y a pas plutôt échec et mat !
-							echecEtMat = calculerEchecEtMatEtPat(!pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
+							echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 							if (echecEtMat){
 								logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
-								if (pieceSelectionnee->couleur == NOIR)
+								if (*couleurAJouer == NOIR)
 									*situationEchec = ECHEC_ET_MAT_BLANC;
 								else
 									*situationEchec = ECHEC_ET_MAT_NOIR;
 							}
 							else{
 								logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-								if (pieceSelectionnee->couleur == NOIR)
+								if (*couleurAJouer == NOIR)
 									*situationEchec = ECHEC_BLANC;
 								else
 									*situationEchec = ECHEC_NOIR;
@@ -741,14 +743,28 @@ int main(int argc, char* argv[]){
 
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
+						echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
 						if (echec){
-							logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
-							if (*couleurAJouer == NOIR)
-								*situationEchec = ECHEC_BLANC;
-							else
-								*situationEchec = ECHEC_NOIR;
+							//On vérifie qu'il n'y a pas plutôt échec et mat !
+							echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
+							if (echecEtMat){
+								logPrint(INFO, "********** ECHEC ET MAT ! PARTIE TERMINEE ... **********");
+								if (*couleurAJouer == NOIR)
+									*situationEchec = ECHEC_ET_MAT_BLANC;
+								else
+									*situationEchec = ECHEC_ET_MAT_NOIR;
+							}
+							else{
+								logPrint(INFO, "********** POSITION D'ECHEC DETECTEE ! **********");
+								if (*couleurAJouer == NOIR)
+									*situationEchec = ECHEC_BLANC;
+								else
+									*situationEchec = ECHEC_NOIR;
+							}
 						}
+						else if (pat)
+							*situationEchec = PAT;
 						else
 							*situationEchec = RIEN;
 					}
