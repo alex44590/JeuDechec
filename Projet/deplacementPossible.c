@@ -671,6 +671,18 @@ Booleen calculerEchecEtMatEtPat(Couleur c, Echiquier* e, DeplacementPossible* dE
 	int i, j, k, l;
 	Booleen continuer = TRUE;
 
+	*pat = TRUE;
+	for (j = 0; j < 8 && continuer; j++){
+		for (i = 0; i < 8 && continuer; i++){
+			if (e->tabPieces[i][j] != NULL){
+				if (e->tabPieces[i][j]->type != ROI){
+					*pat = FALSE;
+				}
+			}
+		}
+	}
+
+
 	for (j = 0; j < 8; j++){
 		for (i = 0; i < 8; i++){
 			if (e->tabPieces[i][j] != NULL){
@@ -696,7 +708,3 @@ Booleen calculerEchecEtMatEtPat(Couleur c, Echiquier* e, DeplacementPossible* dE
 
 	return TRUE;
 }
-
-/*Booleen calculerPat(Couleur c, Echiquier* e, DeplacementPossible* dEchecEtMat, DeplacementPossible* dEchecAnticipe, VecteurDeplacement* v, IDCase* posRoi, Booleen* pat, SDL_Renderer* contexte){
-
-}*/

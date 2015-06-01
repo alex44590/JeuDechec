@@ -673,7 +673,7 @@ int main(int argc, char* argv[]){
 						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						
-						//On vérifie une éventuelle position d'échec du côté adverse
+						/*//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
 						enregisterMatriceDeplacementPossible(deplacementPossibleEchec, "MatDechec.txt");
@@ -698,7 +698,7 @@ int main(int argc, char* argv[]){
 						else if (pat)
 							*situationEchec = PAT;
 						else
-							*situationEchec = RIEN;
+							*situationEchec = RIEN;*/
 					}
 				}
 
