@@ -17,6 +17,7 @@ Piece* creerPiece(TypePiece type, Couleur couleur, char numPiece){
 	//Initialisation des autres attributs
 	p->couleur = couleur;
 	p->type = type;
+	p->nbDeplacement = 0;
 	p->dimension.hauteur = HAUTEUR_PIECE;
 	p->dimension.largeur = LARGEUR_PIECE;
 	p->deplacementPossibles = NULL;

@@ -74,9 +74,9 @@ int main(int argc, char* argv[]){
 	logPrint(INFO, "Création du fichier historique");
 
 	//Création de la Liste chaînée des déplacements
-	ListDeplacement* l = initListDeplacement();
-	//ListDeplacement* l2J = initListDeplacement();
-	//ListDeplacement* lEntrainement = initListDeplacement();
+	ListDeplacement* l2J = initListDeplacement();
+	ListDeplacement* lEntrainement = initListDeplacement();
+	ListDeplacement** l = &l2J;
 
 	//Création des situation de jeu qui indiquera s'il y a échec, pat ...
 	logPrint(INFO, "Création de la situation de jeu 2 joueurs");
@@ -103,13 +103,13 @@ int main(int argc, char* argv[]){
 	//Création des échiquiers
 	Echiquier* echiquier2J = NULL;
 	logPrint(INFO, "Création de l'échiquier 2 joueurs");
-	echiquier2J = creerEchiquier(l, TRUE);
+	echiquier2J = creerEchiquier(*l, TRUE);
 	if (echiquier2J == NULL)
 		logPrint(ERREUR, "Echec de la création de l'échiquier 2 joueurs");
 
 	Echiquier* echiquierEntrainement = NULL;
 	logPrint(INFO, "Création de l'échiquier entrainement");
-	echiquierEntrainement = creerEchiquier(l, FALSE);
+	echiquierEntrainement = creerEchiquier(*l, FALSE);
 	if (echiquierEntrainement == NULL)
 		logPrint(ERREUR, "Echec de la création de l'échiquier entrainement");
 
@@ -674,7 +674,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
+						retourArriere(*l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 						
 						/*//On vérifie une éventuelle position d'échec du côté adverse
@@ -742,7 +742,7 @@ int main(int argc, char* argv[]){
 					if (menuDroite->tabBouton[i]->enfonce == TRUE){
 						desenfoncerBouton(menuDroite->tabBouton[i]);
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
-						retourArriere(l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
+						retourArriere(*l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
 
 						//On vérifie une éventuelle position d'échec du côté adverse
@@ -1015,7 +1015,7 @@ int main(int argc, char* argv[]){
 					afficherMenuEntrainement(menuEntrainement, contexte);
 
 					//On déplace la pièce sur l'échiquier
-					bougerPiece(pieceReserveSelectionnee, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, l);
+					bougerPiece(pieceReserveSelectionnee, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, *l);
 					plateau->echiquier->tabCases[pieceReserveSelectionnee->idPosition.colonne][pieceReserveSelectionnee->idPosition.ligne]->occupee = TRUE;
 					supprimerSurbillancePiece(pieceReserveSelectionnee, contexte);
 
@@ -1037,7 +1037,7 @@ int main(int argc, char* argv[]){
 				//Si une pièce est sélectionnée sur l'échiquier et que la case n'en contient pas
 				else if (pieceSelectionneeEntrainement != NULL && plateau->echiquier->tabPieces[idCaseSelectionneeEntrainement.colonne][idCaseSelectionneeEntrainement.ligne] == NULL){
 					//On déplace la pièce sur l'échiquier
-					bougerPiece(pieceSelectionneeEntrainement, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, l);
+					bougerPiece(pieceSelectionneeEntrainement, plateau->echiquier->tabPieces, caseSelectionneeEntrainement->identifiant.colonne, caseSelectionneeEntrainement->identifiant.ligne, *l);
 					plateau->echiquier->tabCases[pieceSelectionneeEntrainement->idPosition.colonne][pieceSelectionneeEntrainement->idPosition.ligne]->occupee = TRUE;
 					supprimerSurbillancePiece(pieceSelectionneeEntrainement, contexte);
 
@@ -1103,7 +1103,7 @@ int main(int argc, char* argv[]){
 			else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] != NULL && pieceSelectionnee != NULL){
 				
 				//S'il y a possibilité de roque
-				if (gererRoqueSiPossible(pieceSelectionnee, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, contexteRoque, l)){
+				if (gererRoqueSiPossible(pieceSelectionnee, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier, contexteRoque, *l)){
 
 
 					//On vérifie une éventuelle position d'échec du côté adverse
@@ -1171,19 +1171,19 @@ int main(int argc, char* argv[]){
 					//On met la pièce en défausse
 
 					IDPiece idPieceASortir = plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->idPiece;
-					l->current->IDPieceManger = idPieceASortir;
+					(*l)->current->IDPieceManger = idPieceASortir;
 					if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == BLANC)
 						mettrePieceDefausse(plateau->defausseBlanc, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
 					else if (plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne]->couleur == NOIR)
 						mettrePieceDefausse(plateau->defausseNoir, plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], contexte);
 
 					//On mange la pièce 
-					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, l);
+					mangerPiece(plateau->echiquier->tabPieces[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne], plateau->echiquier->tabPieces, *l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
 					
 
 					//Ensuite on bouge la pièce sélectionnée sur la case nouvellement libre
-					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
+					bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, *l);
 					plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 					supprimerSurbillancePiece(pieceSelectionnee, contexte);
 
@@ -1255,11 +1255,11 @@ int main(int argc, char* argv[]){
 					if (deplacementPossible->deplacementPossible[idCaseSelectionnee.colonne][idCaseSelectionnee.ligne] == 1){
 
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = FALSE;
-						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, l);
+						bougerPiece(pieceSelectionnee, plateau->echiquier->tabPieces, caseSelectionnee->identifiant.colonne, caseSelectionnee->identifiant.ligne, *l);
 						plateau->echiquier->tabCases[pieceSelectionnee->idPosition.colonne][pieceSelectionnee->idPosition.ligne]->occupee = TRUE;
 						echec = calculerEchec(pieceSelectionnee->couleur, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						supprimerSurbillancePiece(pieceSelectionnee, contexte);
-						l->current->IDPieceManger = pieceSelectionnee->idPiece; //Piece mangé = pièce sélectionner pour fonction retour arrière
+						(*l)->current->IDPieceManger = pieceSelectionnee->idPiece; //Piece mangée = pièce sélectionnée pour fonction retour arrière
 
 						//Si on vient de bouger un roi, on enregistre sa nouvelle position (permet d'optimiser le calcul d'échec par la suite)
 						if (pieceSelectionnee->type == ROI){
