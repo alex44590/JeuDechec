@@ -75,6 +75,8 @@ int main(int argc, char* argv[]){
 
 	//Création de la Liste chaînée des déplacements
 	ListDeplacement* l = initListDeplacement();
+	//ListDeplacement* l2J = initListDeplacement();
+	//ListDeplacement* lEntrainement = initListDeplacement();
 
 	//Création des situation de jeu qui indiquera s'il y a échec, pat ...
 	logPrint(INFO, "Création de la situation de jeu 2 joueurs");
@@ -377,6 +379,7 @@ int main(int argc, char* argv[]){
 
 		//Cas du Menu 2 joueurs
 		if (typeMenuEnCours == MENU_2J){
+			//l = &(l2J);
 			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_M2J; i++){
@@ -439,6 +442,7 @@ int main(int argc, char* argv[]){
 
 		//Cas du Menu Entrainement
 		if (typeMenuEnCours == MENU_ENTRAINEMENT){
+			//l = &(lEntrainement);
 			if (CLIC_DOWN_SOURIS_INTERIEUR_MENU_GAUCHE && in.sourisEnfoncee){
 				//Traitement des boutons du menu
 				for (i = 0; i < NB_BOUTON_MENT; i++){
