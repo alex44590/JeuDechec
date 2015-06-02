@@ -1,0 +1,8 @@
+FOU DAME ... Et s'arrête lorsqu'il rencontre une pièce
+ROI : Ne peut se mettre en position d'échec
+PION : enlever habituellement + ajouter espace apres point
+ROQUE : espace entre deetcontrole et d'unepièce + enlever le s de pièce dans "aucune pièces"...
+ECHEC : "Lorsque le roi est en prise" --> "Lorsque le roi peut être pris par une pièce adverse" 
++ Remplacer perdue par terminée + lumiere derrière photos
+Promotion : Aligner les textes ou les centrer + Supprimer la phrase de wiki "on parle de promotion..." 
++ ajouter lumière derrière photos.
