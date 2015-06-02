@@ -107,6 +107,8 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 			pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = FALSE;
 
 			bougerPiece(l->current->currentPiece, pl->echiquier->tabPieces, l->current->depart.colonne, l->current->depart.ligne, l);
+			l->current->currentPiece->nbDeplacement--;
+			l->current->currentPiece->nbDeplacement--;
 
 			//On indique que la case sur laquelle est revenue la piece est occupee (idem...)
 			pl->echiquier->tabCases[l->current->currentPiece->idPosition.colonne][l->current->currentPiece->idPosition.ligne]->occupee = TRUE;
@@ -174,6 +176,8 @@ void retourArriere(ListDeplacement *l, PlateauDeJeu *pl, MenuDroite * m, SDL_Ren
 				pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = FALSE;
 				bougerPiece(p, pl->echiquier->tabPieces, colonneArrivee, ligneArrivee, l);
 				pl->echiquier->tabCases[p->idPosition.colonne][p->idPosition.ligne]->occupee = TRUE;
+
+				p->nbDeplacement--;
 
 				deleteCurrent(l);
 				numeroDeplacement--;
