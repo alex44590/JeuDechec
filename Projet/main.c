@@ -676,7 +676,21 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(*l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
-						
+						if (*couleurAJouer == BLANC){
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone1->ttfPseudo;
+						}
+						else{
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone2->ttfPseudo;
+						}
+						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
+
+
 						/*//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
@@ -744,7 +758,20 @@ int main(int argc, char* argv[]){
 						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						retourArriere(*l, plateau, menuDroite, contexte, couleurAJouer, contexteRoque);
 						enregisterEchiquier(plateau->echiquier, "Echiquier.txt");
+						if (*couleurAJouer == BLANC){
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone1->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone1->ttfPseudo;
+						}
+						else{
+							if (typeMenuEnCours == MENU_ENTRAINEMENT)
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menuEntrainement->zone2->ttfPseudo;
+							else
+								menuDroite->zoneJoueurEnCours->ttfJoueur = menu2J->zone2->ttfPseudo;
+						}
 
+						afficherMenuDroite(menuDroite, *couleurAJouer, contexte);
 						//On vérifie une éventuelle position d'échec du côté adverse
 						echec = calculerEchec(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchec, vecteurDeplacement, *positionRoi, contexte);
 						echecEtMat = calculerEchecEtMatEtPat(!*couleurAJouer, plateau->echiquier, deplacementPossibleEchecEtMat, deplacementPossibleEchecAnticipe, vecteurDeplacement, *positionRoi, &pat, contexte);
