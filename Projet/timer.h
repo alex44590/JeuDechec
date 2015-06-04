@@ -35,11 +35,28 @@ typedef struct{
 	Booleen reaffichageNecessaire;
 }Timer;
 
+/**
+* \fn init_timer()
+* \brief   Initialise un timer
+* \return Un pointeur vers le timer 
+*/
 
 Timer* init_timer();
-void update_timer(Timer* t, Booleen pause);
-void afficherChrono(Timer* t, SDL_Renderer* contexte);
-void mettreEnPauseChrono(Timer* t);
 
-int chrono();
+/**
+* \fn update_timer( Timer* t, Booleen pause)
+* \brief   mise à jour du timer
+* \param[in] Timer* t 
+* \param[in] Booleen pause
+*/
+void update_timer(Timer* t, Booleen pause);
+
+/**
+* \fn afficherChrono( Timer* t, SDL_Renderer* contexte)
+* \brief   Affichage du chronomètre
+* \param[in] Timer* t
+* \param[in] SDL_Renderer* contexte
+*/
+void afficherChrono(Timer* t, SDL_Renderer* contexte);
+
 #endif

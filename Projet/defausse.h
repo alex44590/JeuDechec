@@ -31,10 +31,57 @@ typedef struct{
 	Piece* tabPiecesDefaussees[2][8];
 }Defausse;
 
+/**
+* \fn creerDefausse(Couleur couleur)
+* \brief   Crée une défause
+* \param[in] Couleur couleur
+* \return Un pointeur vers la défausse créee
+*/
 Defausse* creerDefausse(Couleur couleur);
+
+/**
+* \fn afficherDefausse(Defausse* d, SDL_Renderer* contexte)
+* \brief   Affiche une défausse
+* \param[in] Defause* d
+* \param[in] SDL_Renderer* contexte
+*/
 void afficherDefausse(Defausse* d, SDL_Renderer* contexte);
+
+/**
+* \fn afficherPieceDefausse(Defausse* d,Piece* p, SDL_Renderer* contexte, int x, int y)
+* \brief   Affiche une pièce dans une défausse
+* \param[in] Defause* d
+* \param[in] Piece* p
+* \param[in] SDL_Renderer* contexte
+* \param[in] int x
+* \param[in] int y
+*/
 void afficherPieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte, int x, int y);
+
+/**
+* \fn afficherAllPiecesDefausse(Defausse* d, SDL_Renderer* contexte)
+* \brief   Affiche toutes les pièces dans la défausse
+* \param[in] Defause* d
+* \param[in] SDL_Renderer* contexte
+*/
 void afficherAllPiecesDefausse(Defausse* d, SDL_Renderer* contexte);
+
+/**
+* \fn mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte)
+* \brief   Mise d'une pièce dans la défausse
+* \param[in] Defause* d
+* \param[in] Piece* p
+* \param[in] SDL_Renderer* contexte
+*/
 void mettrePieceDefausse(Defausse* d, Piece* p, SDL_Renderer* contexte);
+
+/**
+* \fn sortirPieceDefausse(Defausse* dBlanc, Defausse* dNoir, IDPiece id)
+* \brief   Crée une défause
+* \param[in] Defausse* dBlanc
+* \param[in] Defausse* dNoir
+* \param[in] IDPiece id
+* \return Un pointeur vers la piece sortie de la defausse
+*/
 Piece* sortirPieceDefausse(Defausse* dBlanc, Defausse* dNoir, IDPiece id);
 #endif
