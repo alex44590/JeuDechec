@@ -17,7 +17,11 @@
 #define TAILLEMAX_NOM_JOUEUR 12
 
 
-/*Création de la structure CasePseudo*/
+/**
+* \struct CasePseudo
+* \brief  Contient les dimensions et la position de la case, deux chaines de caractères contenant
+*		  le nom de chaque joueur ainsi qu'un booléen pour savoir si la case est sélectionnée
+*/
 typedef struct
 {
 	Dimension dimension;

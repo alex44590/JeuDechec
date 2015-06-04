@@ -75,20 +75,47 @@
 #define LARGEUR_ESPACE_PIECE_RESERVE (-1)
 #define HAUTEUR_ESPACE_PIECE_RESERVE 1
 
+/**
+* \enum Booléen
+* \brief  Les valeurs possibles du booléen
+*/
 typedef enum { FALSE, TRUE }Booleen;
+
+/**
+* \enum Couleur
+* \brief  Les couleurs possibles
+*/
 typedef enum{ BLANC, NOIR }Couleur;
+
+/**
+* \enum Lettre
+* \brief  Les lettres correspondant aux colonnes de l'échiquier
+*/
 typedef enum{ A, B, C, D, E, F, G, H }Lettre;
 
+/**
+* \struct Dimension
+* \brief  Contient la largeur et la hauteur
+*/
 typedef struct {
 	short int hauteur;
 	short int largeur;
 }Dimension;
 
+/**
+* \struct Position
+* \brief  Contient les coordonnées x et y 
+*/
 typedef struct {
 	short int x;
 	short int y;
 }Position;
 
+/**
+* \struct IDPiece
+* \brief  Contient le type et la couleur de la pièce ainsi que le numéro de la pièce
+*			et une chaine de caractère qui regroupe les trois paramètres	
+*/
 typedef struct {
 	char type;
 	char couleur;
@@ -96,13 +123,23 @@ typedef struct {
 	char id[4]; //Id complet de la pièce sous la forme TN0 pour la 1ère Tour Noire, avec un \0 en 4ème caractère pour pouvoir utiliser les fct de string.h 
 }IDPiece;
 
+/**
+* \struct IDCase
+* \brief  Contient la ligne et la colonne auxquelles appartient la case 
+*/
 typedef struct {
 	Lettre colonne;
 	Lettre ligne;
 }IDCase;
 
-
-//Méthode générique d'affichage d'image
+/**
+* \fn afficherImage(SDL_Surface* image, Position p, Dimension d, SDL_Renderer* contexte)
+* \brief     Méthode générique d'affichage d'image
+* \param[in] SDL_Surface* image
+* \param [in] Position p
+* \param [in] Dimension d
+* \param [in] SDL_Renderer* contexte
+*/
 void afficherImage(SDL_Surface* image, Position p, Dimension d, SDL_Renderer* contexte);
 
 

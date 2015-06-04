@@ -16,6 +16,12 @@
 
 
 
+/**
+* \struct Case
+* \brief  Contient les dimensions de la case, son ID, sa position, sa couleur. Elle contient aussi trois booléens afin de savoir si 
+*		  la case est sélectionnée, occupée et si elle est en surbrillance. Il y a aussi les différentes images qui correspondent
+*		  aux différentes situations (actuelle, en surbrillance, occupée et en surbrillance, normale)
+*/
 typedef struct {
 	Dimension dimension;
 	IDCase identifiant;
@@ -30,11 +36,51 @@ typedef struct {
 	Booleen occupee;
 }Case;
 
-
+/**
+* \fn creerCaseBlanche(IDCase id)
+* \brief   Crée une case blanche
+* \param[in] IDCase id
+* \return Un pointeur vers la case créée
+*/
 Case* creerCaseBlanche(IDCase id);
+
+/**
+* \fn creerCaseNoire(IDCase id)
+* \brief   Crée une case noire
+* \param[in] IDCase id
+* \return Un pointeur vers la case créée
+*/
 Case* creerCaseNoire(IDCase id);
+
+/**
+* \fn afficherCase(Case* c, SDL_Renderer* contexte)
+* \brief   Affiche la case passée en paramètre 
+* \param[in] Case* c
+* \param[in] SDL_Renderer* contexte
+*/
 void afficherCase(Case* c, SDL_Renderer* contexte);
+
+/**
+* \fn mettreEnSurbrillance(Case* c, SDL_Renderer* contexte)
+* \brief   Met la case passée en paramètre en surbrillance
+* \param[in] Case* c
+* \param[in] SDL_Renderer* contexte
+*/
 void mettreEnSurbrillance(Case* c, SDL_Renderer* contexte);
+
+/**
+* \fn mettreEnSurbrillanceOccupee(Case* c, SDL_Renderer* contexte)
+* \brief   Met une case occupée en surbrillance
+* \param[in] Case* c
+* \param[in] SDL_Renderer* contexte
+*/
 void mettreEnSurbrillanceOccupee(Case* c, SDL_Renderer* contexte);
+
+/**
+* \fn supprimerSurbrillance(Case* c, SDL_Renderer* contexte)
+* \brief   Supprime la surbrillance de la case
+* \param[in] Case* c
+* \param[in] SDL_Renderer* contexte
+*/
 void supprimerSurbrillance(Case* c, SDL_Renderer* contexte);
 #endif

@@ -29,5 +29,6 @@ INFO : Création de l'objet Déplacement Possible pour l'échec et mat
 INFO : Création de l'objet Vecteur Deplacement
 INFO : Création de la fenêtre contenenant les règles du jeu
 INFO : Création de la page contenenant les options du jeu
+INFO : Création de la Structure input permettant la gestion des évènements
 INFO : Lancement de la boucle principale du jeu
 INFO : Lancement de la boucle principale du jeu
