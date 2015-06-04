@@ -2,34 +2,9 @@
 #define PIECE_H
 
 #include "case.h"
-//#include "commun.h"
 #include "listeDeplacement.h"
-#include "header.h"
+#include "pieceCommun.h"
 #define NB_PION_DEPART 8
-
-
-//typedef enum{ ROI, DAME, FOU, CAVALIER, TOUR, PION }TypePiece;
-
-//typedef struct{
-//	IDCase idPosition;
-//	IDPiece idPiece;
-//	Dimension dimension;
-//	Couleur couleur;
-//	TypePiece type;
-//	SDL_Surface* imagePiece;
-//	SDL_Surface* imagePieceNormale;
-//	SDL_Surface* imagePieceSurbrillance;
-//	SDL_Surface* imagePieceDefausse;
-//	SDL_Surface* imagePieceReserve;
-//	SDL_Surface* imagePieceReserveNormale;
-//	SDL_Surface* imagePieceReserveSurbrillance;
-//	IDCase* deplacementPossibles;
-//	Booleen active;
-//	Booleen pieceSelectionne;
-//	Booleen surbrillance;
-//	Booleen surbrillanceReserve;
-//	int nbDeplacement;
-//}Piece;
 
 
 extern int numeroDeplacement;

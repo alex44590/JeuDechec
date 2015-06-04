@@ -1,8 +1,16 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-//#include "piece.h"
-//#include "deplacement.h"
+/**
+* \file pieceCommun.h
+* \brief Structure Piece
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Définition de la structure pièce dans un fichier dédié
+* La pièce est partagée par plusieurs fichiers d'en tête qui sont doublement liés
+*
+*/
 #include "commun.h"
 
 typedef enum{ ROI, DAME, FOU, CAVALIER, TOUR, PION }TypePiece;

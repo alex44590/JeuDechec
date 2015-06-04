@@ -1,3 +1,15 @@
+/**
+* \file evenement.h
+* \brief Gestions des évènements SDL
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Définition de la structure Input recensant l'état à instant t des évènement SDL
+* Fonction de mise à jour de la structure Input
+* Macro-Définition des évènements courants (Clic souris un bouton du menu, sur une case de l'échiquier, ...)
+*
+*/
+
 #ifndef EVENEMENT_H
 #define EVENEMENT_H
 
@@ -36,6 +48,7 @@ typedef struct{
 	Booleen sourisEnfoncee;
 	Booleen sourisRelachee;
 	Booleen quit;
+	Dimension tailleFenetre;
 }Input;
 
 void mettreAJourEvent(Input* in);

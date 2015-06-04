@@ -1,3 +1,14 @@
+/**
+* \file defausse.h
+* \brief Gestions des défausses
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Définition de la structure défausse
+* Prototypes des fonctions de créations, modifications et affichage des défausses de pièces
+*
+*/
+
 #ifndef DEFAUSSE_H
 #define DEFAUSSE_H
 

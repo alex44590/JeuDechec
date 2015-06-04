@@ -1,3 +1,14 @@
+/**
+* \file entrainement.h
+* \brief Gestions du mode entrainement
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Définition des réserves de pièces pour le mode entrainement
+* Prototypes des fonctions de créations, modifications et d'affichage des réserves
+*
+*/
+
 #ifndef ENTRAINEMENT_H
 #define ENTRAINEMENT_H
 

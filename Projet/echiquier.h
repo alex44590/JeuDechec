@@ -1,3 +1,14 @@
+/**
+* \file echiquier.h
+* \brief Gestion de l'échiquier
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Structure de l'échiquier
+* Fonctions de création, d'enregistrement et d'affichage de l'échiquier
+*
+*/
+
 #ifndef ECHIQUIER_H
 #define ECHIQUIER_H
 

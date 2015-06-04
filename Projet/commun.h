@@ -1,3 +1,13 @@
+/**
+* \file commun.h
+* \brief Structures partagées et Macro-définitions communes
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Fichier regroupant les structures et énumérations communes à plusieurs autres fichiers d'en tête
+*
+*/
+
 #ifndef COMMUN_H
 #define COMMUN_H
 

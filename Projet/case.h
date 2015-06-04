@@ -1,3 +1,14 @@
+/**
+* \file case.h
+* \brief Gestions des cases
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Prototypes des fonctions de créations, modifications et affichage des cases de l'échiquier
+*
+*/
+
+
 #ifndef CASE_H
 #define CASE_H
 

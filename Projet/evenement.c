@@ -7,7 +7,6 @@ void mettreAJourEvent(Input* in){
 	{
 		switch (event.type)
 		{
-
 		//Gestion du clavier
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym <= 127)

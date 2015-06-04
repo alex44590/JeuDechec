@@ -2,9 +2,8 @@
 #define LISTEDEPLACEMENT_H
 
 
-//#include "deplacement.h"
 #include "log.h"
-#include "header.h"
+#include "pieceCommun.h"
 
 
 typedef struct Deplacement{

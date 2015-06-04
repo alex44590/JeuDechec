@@ -1,3 +1,16 @@
+/**
+* \file deplacementPossible
+* \brief Gestions des déplacements des pièces
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+* Définition des structures permettant le calcul des déplacements autorisés d'une pièce
+* Prototypes des fonctions de calcul de la matrice des déplacements possibles
+* Gestion du Roque
+* Calcul des situations d'échec, d'échec anticipé pour une pièce, du pat et de l'échec et mat
+*
+*/
+
 #ifndef DEPLACEMENTPOSSIBLE_H
 #define DEPLACEMENTPOSSIBLE_H
 

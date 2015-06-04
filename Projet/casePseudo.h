@@ -1,3 +1,10 @@
+/**
+* \file casePseudo.h
+* \brief Structure de la case permettant d'entrer un pseudo
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1*
+*/
+
 #ifndef CASEPSEUDO_H
 #define CASEPSEUDO_H
 
