@@ -135,10 +135,10 @@ typedef struct {
 /**
 * \fn afficherImage(SDL_Surface* image, Position p, Dimension d, SDL_Renderer* contexte)
 * \brief     Méthode générique d'affichage d'image
-* \param[in] SDL_Surface* image
-* \param [in] Position p
-* \param [in] Dimension d
-* \param [in] SDL_Renderer* contexte
+* \param[in]  image : image à afficher
+* \param [in] p : position de l'image 
+* \param [in] d : dimension de l'image
+* \param [in] contexte : contexte graphique
 */
 void afficherImage(SDL_Surface* image, Position p, Dimension d, SDL_Renderer* contexte);
 

@@ -46,8 +46,8 @@ typedef struct{
 /**
 * \fn Bouton* creerBouton(idBouton cible, char* nomImage) 
 * \brief      Crée un bouton
-* \param[in] idBouton cible
-* \param [in] char* nomImage
+* \param[in] cible : type de bouton à créer
+* \param [in] nomImage: pointeur vers l'image à charger
 * \return   Pointeur vers le bouton créé
 */
 Bouton* creerBouton(idBouton cible, char* nomImage);
@@ -55,40 +55,40 @@ Bouton* creerBouton(idBouton cible, char* nomImage);
 /**
 * \fn void setPositionBouton(Bouton* b, int x, int y)
 * \brief   Modifie la position du bouton
-* \param[in] Bouton* b
-* \param [in] int x
-* \param [in] int y
+* \param[in] b : pointeur vers le bouton
+* \param [in] x : position en x du bouton
+* \param [in] y : position en y du bouton
 */
 void setPositionBouton(Bouton* b, int x, int y);
 
 /**
 * \fn setTailleBouton(Bouton* b, int largeur, int hauteur)
 * \brief   Modifie la taille du bouton
-* \param[in] Bouton* b
-* \param [in] int largeur
-* \param [in] int longueur
+* \param[in] b : pointeur vers le bouton
+* \param [in] largeur : largeur du bouton
+* \param [in] longueur : longueur du bouton
 */
 void setTailleBouton(Bouton* b, int largeur, int hauteur);
 
 /**
 * \fn afficherBouton(Bouton* b, SDL_Renderer* contexte)
 * \brief   Affiche le bouton passé en paramètre
-* \param[in] Bouton* b
-* \param [in] SDL_Renderer* contexte
+* \param[in] b : pointeur vers le bouton à afficher
+* \param [in] contexte : contexte graphique
 */
 void afficherBouton(Bouton* b, SDL_Renderer* contexte);
 
 /**
 * \fn enfoncerBouton(Bouton* b)
 * \brief   Modifie la position du bouton de 3 pixels à droite et en bas
-* \param[in] Bouton* b
+* \param[in] b : pointeur vers le bouton à envoyer
 */
 void enfoncerBouton(Bouton* b);
 
 /**
 * \fn desenfoncerBouton(Bouton* b)
 * \brief   Remet le bouton en position initiale
-* \param[in] Bouton* b
+* \param[in] b : pointeur vers le bouton à relacher
 */
 void desenfoncerBouton(Bouton* b);
 

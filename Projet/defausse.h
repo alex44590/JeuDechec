@@ -23,6 +23,7 @@
 #define LARGEUR_ESPACE_PIECE_DEFAUSSE 0
 #define HAUTEUR_ESPACE_PIECE_DEFAUSSE 2
 
+
 typedef struct{
 	Couleur couleur;
 	Position position;
