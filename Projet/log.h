@@ -1,3 +1,11 @@
+/**
+* \file log
+* \brief gestion des données d'information/erreur/avertissement
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+*/
+
 #ifndef LOG_H
 #define LOG_H
 /*Définit les fonctions de bases d'un fichier de log qui sert à suivre l'avancement

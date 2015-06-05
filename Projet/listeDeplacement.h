@@ -1,3 +1,10 @@
+/**
+* \file listDeplacement
+* \brief gestion de la liste des Déplacements
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+*/
 #ifndef LISTEDEPLACEMENT_H
 #define LISTEDEPLACEMENT_H
 
@@ -5,7 +12,11 @@
 #include "log.h"
 #include "pieceCommun.h"
 
-
+/**
+* \struct Deplacement
+* \brief caractéristiques d'un déplacement
+*
+*/
 typedef struct Deplacement{
 	Piece * currentPiece;
 	IDCase depart;
@@ -18,7 +29,11 @@ typedef struct Deplacement{
 	int deplacementRoque;
 }Deplacement;
 
-
+/**
+* \struct listDeplacement
+* \brief curseur sur la liste des déplacements
+*
+*/
 typedef struct {
 	Deplacement* first;
 	Deplacement* current;

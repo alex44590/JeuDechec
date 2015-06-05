@@ -1,3 +1,11 @@
+/**
+* \file piece
+* \brief gestion des actions en interactions avec les pièces
+* \author VIGNAL A, MIQUEU C, MONNIER N, TASSE A.
+* \version 1
+*
+*/
+
 #ifndef PIECE_H
 #define PIECE_H
 
